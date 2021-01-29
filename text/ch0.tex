@@ -1,0 +1,468 @@
+\section{Chapter 0 -- Review of Linear Algebra}
+
+\subsection{Vector Spaces}
+\label{subsection:vector-spaces}
+We quickly define general algebraic structures of interest, paying particular attention to vector spaces and their properties.
+
+\begin{definition}[Field]
+    \label{def:field}
+    \textit{Fields} are algebraic structures endowed with addition and multiplication, which behave in the same way as we think of these operations for the real or rational numbers.
+\end{definition}
+\begin{itemize}
+    \item Examples include $\R$, $\C$, and $\Q$.
+    \item Fields contain the additive/multiplicative identities and additive/multiplicative inverses for each element in the field.
+    \item The commutative, associative, and distributive properties hold.
+\end{itemize}
+
+\begin{definition}[Vector Space]
+    \label{def:vector-space}
+    \textit{Vector spaces} are defined over some field $\F$ and are endowed with addition and scalar multiplication. Elements of a vector space are called vectors.
+\end{definition}
+\begin{itemize}
+    \item Examples include $\R^n$ over $\R$, $\C^n$ over $\C$, $\F^n$ over $\F$, $C^1[a,b]$ over $\R$, or real polynomials over $\R$.
+    \item Vector spaces contain the contain the additive/multiplicative identities and additive/multiplicative inverses for each element in the vector space.
+    \item The commutative, associative, and distributive properties hold.
+\end{itemize}
+
+\begin{definition}[Linear Combination]
+\label{def:linear-combination}
+For a vector space $V$ over a field $\F$, let $v_1, v_2,\dots, v_n \in V$, $a_1, a_2, \dots, a_n \in \F$. We say that
+$$
+a_1v_1 + a_2v_2 + \dots + a_nv_n
+$$
+is a \textit{linear combination} of $v_1, v_2, \dots, v_n$.
+\end{definition}
+
+\begin{example}
+An example of a linear combination:
+$$
+2 \begin{bmatrix} 1 \\ 2 \\ 2 \end{bmatrix} + 
+3 \begin{bmatrix} -3 \\ 2 \\ 1 \end{bmatrix} -
+2 \begin{bmatrix} 6 \\ 0 \\ 1 \end{bmatrix} = 
+\begin{bmatrix} -19 \\ 10 \\ 5 \end{bmatrix}
+$$
+\end{example}
+
+\begin{definition}[Span]
+\label{def:span}
+The \textit{span} of a set of vectors $\{v_1, v_2, \dots, v_n\}$ is the set of all linear combinations of those vectors
+$$
+\text{span}\{v_1, v_2, \dots, v_n\} 
+    \defeq 
+\{\alpha_1v_1 + \alpha_2v_2 + \dots + \alpha_nv_n | \alpha_1, \alpha_2, \dots, \alpha_n \in \F \}.
+$$
+\end{definition}
+
+\begin{remark*}
+The zero vector $\vec{0}$ is in the span of any set of vectors, that is, $\vec{0} \in \text{span}\{v_1, v_2, \dots, v_n\}$ for any $\{v_1, v_2, \dots, v_n\}$ since
+$$
+0v_1 + 0v_2 + \dots 0v_n = \vec{0} \hspace{1cm} (``\text{trivial linear combination}")
+$$
+\end{remark*}
+
+\begin{definition}[Linear Dependence/Independence] 
+\label{def:linear-dependence}
+We say that $v_1, v_2, \dots, v_n$ are \textit{linearly dependent} if $\exists \alpha_1, \alpha_2, \dots, \alpha_n$ not all zero such that
+$$
+\alpha_1v_1 + \alpha_2v_2 + \dots + \alpha_nv_n = \vec{0}
+$$
+\end{definition}
+
+\begin{remark*}
+Conversely, we say that $v_1, v_2, \dots, v_n$ are \textit{linearly independent} if for any $\alpha_1, \alpha_2, \dots, \alpha_n$,
+$$
+\alpha_1v_1 + \alpha_2v_2 + \dots + \alpha_nv_n = \vec{0} \quad     \Rightarrow \quad 
+\alpha_1 = \alpha_2 = \dots = \alpha_n
+$$
+\end{remark*}
+    
+\begin{remark*}
+$v_1, v_2, \dots, v_n$ are linearly independent $\Longleftrightarrow$ one of the $v_i$'s can be expressed as a linear combination of the others.
+\end{remark*}
+
+\begin{example}
+An example of linear dependence:
+    \begin{alignat*}{2}
+        && 3v_1 + 6v_2 + 0v_3 + 2v_4 &= \vec{0} \\
+        & \Longrightarrow \quad & v_4 &= -\frac{3}{2}v_1 - \frac{6}{2}v_2 - \frac{0}{2}v_3 \\
+                            &&&= -\frac{3}{2}v_1 - 3v_2 - 0v_3
+    \end{alignat*}
+
+In the context of span, $v_4$ is redundant.
+\end{example}
+
+\begin{definition}[Basis]
+\label{def:basis}
+We say that $v_1, v_2, \dots, v_n \in V$ form a \textit{(Hamel) basis} for $V$ if
+\begin{enumerate}[label=(\roman*)]
+    \item $v_1, v_2, \dots, v_n$ are linearly independent, and
+    \item $\text{span}\{v_1, v_2, \dots, v_n\} = V$.
+\end{enumerate}
+\end{definition}
+
+\begin{remark*}
+If $v_1, v_2, \dots, v_n$ are a basis for $V$, then $\forall v \in V$, $\exists! \alpha_1, \alpha_2, \dots, \alpha_n \in \F$ such that 
+$$
+v = \alpha_1v_1 + \alpha_2v_2 + \dots + \alpha_nv_n,
+$$
+that is, every $v \in V$ is expressible as a unique linear combination of $v_1, v_2, \dots, v_n$.
+
+\begin{proof}[Proof of Remark]
+Let $v = \sum_{i=1}^n \alpha_iv_i = \sum_{i=1}^n \alpha'_iv_i$. This implies that
+$$
+\vec{0} = v - v = \sum_{i=1}^n (\alpha_i - \alpha_i')v_i
+$$
+By linear independence of a basis, this suggests
+\begin{align*}
+    \alpha_i - \alpha'_i &= 0 \quad\quad \forall i = 1, 2, \dots, n \\
+    \Rightarrow \quad \alpha_i &= \alpha'_i \quad\quad \forall i = 1, 2, \dots, n
+\end{align*}
+\end{proof}
+\end{remark*}
+
+\begin{definition}[Dimension]
+\label{def:dimension}
+The cardinality of a basis for $V$ is the \textit{dimension} of $V$.
+\end{definition}
+
+\begin{example}
+Consider the following examples relating bases and dimension:
+\begin{itemize}
+    \item Two possible bases in $\R^3$ (which has dimension 3):
+    $$
+    \left\{ 
+    \begin{bmatrix} 2 \\ 0 \\ 3 \end{bmatrix}, 
+    \begin{bmatrix} -1 \\ 1 \\ 0 \end{bmatrix}, 
+    \begin{bmatrix} 7 \\ 9 \\ 13 \end{bmatrix}
+    \right\},
+    $$
+    $$
+    \left\{ 
+    \begin{bmatrix} 2 \\ 0 \\ 3 \end{bmatrix},
+    \begin{bmatrix} -1 \\ 1 \\ 0 \end{bmatrix},
+    \begin{bmatrix} 7 \\ 9 \\ 13 \end{bmatrix}
+    \right\}
+    $$
+    \item The vector space of all polynomials has bases which are countably infinite, so the dimension is also countably infinite:
+    \begin{align*}
+        1 & \quad\quad\quad 1 \\
+        t & \quad\quad -t \\
+        t^2 & \quad\quad 2t^2 - t \\
+        t^3 & \quad\quad 3t^3 - 6 \\
+        t^4 & \quad -7t^4 + 5t + 3 \\
+        \vdots & \quad\quad\quad \vdots
+    \end{align*}
+    \item $C^1[a,b]$ is an uncountably infinite-dimensional vector space.
+\end{itemize}
+\end{example}
+
+\newpage
+
+\noindent We establish the dual structure of $M_{m,n}(\F)$. We can think of $A \in M_{m,n}(\F)$ as a function $``A": \F^n \rightarrow \F^m$, whereby $\forall x \in \F^n$ we have that $``A"x \equiv Ax \in \F^m$. Such a function $``A"$ is linear.
+\begin{itemize}
+    \item Recall that $T: V \rightarrow W$ is \textit{linear} if $\forall \alpha, \beta \in \F$, $x, y \in V$, we have that
+    $$
+    T(\alpha x + \beta y) = \alpha T(x) + \beta T(y),
+    $$
+    that is all linear combinations are preserved by the function $T$.
+    \item All such linear functions can be represented as matrices because they result in the same outputs given the same inputs
+    \item To assure ourselves that there is a true 1-1 relationship between functions and matrices, we check that the functions give the same output given vectors from some basis set. We say that they are the ``same given a basis". Because all other vectors are expressible as a linear combination of the basis vectors, we know the function and matrix operate the same, and therefore, are equiavlent.
+\end{itemize}
+
+\begin{definition}[Nullspace/Kernel]
+\label{def:nullspace}
+For $A \in M_{m,n}(\F)$, the \textit{nullspace}, or \textit{kernel}, of $A$ is
+$$
+\text{null}(A) \defeq \left\{x \in \F^n | Ax = \vec{0}\right\}
+$$
+\end{definition}
+
+\begin{remark*}
+The nullspace of $A \in M_{m,n}(\F)$ is a subspace of $\F^n$.
+\end{remark*}
+\begin{remark*}
+The nullspace is closed under addition and scalar multiplication.
+\end{remark*}
+\begin{remark*}
+$\vec{0}$ is always in the nullspace.
+\end{remark*}
+
+\begin{definition}[Nullity]
+\label{def:nullity}
+The \textit{nullity} of $A$ is dim(null($A$).
+\end{definition}
+
+\begin{definition}[Range/Image]
+\label{def:range}
+For $A \in M_{m,n}(\F)$, the \textit{range}, or \textit{image}, of $A$ is
+$$
+\text{range}(A) \defeq \left\{Ax | x \in \F^n \right\}
+$$
+\end{definition}
+
+\begin{remark*}
+The range of $A \in M_{m,n}(\F)$ is a subspace of $\F^m$.
+\end{remark*}
+\begin{remark*}
+The range is closed under addition and scalar multiplication.
+\end{remark*}
+\begin{remark*}
+$\vec{0}$ is always in the range.
+\end{remark*}
+
+\begin{definition}[Rank]
+\label{def:rank}
+The \textit{rank} of $A$ is dim(range($A$).
+\end{definition}
+
+\begin{proposition}
+\label{prop:indep-nullspace}
+Suppose $A \in M_{m,n}(\F)$. Then, the columns of $A$ are linearly independent if and only if null(A) = \{$\vec{0}$\}, if and only if $A$ is 1-1 (injective) as a function.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition \ref{prop:indep-nullspace}] We first show that null(A) = \{$\vec{0}$\} if and only if $A$ is 1-1 (injective) as a function.
+($\Longrightarrow$) Suppose null($A$) = \{$\vec{0}$\}. Let $x,y \in F^n$ such that $Ax = Ay$. We want to show that this implies $x = y$, to show that $A$ is 1-1.
+\begin{alignat*}{2}
+    && Ax - Ay &= \vec{0} \\
+    &\Longrightarrow \quad & A(x - y) &= \vec{0} \quad \text{(by linearity of $A$)} \\
+    &\Longrightarrow \quad & x - y &= \vec{0} \\
+    &\Longrightarrow \quad & x &= y
+\end{alignat*}
+($\Longleftarrow$) This is clear. If $A$ is 1-1, then we know only the zero vector $\vec{0} \in \F^n$ is mapped to $\vec{0} \in \text{null}(A) \subseteq \F^m$. \\
+
+\noindent Now we prove $\text{null}(A) = \{\vec{0}\}$ if and only if the columns of $A$ are linearly independent.
+
+\noindent ($\Longrightarrow$) Suppose null($A$) = \{$\vec{0}$\}. This means that
+\begin{align*}
+    \forall x \in \F^n, &\quad Ax = \vec{0} \Rightarrow x = \vec{0} \\
+    \Longrightarrow \forall x \in \F^n, &\quad \begin{bmatrix}A_1 & A_2 & \dots & A_n\end{bmatrix}
+    \begin{bmatrix}x_1 \\ x_2 \\ \vdots \\ x_n\end{bmatrix} = \vec{0} \hspace{1cm} (\text{$A_i \in \F^m$ is the $i$th column of A}) \\
+    \Longrightarrow \forall x \in \F^n, &\quad x_1 = x_2 = \dots = x_n = 0.
+\end{align*}
+This shows that the only linear combination of the columns of $A$ that equate to $\vec{0}$ is the trivial combination $x_1 = x_2 = \dots = x_n = 0$. By definition, this demonstrates the columns of $A$ are linearly independent. \\
+
+\noindent ($\Longleftarrow$) This is clear. If the columns of $A$ are linearly independent, then only the trivial linear combination will yield $\vec{0}$. This means that the only vector $x \in \F^n$ that is in null($A$) is $\vec{0} \in \F^n$.
+\end{proof}
+
+
+\subsection{Linear Systems}
+\label{subsection:linear-systems}
+The system of linear equations
+\begin{align*}
+    a_{11}x_1 + a_{11}x_2 + \dots + a_{1n}x_n &= b_1 \hspace{2cm} \forall i,j \quad a_{ij}, b_i \in \F \\
+    a_{21}x_1 + a_{21}x_2 + \dots + a_{2n}x_n &= b_1 \\
+    \vdots \hspace{2cm} &= \vdots \\
+    a_{m1}x_1 + a_{m1}x_2 + \dots + a_{mn}x_n &= b_1
+\end{align*}
+can be compactly expressed as ``$Ax = b$", where $A \in M_{m,n}(\F)$ and $b \in \F^m$. We often store this as an \textit{augmented} matrix $\begin{amatrix}{1} A & b \end{amatrix}$. \\
+
+\noindent There are three types of \textit{row operations} that can be performed on $\begin{amatrix}{1} A & b \end{amatrix}$ without affecting the solution set of the linear system:
+\begin{enumerate}
+    \item Swapping two rows
+    \item Multiplying a single row by a nonzero scalar $c \in \F$
+    \item Adding one row to another
+\end{enumerate}
+
+\noindent These row operations are useful in converting matrices or linear systems into Reduced Row Echelon Form (RREF).
+
+\begin{definition}[Reduced Row Echelon Form (RREF)]
+The \textit{reduced row echelon form} (RREF) of a matrix $A$ is the unique row equivalent matrix such that
+\begin{enumerate}
+    \item The leading entry of every row is a 1 (``pivot") unless the row consists only of 0's
+    \item Each pivot has 0's above and below it
+    \item The pivot moves strictly to the right, and the rows of 0's are at the bottom
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+Consider the following example of a matrix in RREF:
+$$A = 
+\begin{bmatrix}
+\red{1} & 5 & 0 & 4 \\
+0 & 0 & \red{1} & 5 \\
+0 & 0 & 0 & 0
+\end{bmatrix}
+$$
+
+Note the \red{red 1's} are the pivots. Above and below each of them are 0's and the 0 row is at the bottom.
+\end{example}
+
+\newpage
+
+\noindent The strategy for solving a linear system of equations is to row reduce $\begin{amatrix}{1} A & b \end{amatrix}$ to RREF and then deduce the solution. In particular, suppose that $A \in M_{m,n}(\F)$, $b \in \F^n$, and if $A \overset{\text{RR}}{\sim} I$ then the solutions for $Ax = b$ are the solutions to $Ix = d$, which are unique, that is
+$$
+\begin{amatrix}{1} A & b \end{amatrix} \overset{\text{RR}}{\sim} \begin{amatrix}{1} I & d \end{amatrix}
+$$
+
+\noindent If we have multiple linear systems $Ax = b^{(1)}, Ax = b^{(2)}, \dots, Ax = b^{(n)}$ simultaneously under consideration, we can solve them in parallel by row reducing the augmented matrix
+$$
+\left[\begin{array}{c|c|c|c|c} A & b^{(1)} & b^{(2)} & \dots & b^{(n)} \end{array}\right]
+\overset{\text{RR}}{\sim}
+\left[\begin{array}{c|c|c|c|c} I & d^{(1)} & d^{(2)} & \dots & d^{(n)} \end{array}\right],
+$$
+where each $Ix = d^{(i)}$ has the same solution set as $Ax = b^{(i)}$.
+
+\begin{definition}[Determinant (Laplace expansion)]
+For a matrix $A \in M_n(\F)$, the \textit{determinant} can be defined inductively in the following way:
+\begin{align*}
+    \det A &= \sum_{k=1}^n (-1)^{i+k}a_{ik}M_{ik} \\
+           &= \sum_{k=1}^n (-1)^{k+j}a_{kj}M_{kj},
+\end{align*}
+where $M_{ij}$ is the minor determinant, \textit{i.e.} the determinant of $A$ when row $i$ and column $j$ are deleted.
+\end{definition}
+
+\begin{definition}[Determinant (Alternating sums and permutations)]
+A permutation of $\{1, \dots, n\}$ is a bijective function $\sigma: \{1, \dots, n\} \rightarrow \{1, \dots, n\}$. There are $n!$ distinct permutations of $\{1, \dots, n\}$. The alternative presentation of the determinant is
+$$
+\det A = \sum_{\sigma}
+\left( \sign(\sigma) \prod_{i=1}^n a_{i, \sigma(i)} \right)
+$$
+\end{definition}
+
+\subsection{Properties of Determinants}
+\label{subsection:properties-of-determinants}
+The three types of row operations that can be performed on a matrix $A \in M_n(\F)$ scale the determinant.
+
+\begin{center}
+    \begin{tabular}{r l l}
+    & \textbf{Row operation} & \textbf{Effect on Determinant}\\
+    (i) & Swapping two rows & Multiplies determinant by negative 1 \\
+    (ii) &  Multiplying a single row by a nonzero scalar $c \in \F$ &  Multiplies determinant by $c$ \\
+    (iii) & Adding one row to another & No change to determinant
+    \end{tabular}
+\end{center}
+
+\begin{proposition}
+\label{prop:determinant-basics}
+If $A, B \in M_n(\F)$, the following determinant properties hold:
+\begin{enumerate}
+    \item If $A$ is upper triangular, then its determinant is the product of its diagonal entries.
+    $$\det \begin{bmatrix} a_{11} &  &  & * \\ 
+                           & a_{22} &  & \\ 
+                           &  & \ddots & \\
+                           \mathbf{0} &  &  & a_{nn}
+            \end{bmatrix} = \prod_{i=1}^n a_{ii}$$
+    \item If $A$ has a row or column of zeros, then $\det A = 0$.
+    \item $\det AB = (\det A)(\det B)$
+\end{enumerate}
+\end{proposition}
+
+\begin{note*}
+The strategy for computing $\det A$ is to compute $\det\left[\text{RREF}(A)\right]$ and track the row operations to scale back to $\det A$. \\
+\end{note*}
+
+\begin{definition}[Inverse]
+If $A, B \in M_n(\F)$ such that $AB = BA = I$, then we call $B$ the \textit{inverse} of $A$.
+\end{definition}
+
+\begin{remark*}
+If such a $B$ truly exists, then it is unique.
+\end{remark*}
+
+\begin{remark*}
+We call $``B": \F^n \rightarrow \F^n$ the \textit{inverse function}  of ``$A$" since $\forall x \in \F^n$, $A(Bx) = (AB)x = Ix = x$ and $B(Ax) = (BA)x = Ix = x$.
+\end{remark*}
+
+\begin{lemma}
+\label{lem:rref-det-dichtonomy}
+Let $A \in M_n(\F)$. Denote the row reduced form of $A$ as $\text{RREF}(A)$. Then either $\text{RREF}(A) = I$ or $\text{RREF}(A) \not= I$. In the first case, then $\det[\text{RREF}(A)] = 1 \Longrightarrow \det A \not= 0$. In the second case, then $\det[\text{RREF}(A)] = 0 \Longrightarrow \det A = 0$.
+\end{lemma}
+\begin{proof}[Proof sketch of \ref{lem:rref-det-dichtonomy}]
+In the first case, then $\text{RREF}(A)$ looks like
+$$
+\begin{bmatrix}
+1 &   &   &   &   &   & \mathbf{0} \\
+  & 1 &   &   &   &   &   \\
+  &   & 1 &   &   &   &   \\
+  &   &   & 1 &   &   &   \\
+  &   &   &   & 1 &   &   \\
+  &   &   &   &   & \ddots & \\
+\mathbf{0} &   &   &   &   &        & 1
+\end{bmatrix}
+$$
+which has determinant 1 by part (i) of Proposition \ref{prop:determinant-basics}. In the second case, without loss of generality, then $\text{RREF}(A)$ looks like
+$$
+\begin{bmatrix}
+1 &   &   &   &   &   & * \\
+  & 1 &   &   &   &   &   \\
+  &   & 0 & 1 &   &   &   \\
+  &   &   &   & 1 &   &   \\
+  &   &   &   &   & \ddots & \\
+  &   &   &   &   &   & 1 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{bmatrix}
+$$
+which has determinant 0 by part (ii) of Proposition \ref{prop:determinant-basics}.
+\end{proof}
+
+\begin{theorem}
+\label{thm:basic-equivalences}
+Let $A \in M_n(\F)$. Then the following statements are equivalent:
+\begin{enumerate}
+    \item $\exists B \in M_n(\F)$ such that $AB = BA = I$
+    \item $\det A \not= 0$
+    \item $\ker(A)$ = $\{\vec{0}\}$ $\Longleftrightarrow$ ``$A$" is 1-1 $ \Longleftrightarrow$ the columns of $A$ are linearly independent
+    \item $\rank(A)$ = $n$ $\Longleftrightarrow$ ``$A$" is onto $\Longleftrightarrow$ the columns of $A$ span $\F^n$
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:basic-equivalences}]
+We showed the equivalencies of (iii) in Proposition \ref{prop:determinant-basics}.
+
+We first argue that the equivalencies of (iv) are true. Saying that rank($A$) = $n$ is equivalent to saying that the dimension of any basis set for range($A$) has $n$ linearly independent vectors in $\F^n$. This means that a given basis set is also a basis for $\F^n$, which is the codomain of the function ``$A$". So, $y$ in the codomain of ``$A$" has a corresponding $x$ in the domain of ``$A$" such that $A(x) = y$ since ``$A$" is linear and there is a non-trivial linear combination of the basis vectors in $\F^n$ that give $y$. This means ``$A$" is onto. Equivalently, the columns of $A$ span all of $\F^n$.
+
+\textit{(iii) $\Longleftrightarrow$ (iv).} We show that the columns of $A$ are linearly independent if and only if the columns of $A$ span $\F^n$. If they are linearly independent, then the columns form a basis for $\F^n$ and thus span $\F^n$. If the columns of $A$ span $\F^n$, then they form a basis for $\F^n$, which implies each column is linearly independent. For the sake of contradiction, if either linear independence or full spanning of $\F^n$ did not hold, then we would be able to shrink or grow the basis set to be smaller or larger than $n$, respectively, which would break the dimensionality theorem.
+
+\textit{(i) $\Longrightarrow$ (ii).} Suppose that $A,B \in M_n(\F)$ and $AB = BA = I$. Then
+$$
+1 = \det I = \det AB = (\det A)(\det B) \Longrightarrow \det A \not= 0
+$$
+
+\textit{(ii) $\Longrightarrow$ (i).} Suppose that $\det A \not= 0$. We wish to show $AB = BA = I$ for some $B \in M_n(\F)$. Since $\det A \not= 0$, by Lemma \ref{lem:rref-det-dichtonomy}, then we know there is some nonzero $c \in \F$ such that
+$$
+0 \not= \det A = c \cdot \det[\text{RREF}(A)] \Longrightarrow \text{RREF}(A) = I.
+$$
+To solve for $X$ in $AX = I$, we row reduce
+$\begin{amatrix}{1} A & I\end{amatrix}$, which gives $\begin{amatrix}{1} I & B\end{amatrix}$, where $B \in M_n(\F)$ is some matrix resulting from the row operations to get $A \overset{\text{RR}}{\sim} I$. This means that $X = B$ and that $AB = I$. Now we show that $BA$ = I.
+
+\begin{alignat*}{2}
+& \begin{amatrix}{1} A & I \end{amatrix} &\overset{\text{RR}}{\sim} \begin{amatrix}{1} I & B\end{amatrix} \\
+\Longrightarrow \quad & \begin{amatrix}{1} I & B \end{amatrix} &\overset{\text{RR}}{\sim} \begin{amatrix}{1} A & I\end{amatrix} \\
+\Longrightarrow \quad & \begin{amatrix}{1} B & I \end{amatrix} &\overset{\text{RR}}{\sim} \begin{amatrix}{1} I & A\end{amatrix} \\
+\Longrightarrow \quad & BA &= I
+\end{alignat*}
+
+\textit{(i) $\Longrightarrow$ (iii)} Suppose $\exists B \in M_n(\F)$ where $AB = BA = I$. If we have $x \in \F^n$ such that $Ax = \vec{0}$, then we show that it must be the case that $x = \vec{0}$:
+\begin{alignat*}{2}
+    && Ax &= \vec{0} \\
+    \Longrightarrow \quad & BAx &= B\vec{0} = \vec{0} \\
+    \Longrightarrow \quad & Ix &= \vec{0} \\
+    \Longrightarrow \quad & x &= \vec{0}
+\end{alignat*}
+So the only vector that is in the nullspace of $A$ is $\vec{0}$, i.e. null($A$) = \{$\vec{0}$\}.\\
+
+\textit{(iii), (iv) $\Longrightarrow$ (i)} Suppose ``$A$" is 1-1 and onto. Then ``$A$" has an inverse function ``$B$". Note that $B$ is linear. This means it can be expressed as $B \in M_n(\F)$. Then $\forall x \in F^n$, we have that
+\begin{alignat*}{2}
+    && A(B(x)) &= B(A(x)) \\
+            &&&= I(x) \\
+    &\Longrightarrow & AB &= BA = I.
+\end{alignat*}
+\end{proof}
+
+\begin{remark*}
+If $A,B \in M_n(\F)$ such that $AB = I$, then $B = A^{-1}$, i.e. a matrix $B$ that turns $A$ into $I$ is called the inverse of $A$, further, the inverse is unique.
+\end{remark*}
+
+\begin{proof}[Proof of Remark]
+Since $AB = I$, we have that
+$$
+1 = \det I = \det AB = (\det A)(\det B) \rightarrow \det A \not= 0.
+$$
+By Theorem \ref{thm:basic-equivalences}, $\exists$ an inverse matrix $A^{-1}$, so
+\begin{alignat*}{2}
+    && AB &= I \\
+    &\Longrightarrow & A^{-1}(AB) &= A^{-1}I \\
+    &\Longrightarrow & (A^{-1}A)B &= A^{-1} \\
+    &\Longrightarrow & B &= A^{-1}
+\end{alignat*}
+\end{proof}

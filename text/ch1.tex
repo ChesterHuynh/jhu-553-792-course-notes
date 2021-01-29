@@ -1,0 +1,598 @@
+\section{Chapter 1 -- Eigenvalues and Similarity of Matrices}
+
+\subsection{Similarity}
+\begin{definition}[Similar]
+\label{def:similar}
+Let $A, B \in M_n(\F)$. We say that ``$A$ is \textit{similar} to $B$", denoted $A \sim B$ if there exists an $S \in M_n(\F)$ such that $A = SBS^{-1}$.
+\end{definition}
+
+\begin{remark*}
+The $\sim$ operation is an equivalence relation on $M_n(\F)$.
+\begin{itemize}
+    \item Reflexive: $A = IAI^{-1}$
+    \item Symmetric: $A = SBS^{-1} \Longrightarrow S^{-1}AS = B$
+    \item Transitive: $A = SBS^{-1}$ and $B = TCT^{-1} \Longrightarrow A = (ST)C(T^{-1}S^{-1})$ since $(ST)^{-1} = T^{-1}S^{-1}$
+\end{itemize}
+
+\noindent This gives us equivalence classes. As functions we can think of ``$A$" as applying a transformation onto some input $x$. Now consider $B$ which is similar to $A$, so that $A = SBS^{-1}$. We can think of $S$ as a change of basis or change of coordinates. $A$ and $B$ apply the same transformation or function, just from a different perspectives or basis sets. This tells us that we can think of similarity as the ``sameness" of transformations up to a change of basis. \\
+
+\noindent Note that just because $A$ is a rotation matrix does not mean that $B$ is also a rotation matrix because $A$ and $B$ do not necessarily respect the same metric or isometry.
+\end{remark*}
+
+\begin{note*}
+Suppose $A, B \in M_n(\F)$ are similar. Say that $A = SBS^{-1}$ for some $S \in M_n(\F)$ which is invertible. Then,
+$$
+\det A = \det SBS^{-1} = \det S \det B \det S^{-1} = \det S \det S^{-1} \det B = \det SS^{-1} \det B = \det B
+$$
+
+That is, the determinant is preserved between similar matrices.
+\end{note*}
+
+\subsection{Eigenvectors and Eigenvalues}
+\begin{definition}[Eigenvector, Eigenvalue]
+\label{def:eigenvector-eigenvalue}
+Let $A \in M_n(\F)$. If $x \in \F^n$ nonzero and we have $\lambda \in \F$ such that $Ax = \lambda x$ (which serves as a scaling operation along the direction of $x$), then we call $x$ and \textit{eigenvector} associated with \textit{eignevalue} $\lambda$.
+\end{definition}
+
+\begin{note*}
+For $A \in M_n(\F)$, when is $\lambda \in \F$ an eigenvalue? If and only if there exists $x \in \F^n$ nonzero such that
+\begin{alignat*}{2}
+&& Ax &= \lambda x \\
+&\Longleftrightarrow \quad &  Ax &= \lambda Ix \\
+&\Longleftrightarrow \quad & (\lambda I - A)x &= \vec{0} \\
+&\Longleftrightarrow \quad & (\lambda I - A) &\text{ has a nontrivial nullspace} \\
+&\Longleftrightarrow \quad & \det(\lambda I - A) &= \vec{0}
+\end{alignat*}
+\end{note*}
+
+\begin{definition}[Characteristic Polynomial]
+\label{def:char-poly}
+We denote $\det(\lambda I - A)$ as $p_A(\lambda)$ and call it the \textit{characteristic polynomial}, which is a monic (leading term is 1) polynomial of degree $n$ in variable $\lambda$.
+\end{definition}
+
+\begin{example}
+Suppose $A = \begin{bmatrix} 2 & 2 \\ 1 & 3\end{bmatrix}$. Then
+$$
+p_A(\lambda) = \det(\lambda I - A) = \det \begin{bmatrix} \lambda - 2 & 2 \\ -1 & \lambda - 3 \end{bmatrix} = (\lambda-2)(\lambda-3) - 2 = \lambda^2 - 5 \lambda + 4 = (\lambda-4)(\lambda-1)
+$$
+$p_A(\lambda) = 0$ when $\lambda = 1$ or $\lambda = 4$, so our eigenvalues are 1 and 4.
+\end{example}
+
+\begin{definition}[Eigenspace]
+\label{def:eigenspace}
+For a matrix $A \in M_n(\F)$, given an eigenvalue $\lambda$, the associated eigenvectors form the associated \textit{eigenspace} $\{x | (\lambda I - A)x = \vec{0}\}$, which is equivalently the nullspace of $\lambda I - A$. Note, here we consider $\vec{0}$ as an ``honorary eigenvector" to make the eigenspace a valid nullspace.
+\end{definition}
+
+\begin{example}
+Consider an upper triangular matrix $T$:
+$$
+T = \begin{bmatrix}
+t_{11} &        &       & * \\
+       & t_{22} &       &   \\
+       &        & \ddots&   \\
+\mathbf{0}     &        &       & t_{nn} \\
+\end{bmatrix}
+$$
+
+Then its eigenvalues can be immediately read from its characteristic polynomial:
+\begin{align*}
+p_T(\lambda) &= \det(\lambda I - T)\\
+             &= \det\begin{bmatrix} 
+\lambda - t_{11} &        &       & * \\
+       & \lambda - t_{22} &       &   \\
+       &        & \ddots&   \\
+\mathbf{0}  &        &       & \lambda - t_{nn}
+\end{bmatrix} \\
+             &= (\lambda - t_{11})(\lambda - t_{22})\cdots(\lambda - t_{nn})
+\end{align*}
+
+So the eigenvalues of an upper triangular matrix is its diagonal entries.
+\end{example}
+
+\begin{definition}[Spectrum]
+\label{def:spectrum}
+If $A \in M_n(\C)$, then by the Fundamental Theorem of Algebra, there exists exactly $n$ roots of $p_A(\lambda)$, the multiset of which is called the \textit{spectrum} of $A$, denoted $\sigma(A)$.
+\end{definition}
+\begin{definition}[Algebraic Multiplicity, Geometric Multiplicity]
+\label{def:alg-mult-geom-mult}
+If $\lambda \in \sigma(A)$, then
+\begin{itemize}
+    \item The \textit{algebraic multiplicity of $\lambda$} is the number of times $\lambda$ appears as a root of $p_A(\lambda)$, i.e. the number of times $\lambda$ appears in $\sigma(A)$.
+    \item The \textit{geometric multiplicity of $\lambda$} is the dimension of the eigenspace for $\lambda$.
+\end{itemize}
+\end{definition}
+
+\begin{example}
+Consider the following matrix $A$:
+$$
+A = \begin{bmatrix}
+7 &   &   &   &   &   & \textbf{0}\\
+  & 7 &   &   &   &   &  \\
+  &   & 7 &   &   &   &  \\
+  &   &   & 8 & 1 &   &  \\
+  &   &   &   & 8 &   &  \\
+  &   &   &   &   & 8 & 1\\
+\textbf{0} &   &   &   &   &   & 8\\
+\end{bmatrix}
+$$
+
+Then $\sigma(A) = \{7,7,7,8,8,8,8\}$. For $\lambda = 7$, the algebraic multiplicity is 3 and the geometric multiplicity is 3 since $e_1, e_2, e_3$ span its eigenspace. For $\lambda = 8$, the algebraic multiplicity is 4 and the geometric multiplicity is 2 since only $e_4, e_6$ span its eigenspace.
+\end{example}
+
+\begin{remark*}
+For all $A \in M_n(\F)$ and $\lambda \in \sigma(A)$, 
+$$
+1 \leq \text{geometric multiplicity of } \lambda \leq \text{algebraic multiplicity of } \lambda \leq n
+$$
+\end{remark*}
+
+\begin{proposition}
+\label{prop:similarity-spectrum}
+Suppose that $A, B \in M_n(\F)$ are similar. Then $p_A(\lambda) = p_B(\lambda)$, hence $\sigma(A) = \sigma(B)$.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition \ref{prop:similarity-spectrum}]
+Say $A = SBS^{-1}$ for some invertible $S \in M_n(\F)$. Then
+\begin{align*}
+p_A(\lambda) &= \det(\lambda I - A) \\
+             &= \det(\lambda I - SBS^{-1}) \\
+             &= \det(\lambda SIS^{-1} - SBS^{-1}) \\
+             &= \det S(\lambda I - B)S^{-1} \\
+             &= \det SS^{-1} \det(\lambda I - B) \\
+             &= \det(\lambda I - B) \\
+             &= p_B(\lambda)
+\end{align*}
+\end{proof}
+
+\begin{definition}[Diagonalizable]
+\label{def:diagonalizable}
+$A \in M_n(\F)$ is \textit{diagonalizable} if $A$ is similar to a diagonal matrix.
+\end{definition}
+
+\begin{note*}
+If $A \in M_n(\F)$ is diagonalizable, say for some invertible $S \in M_n(\F)$
+$$
+A = S\begin{bmatrix}
+d_{11} & & & \textbf{0}\\
+ & d_{22} & & \\
+ & & \ddots & \\
+\textbf{0}& & & d_{nn}
+\end{bmatrix}S^{-1}
+$$
+then $\sigma(A) = \{d_{11}, d_{22}, \dots, d_{nn}\}$. This allows us to decompose $A$ into its eigenvectors and eigenvalues. In fact, $S$ is the matrix with columns being the eigenvectors corresponding to each entry in the diagonal matrix.
+\end{note*}
+
+\begin{example}
+$A = \begin{bmatrix}0 & 1 \\ 0 & 0\end{bmatrix}$ is not diagonalizable. For the sake of contradiction (FSOC), suppose it was the case that $A = SDS^{-1}$ for some invertible $S \in M_n(\F)$ and diagonal $D \in M_n(\F)$. Since $A$ is upper triangular, then $\sigma(A) = \{0, 0\}$. This implies that the diagonal entries of $D$ are 0, i.e. $D = \mathbf{0}$. This suggests $\mathbf{0} \not= A = SDS^{-1} = \mathbf{0}$. Therefore, $A$ is not diagonalizable.
+\end{example}
+
+\begin{lemma}
+\label{lem:evecs-lin-indep}
+Suppose $A \in M_n(\C)$. Say $\mathcal{F} \subseteq \C^n$ is a collection of eigenvectors associated with distinct eigenvalues. Then $\mathcal{F}$ is linearly independent.
+\end{lemma}
+
+\begin{proof}[Proof of Lemma \ref{lem:evecs-lin-indep}]
+FSOC, suppose $\mathcal{F}$ is not linearly independent. For $k \geq 2$, let $\{x^{(1)}, x^{(2)}, \dots, x^{(k)}\}$ be the smallest linearly dependent subset of $\mathcal{F}$ and $\lambda_1, \lambda_2, \dots, \lambda_k \in \F$ be the associated eigenvalues, which are all distinct. Then $\exists \alpha_1, \alpha_2, \dots, \alpha_k \in \F$ not all zero such that
+\begin{equation}
+\label{eq:lin-dependent-lemma-1.1}
+\alpha_1 x^{(1)} + \alpha_2 x^{(2)} + \dots + \alpha_k x^{(k)} = \vec{0}
+\end{equation}
+In fact, since $x^{(1)}, x^{(2)}, \dots, x^{(k)}$ is the smallest linearly dependent subset, then all $\alpha_1, \alpha_2, \dots, \alpha_k$ must be nonzero, else there would be at least one $\alpha_i = 0$ and we could further reduce the subset.
+
+\noindent Applying $A$ to equation (\ref{eq:lin-dependent-lemma-1.1}), we have
+\begin{align}
+    A(\alpha_1 x^{(1)} + \alpha_2 x^{(2)} + \dots + \alpha_k x^{(k)}) &= A\vec{0} = \vec{0} \nonumber \\
+    \lambda_1\alpha_1 x^{(1)} + \lambda_2\alpha_2 x^{(2)} + \dots + \lambda_k\alpha_k x^{(k)} &= \vec{0} \label{eq:lin-dependent2-lemma-1.1}
+\end{align}
+
+\noindent Subtracting equation (\ref{eq:lin-dependent2-lemma-1.1}) from $\lambda_1 \cdot$ equation (\ref{eq:lin-dependent-lemma-1.1}) to get
+
+$$
+\underbrace{(\lambda_1 - \lambda_1)}_{=0} \alpha_1 x^{(1)} + 
+\underbrace{(\lambda_1 - \lambda_2)}_{\not=0} \alpha_2 x^{(2)} + \dots + 
+\underbrace{(\lambda_1 - \lambda_k)}_{\not=0} \alpha_k x^{(k)} = \vec{0}
+$$
+
+\noindent This gives a strictly smaller linearly dependent subset of $\mathcal{F}$. $\Rightarrow\Leftarrow$ So $\{x^{(1)}, x^{(2)}, \dots, x^{(k)}\}$ must be linearly independent.
+\end{proof}
+
+\begin{theorem}
+\label{thm:diagonalizable-lin-ind-evecs}
+$A \in M_n(\F)$ is diagonalizable if and only if $A$ has $n$ linearly independent eigenvectors.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:diagonalizable-lin-ind-evecs}]
+$A$ being diagonalizable means the following are all equivalent
+\begin{itemize}
+    \item $\exists S \in M_n(\F)$ invertible and $D \in M_n(\F)$ diagonal such that $A = SDS^{-1}$.
+    \item $\exists S \in M_n(\F)$ invertible and $D \in M_n(\F)$ diagonal such that $AS = SD$.
+    \item For $S^{(1)}, S^{(2)}, \dots, S^{(n)}$ linearly independent (which is equivalent to $S$ being invertible) and $d_{11}, d_{22}, \dots, d_{nn} \in \F$, then $A 
+    \begin{array}{c|c|c|c}
+    [S^{(1)} & S^{(2)} & \dots & S^{(n)}]
+    \end{array} 
+    =
+    \begin{array}{c|c|c|c}
+    [S^{(1)} & S^{(2)} & \dots & S^{(n)}]
+    \end{array} 
+    \begin{bmatrix}
+    d_{11} & & \textbf{0} \\
+           & \ddots & \\
+         \textbf{0} & & d_{nn}
+    \end{bmatrix}
+    $
+    \item For $S^{(1)}, S^{(2)}, \dots, S^{(n)}$ linearly independent, $d_{11}, d_{22}, \dots, d_{nn} \in \F$, then $AS^{(1)} = d_{11}S^{(1)}$, $AS^{(2)} = d_{22}S^{(2)}$, $\dots$, $AS^{(n)} = d_{nn}S^{(n)}$, so $S^{(1)}, S^{(2)}, \dots S^{(n)}$ are $n$ eigenvectors of $A$, which form a linearly independent set.
+\end{itemize}
+\end{proof}
+
+\noindent Note that Theorem \ref{thm:diagonalizable-lin-ind-evecs} suggests the following ideas:
+\begin{itemize}
+    \item The eigenvectors form a basis over $\F^n$ since they are a set of $n$ linearly independent vectors
+    \item The matrix of eigenvectors serves as a change of basis matrix, as introduced in the concept of similar matrices. The operator $A$ just acts like a diagonal matrix that scales each coordinate independently in the new space.
+\end{itemize}
+
+\begin{corollary}
+If $A$ has $n$ distinct eigenvalues (which implies a linear independent set of $n$ eigenvectors), then $A$ is diagonalizable.
+\end{corollary}
+
+\begin{definition}[Principal Submatrix]
+\label{def:principal-submatrix}
+For $A \in M_n(\F)$, an $r \times r$ \textit{principal submatrix} is a matrix constructed from the rows and columns corresponding to an arbitrary index set $\{i_1, i_2, \dots, i_r\}$ of size $r$.
+\end{definition}
+
+\begin{definition}
+\label{def:s-and-e-char-poly}
+Suppose $A \in M_n(\C)$ has eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_n$. For $i = 1, 2, \dots, n$,
+\begin{align*}
+    S_i &\defeq \sum_{\substack{\text{all } \binom{n}{i} \text{ sets } U \\ \text{ of } i \text{ eigenvalues}}} \prod_{\lambda \in U} \lambda \\
+    E_i &\defeq \sum_{\substack{\text{all } \binom{n}{i} \\ \text{ principal } i \times i \\ \text{ submatrices } M \\ \text{ of } A}} \det M
+\end{align*}
+
+\begin{itemize}
+    \item The $S_i$'s look like the following
+    \begin{align*}
+        S_1 &= \lambda_1 + \lambda_2 + \dots + \lambda_n \\
+        S_2 &= \lambda_1\lambda_2 + \lambda_1\lambda_3 + \dots + \lambda_1\lambda_n + \lambda_2\lambda_3 + \lambda_2\lambda_4 + \dots + \lambda_{n-1}\lambda_{n} \\
+        S_3 &= \lambda_1\lambda_2\lambda_3 + \lambda_1\lambda_2\lambda_4 + \dots + \lambda_1\lambda_{n-1}\lambda_n + \dots + \lambda_2\lambda_3\lambda_4 + \dots + \lambda_{n-2}\lambda_{n-1}\lambda_n \\
+        \vdots & \\
+        S_n &= \lambda_1\lambda_2\lambda_3\dots\lambda_n
+    \end{align*}
+    \item The $E_i$'s look like the following
+    \begin{align*}
+        E_1 &= a_{11} + a_{22} + \dots + a_{nn} = \tr(A) \\
+        \vdots & \\
+        E_n &= \det A
+    \end{align*}
+\end{itemize}
+\end{definition}
+
+\begin{proposition}
+For all $A \in M_n(\C)$, then 
+\begin{align*}
+    p_A(\lambda) &= \lambda^n - S_1\lambda^{n-1} + S_2\lambda^{n-2} - S_3\lambda^{n-3} + \dots \pm S_n\lambda^0 \\ 
+                 &= \lambda^n - E_1\lambda^{n-1} + E_2\lambda^{n-2} - E_3\lambda^{n-3} + \dots \pm E_n\lambda^0
+\end{align*}
+\end{proposition}
+\noindent For the $S_i$, we can expand $\prod_{i=1}^n (\lambda - \lambda_i)$. For the $E_i$, we can use induction with the Laplace expansion for $\det(\lambda I - A)$.
+
+\begin{note*}
+For all $i = 1,2,\dots,n$, $S_i = E_i$. Thus, $\tr(A) = \sum_{i=1}^n \lambda_i$ and $\det A = \prod_{i=1}^n \lambda_i$, which implies that the $\lambda_i$'s are nonzero when $\det A \not=0$.
+\end{note*}
+
+\begin{lemma}
+\label{lem:multiplying-partition-matrices}
+Multiplying partition matrices. Consider $A$ and $B$ to be matrices with the following structure:
+\begin{align*}
+A = \begin{bmatrix} 
+A_{11} & \dots & A_{1s} \\
+\vdots & \ddots & \vdots \\
+A_{r1} & \dots & A_{rs}
+\end{bmatrix} \quad&\quad
+B = \begin{bmatrix} 
+B_{11} & \dots & B_{1t} \\
+\vdots & \ddots & \vdots \\
+B_{s1} & \dots & B_{st}
+\end{bmatrix}  
+\end{align*}
+where each $A_{ij}$ is itself a $m_i \times n_j$ matrix and $B_{ij}$ is itself a $n_i \times p_j$ matrix. That is $A$ and $B$ are block matrices. Then for $AB = C$, it holds that $C_{ij} = \sum_{k=1}^s A_{ik}B_{kj}$, where each $A_{ik}$ is a $m_i \times n_k$ matrix, $B_{kj}$ is a $n_k \times p_j$ matrix, and $C_{ij}$ is a $m_i \times p_j$ matrix.
+\end{lemma}
+
+\subsection{Properties of Diagonalizabile Matrices}
+\begin{definition}[Permutation Matrices]
+\label{def:permutation-matrices}
+A \textit{permutation matrix} is a square matrix such that every row has a single 1, every column has a single 1, and the rest are zeros.
+\end{definition}
+
+\begin{example}
+    Consider $P = 
+    \begin{bmatrix}
+    0 & 1 & 0 \\ 
+    0 & 0 & 1 \\ 
+    1 & 0 & 0
+    \end{bmatrix}$. When applied to some matrix $A$, then
+    \begin{align*}
+        PA &= \begin{bmatrix}
+            0 & 1 & 0 \\ 
+            0 & 0 & 1 \\ 
+            1 & 0 & 0
+            \end{bmatrix}
+            \begin{bmatrix}
+            \text{row 1} \\
+            \text{row 2} \\
+            \text{row 3}
+            \end{bmatrix}
+            = \begin{bmatrix}
+            \text{row 2} \\
+            \text{row 3} \\
+            \text{row 1}
+            \end{bmatrix} \\
+        AP^T &=
+            \begin{bmatrix}
+            \text{col 1} &
+            \text{col 2} &
+            \text{col 3}
+            \end{bmatrix}
+            \begin{bmatrix}
+            0 & 0 & 1 \\ 
+            1 & 0 & 0 \\ 
+            0 & 1 & 0
+            \end{bmatrix}
+            = \begin{bmatrix}
+            \text{col 2} &
+            \text{col 3} &
+            \text{col 1}
+            \end{bmatrix} \\
+    \end{align*}
+\end{example}
+\begin{remark*}
+$PP^T = I$ and so $P^T = P^{-1}$.
+\end{remark*}
+
+\begin{proof}[Proof of Remark.]
+If the $i$th row of $P$ has a 1 at the $j$th entry, then the $i$th column of $P^T$ has a 1 at the $j$th entry. All other columns of $P^T$ will yield a zero in the matrix multiplication when involving the $i$th row of $P$. Thus, only the terms $(PP^T)_{ii}$ will be nonzero, specifically they will be 1. Thus, $PP^T = I$. By definition, $P^T = P^{-1}$.
+\end{proof}
+
+\begin{note*}
+If $D$ is diagonal, then $PDP^T$ is diagonal and the diagonals of $D$ have been simply rearranged. Thus, permutation matrices $P$ give a class of similarity transformations for diagonal matrices.
+\end{note*}
+
+\noindent Suppose that $C_{ii} \in M_{n_i}(\F)$. We can construct the block matrix $C$ by putting the $C_{ii}$ on the diagonals. Further, we generalize so that $C$ also has nonzero upper triangular entries. $C$ has the following properties:
+\begin{itemize}
+    \item $\sigma(C) = \sigma
+    \left(
+    \begin{bmatrix}
+    C_{11} & & & * \\
+           & C_{22} & & \\
+           & & \ddots & \\
+        \textbf{0} & & & C_{kk}
+    \end{bmatrix}
+    \right) = \bigcup\limits_{i=1}^k \sigma(C_{ii})$
+    \item $\det(\lambda I - C) = \det
+    \left(
+    \begin{bmatrix}
+    \lambda I - C_{11} & & & * \\
+      & \lambda I - C_{22} & & \\
+      & & \ddots & \\
+    \textbf{0} & & & \lambda I - C_{kk} \\
+    \end{bmatrix}
+    \right)
+    = \prod\limits_{i=1}^k \det(\lambda I - C_{ii})
+    $
+\end{itemize}
+
+\begin{theorem}
+\label{thm:char-poly-matrix-prod}
+Let $A \in M_{m,n}(\F), B \in M_{n, m}(\F)$. Without loss of generality (WLOG), say that $m \leq n$. Then,
+$$
+p_{BA}(\lambda) = \lambda^{n-m}p_{AB}(\lambda).
+$$
+In particular, the nonzero eigenvalues of $AB$ and $BA$ and their multiplicities are the same. This also tells us that $\tr(AB) = \tr(BA)$ (see Proposition \ref{prop:similarity-spectrum}).
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:char-poly-matrix-prod}]
+Observe that
+$$
+\underbrace{\begin{bmatrix}
+AB & \textbf{0} \\
+B & \textbf{0}
+\end{bmatrix}}_{\Large \mathbb{A}}
+\underbrace{\begin{bmatrix}
+I & A \\
+\textbf{0} & I
+\end{bmatrix}}_{\Large \mathbb{S}}
+=
+\begin{bmatrix}
+AB & ABA \\
+B & BA
+\end{bmatrix}
+=
+\underbrace{\begin{bmatrix}
+I & A \\
+\textbf{0} & I
+\end{bmatrix}}_{\Large \mathbb{S}}
+\underbrace{\begin{bmatrix}
+\textbf{0} & \textbf{0} \\
+B & BA
+\end{bmatrix}}_{\Large \mathbb{B}}
+$$
+This tell us that 
+\begin{alignat*}{2}
+ &&\mathbb{A} &\sim \mathbb{B} \\
+ &\Longrightarrow \quad &
+     \begin{bmatrix}
+     AB & \textbf{0} \\ 
+     B & \textbf{0}
+     \end{bmatrix}
+     &\sim 
+     \begin{bmatrix}
+     \textbf{0} & \textbf{0} \\
+     B & BA
+     \end{bmatrix} \\
+ &\Longrightarrow \quad &
+     \sigma \left(
+     \begin{bmatrix}
+     AB & \textbf{0} \\ 
+     B & \textbf{0}
+     \end{bmatrix}
+     \right)
+     &\sim 
+     \sigma \left(
+     \begin{bmatrix}
+     \textbf{0} & \textbf{0} \\
+     B & BA
+     \end{bmatrix}
+     \right) \\
+\end{alignat*}
+The final similarity relation tells us that $\sigma(AB) \cup \{n \text{ zeros}\} = \sigma(BA) \cup \{m \text{ zeros}\}$. This means that the nonzero components of the spectra for $AB$ and $BA$ are equivalent.
+\end{proof}
+
+\begin{lemma}
+\label{lem:diagonalizable-block-matrix-has-diagonal-blocks}
+If a block matrix $B$ is diagonalizable, then the blocks $B_{11}$, $B_{22}$, $\dots$, $B_{rr}$ are each diagonal.
+Say that for all $i = 1, 2, \dots, r$, each of the $B_{ii}$ are diagonalizations, i.e.
+$$
+B_{ii} = S_i D_i S_i^{-1}.
+$$
+Then,
+\begin{align*}
+    B &= \begin{bmatrix}
+    B_{11} & & & \mathbf{0} \\
+    & B_{22} & & \\
+    & & \ddots & \\
+    \mathbf{0}& & & B_{rr}
+    \end{bmatrix} \\
+      &= \begin{bmatrix}
+    S_1 & & & \mathbf{0}\\
+    & S_2 & & \\
+    & & \ddots & \\
+    \mathbf{0}& & & S_r
+    \end{bmatrix}
+    \begin{bmatrix}
+    D_1 & & & \mathbf{0}\\
+    & D_2 & & \\
+    & & \ddots & \\
+    \mathbf{0}& & & D_r
+    \end{bmatrix}
+    \begin{bmatrix}
+    S_1^{-1} & & & \mathbf{0}\\
+    & S_2^{-1} & & \\
+    & & \ddots & \\
+    \mathbf{0}& & & S_r^{-1}
+    \end{bmatrix} \\
+    &= \begin{bmatrix}
+    S_1 & & & \mathbf{0} \\
+    & S_2 & & \\
+    & & \ddots & \\
+    \mathbf{0} & & & S_r
+    \end{bmatrix}
+    \begin{bmatrix}
+    D_1 & & & \mathbf{0} \\
+    & D_2 & & \\
+    & & \ddots & \\
+    \mathbf{0} & & & D_r
+    \end{bmatrix}
+    \begin{bmatrix}
+    S_1 & & & \mathbf{0} \\
+    & S_2 & & \\
+    & & \ddots & \\
+    \mathbf{0} & & & S_r
+    \end{bmatrix}^{-1}
+\end{align*}
+\end{lemma}
+
+\begin{theorem}
+\label{thm:commuting-matrices-simultaneously-diagonalizable}
+Let $A,B \in M_n(\C)$ be diagonalizable. $AB = BA$ if and only if they are simultaneously diagonalizable, i.e. $\exists S \in M_n(\C)$ invertible such that $A = SD_1S^{-1}$, $B = SD_2S^{-1}$. Note $S$ is a matrix of eigenvectors, so this tell us that $A, B$ have common ``eigen-structure", that is they are both scaling operations under the same basis set of eigenvectors.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:commuting-matrices-simultaneously-diagonalizable}]
+($\Longleftarrow$) Suppose $A, B$ are simultaneously diagonalizable, i.e.
+$A = SD_1S^{-1}$ and $B = SD_1S^{-1}$. Then we show $AB = BA$ directly:
+\begin{align*}
+    AB &= (SD_1S^{-1})(SD_2S^{-1}) \\
+       &= SD_1D_2S^{-1} \\
+       &= SD_2D_1S^{-1} \\
+       &= SD_2S^{-1}SD_1S^{-1} \\
+       &= BA
+\end{align*}
+($\Longrightarrow$) Suppose $AB = BA$ and $A, B$ diagonalizable. We want to show that $A, B$ are simultaneously diagonalizable.
+\begin{itemize}
+    \item \underline{Special Case ($*$)}: Suppose that we have a particularly structured 
+    $$
+    A = \begin{bmatrix}
+    \lambda_1 I & & & \textbf{0} \\
+    & \lambda_2 I & & \\
+    & & \ddots & \\
+    \textbf{0} & & & \lambda_r I
+    \end{bmatrix}
+    $$
+    where the $\lambda_i$ are distinct and they are ordered and grouped together within $A$, where each $\lambda_i$ occurs $n_i$ times along the diagonal. We first show that $B$ must be a block matrix, i.e.
+    $$
+    B = \begin{bmatrix}
+    B_{11} & & & \textbf{0} \\
+    & B_{22} & & \\
+    & & \ddots & \\
+    \textbf{0} & & & B_{rr}
+    \end{bmatrix}
+    $$
+    where each $B_{ii} \in M_{n_i}$. Let $i$ be in the $n_s$ rows and $j$ be in the $n_t$ columns, where $s \not= t$. Since $AB = BA$, then
+    \begin{alignat*}{2}
+        &&(AB)_{ij} &= (BA)_{ij} \\
+        &\Longrightarrow \quad & \lambda_s b_{ij} &= \lambda_t b_{ij} \\
+        &\Longrightarrow \quad & (\lambda_s - \lambda_t) b_{ij} &= 0 \\
+        &\Longrightarrow \quad & b_{ij} &= 0
+    \end{alignat*}
+    
+    By Lemma \ref{lem:diagonalizable-block-matrix-has-diagonal-blocks}, we have that
+    \begin{align*}
+        B &= \begin{bmatrix}
+            S_1 & & & 0 \\
+            & S_2 & & \\
+            & & \ddots & \\
+            0 & & & S_r
+            \end{bmatrix}
+            \begin{bmatrix}
+            D_1 & & & 0 \\
+            & D_2 & & \\
+            & & \ddots & \\
+            0 & & & D_r
+            \end{bmatrix}
+            \begin{bmatrix}
+            S_1^{-1} & & & 0 \\
+            & S_2^{-1} & & \\
+            & & \ddots & \\
+            0 & & & S_r^{-1}
+            \end{bmatrix} \\
+        A &= \begin{bmatrix}
+            \lambda_1 I & & & 0 \\
+            & \lambda_2 I & & \\
+            & & \ddots & \\
+            0 & & & \lambda_r I
+        \end{bmatrix} \\
+          &= \begin{bmatrix}
+            S_1 & & & 0 \\
+            & S_2 & & \\
+            & & \ddots & \\
+            0 & & & S_r
+            \end{bmatrix}
+            \begin{bmatrix}
+            \lambda_1 I & & & 0 \\
+            & \lambda_2 I & & \\
+            & & \ddots & \\
+            0 & & & \lambda_r I
+            \end{bmatrix}
+            \begin{bmatrix}
+            S_1^{-1} & & & 0 \\
+            & S_2^{-1} & & \\
+            & & \ddots & \\
+            0 & & & S_r^{-1}
+            \end{bmatrix}
+    \end{align*}
+    So $A$ and $B$ are simultaneously diagonalizable.
+    
+    \item \underline{For general $A$}: Let $S \in M_n(\C)$ be invertible such that $S^{-1}AS$ is diagonal. Let $P$ be a permutation matrix such that $PS^{-1}ASP^{-1}$ is of the form in the special case ($*$). Note that $PS^{-1}ASP^{-1}$ and $PS^{-1}BSP^{-1}$ are both diagonalizable and these are similar to $A$ and $B$, respectively. They both also commute since $AB = BA$. By ($*$), then they are simultaneously diagonalizable. Say $V^{-1}PS^{-1}ASP^{-1}V$ and $V^{-1}PS^{-1}BSP^{-1}V$. Then both are diagonal!
+\end{itemize}
+\end{proof}
+
+\begin{proposition}
+For a collection diagonal matrices, they commute pairwise with each other if and only if they are simultaneously diagonalizable.
+\end{proposition}

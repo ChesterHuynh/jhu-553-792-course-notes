@@ -1,0 +1,166 @@
+\section{Chapter 8 -- Positive and Nonnegative Matrices}
+
+\subsection{Nonnegative Matrices}
+We begin with notation. Let $A \in M_n$. Then,
+\begin{itemize}
+    \item $A \ge \mathbf{0}$ means that $\forall i,j$, $A_{ij} \ge 0$ entrywise
+    \item $A > \mathbf{0}$ means that $\forall i,j$, $A_{ij} > 0$ entrywise
+    \item $A \le \mathbf{0}$ means that $\forall i,j$, $A_{ij} \le 0$ entrywise
+    \item $A < \mathbf{0}$ means that $\forall i,j$, $A_{ij} < 0$ entrywise
+\end{itemize}
+Observe that
+\begin{itemize}
+    \item By the triangle inequality, $|AB| \le |A||B|$, which is an entrywise inequality
+    \item Inductively, $|A^k| \le |A|^k$
+    \item $\mathbf{0} \le A \le B$ implies that $\mathbf{0} \le A^k \le B^k$.
+    \item For $x \in \C^n$, $|x|$ is the coordinate-wise absolute value of $x$
+    \item $|Ax| \le |A||x|$ By the triangle inequality applied componentwise.
+\end{itemize}
+
+\begin{proposition}
+\label{prop:all-row-sums-equal}
+Let $A \in M_n$ such that $A \ge \mathbf{0}$ and $\forall i$, $\sum_j a_{ij} = \alpha$. Then, $\rho(A) = \norm{A}_{\infty,\infty} = \alpha$.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition \ref{prop:all-row-sums-equal}]
+$A\mathrm{e} = \alpha\mathrm{e}$, so $\alpha \in \sigma(A)$. Thus, we have $\alpha \le \rho(A) \le \norm{A}_{\infty,\infty} = \alpha$.
+\end{proof}
+
+\begin{theorem}
+\label{thm:relative-spectral-radii}
+Let $A, B \in M_n$ such that $|A|\le B$. Then, $\rho(A) \le \rho(|A|) \le \rho(B)$.
+\end{theorem}
+\begin{proof}[Proof of Theorem \ref{thm:relative-spectral-radii}]
+For all $k$, $|A^k| \le |A|^k \le B^k$. Thus,
+\begin{alignat*}{2}
+    &&\norm{|A^k|}_F &\le \norm{|A|^k}_F \le \norm{B^k}_F \\
+    &\Longrightarrow&\norm{A^k}_F^\frac{1}{k} &\le \norm{|A|^k}_F^{\frac{1}{k}} \le \norm{B^k}_F^\frac{1}{k}
+\end{alignat*}
+The second line holds because of the Frobenius norm being a monotone and absolute norm. Then, as $k\rightarrow\infty$, we have convergence to the spectral radii:
+\[
+    \rho(A) \le \rho(|A|) \le \rho(B).
+\]
+\end{proof}
+
+\begin{corollary}
+\label{cor:min-row-sum-spectral-radius-lower-bound}
+Let $A \in M_n$ such that $A \ge \mathbf{0}$. Then $\min_i \sum_j a_{ij} \le \rho(A)$. Contrast this with $\rho(A) \le \norm{A}_{\infty,\infty} = \max_i \sum_j a_{ij}$.
+\end{corollary}
+\begin{proof}[Proof of Corollary \ref{cor:min-row-sum-spectral-radius-lower-bound}]
+If $\min_i \sum_j a_{ij} = 0$ then this is trivial. Else, obtain $\Tilde{A}$ from $A$ in the following way: for each row $k = 1,2, \dots, n$, multiply row $k$ of $A$ by $\frac{\min_i\sum_ja_{ij}}{\sum_ja_{kj}} \le 1$ to obtain row $k$ of $\Tilde{A}$. So, $0 \le \Tilde{A} \le A$ and each row sum of $\Tilde{A}$ is $\min_i\sum_j a_{ij}$. So, $\min_i\sum_ja_{ij} = \rho(\Tilde{A}) \le \rho(A)$ by Proposition \ref{prop:all-row-sums-equal} and Theorem \ref{thm:relative-spectral-radii}.
+\end{proof}
+
+\begin{note*}
+By Corollary \ref{cor:min-row-sum-spectral-radius-lower-bound}, $A > \mathbf{0}$ implies that $\rho(A) > 0$. $A \ge \mathbf{0}$ being irreducible implies $\rho(A) > \mathbf{0}$.
+\end{note*}
+
+\begin{theorem}
+\label{thm:positive-vec-spectral-radius-bound}
+Let $A \in M_n$, $x \in \C^n$, $A \ge \mathbf{0}$, and $x > \Vec{0}$. Then the following hold:
+\begin{itemize}
+    \item If $\exists \alpha \ge 0$ such that $Ax > \alpha x$, then $\rho(A) > \alpha$.
+    \item If $\exists \alpha \ge 0$ such that $Ax \ge \alpha x$, then $\rho(A) \ge \alpha$.
+    \item If $\exists \alpha \ge 0$ such that $Ax < \alpha x$, then $\rho(A) < \alpha$.
+    \item If $\exists \alpha \ge 0$ such that $Ax \le \alpha x$, then $\rho(A) \le \alpha$.
+\end{itemize}
+\end{theorem}
+\begin{proof}[Proof of Theorem \ref{thm:positive-vec-spectral-radius-bound}]
+Let $X \in M_n$ be defined as $X = \diag(x_1, \dots, x_n)$, note that $X\mathrm{e} = x$. Thus,
+\begin{alignat*}{2}
+    && Ax &\ge \alpha x \\
+    & \Longrightarrow\quad& AX\mathrm{e} &\ge \alpha X\mathrm{e} \\
+    & \Longrightarrow\quad& X^{-1}AX\mathrm{e} &\ge \alpha X^{-1}X\mathrm{e} \\
+    &&&=\alpha\mathrm{e},
+\end{alignat*}
+i.e. the row sums of $X^{-1}AX$ are all at least $\alpha$. By Corollary \ref{cor:min-row-sum-spectral-radius-lower-bound}, $\rho(A) = \rho(X^{-1}AX) \ge \min_i \sum_j a_{ij} = \alpha$. 
+
+Similarly, if $Ax \le \alpha x$, then
+\begin{alignat*}{2}
+    && Ax &\le \alpha x \\
+    & \Longrightarrow\quad& AX\mathrm{e} &\le \alpha X\mathrm{e} \\
+    & \Longrightarrow\quad& X^{-1}AX\mathrm{e} &\le \alpha X^{-1}X\mathrm{e} \\
+    &&&=\alpha\mathrm{e}
+\end{alignat*}
+i.e. all row sums of $X^{-1}AX$ are at most $\alpha$. Then, $\rho(A) = \rho(X^{-1}AX) \le \norm{X^{-1}AX}_{\infty,\infty} \le \alpha$.
+
+Similarly, if $Ax > \alpha x$, then $\exists \e>0$ such that $Ax \ge (\alpha+\e)x$, which implies $\rho(A) \ge \alpha+\e > \alpha$. If $Ax < \alpha x$, then $\exists\e > 0$ such that $Ax \le (\alpha-\e)x$, which implies $\rho(A) \le \alpha-\e < \alpha$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:nonneg-matrix-positive-evec-eigenvalue}
+Suppose $A \in M_n$ such that $A \ge \mathbf{0}$. If $A$ has a positive eigenvector, then its associated eigenvalue is $\rho(A)$.
+\end{corollary}
+
+\begin{proof}[Proof of Corollary \ref{cor:nonneg-matrix-positive-evec-eigenvalue}]
+If $x > \Vec{0}$ such that $Ax = \lambda x$, where $\lambda \in \sigma(A)$, then $\lambda \in \R_{\ge 0}$, because the LHS has all non-negative real values. So,
+\begin{itemize}
+    \item $Ax \ge \lambda x$ implies $\rho(A) \ge \lambda$
+    \item $Ax \le \lambda x$ implies $\rho(A) \le \lambda$.
+\end{itemize}
+Together, these imply that $\rho(A) = \lambda$.
+\end{proof}
+
+\subsection{Positive Matrices}
+\begin{lemma}
+\label{lem:positive-matrix-positive-evec-eigenvalue}
+Let $A \in M_n$, $A > \mathbf{0}$. If $x$ is an eigenvector with associated eigenvalue $\lambda$ such that $|\lambda| = \rho(A)$, then $A|x| = |\lambda||x|$ and $|x| > \Vec{0}$. That is, the eigenvector associated with the eigenvalue of maximum modulus has an eigenvector which is strictly nonzero.
+\end{lemma}
+
+\begin{proof}[Proof of Lemma \ref{lem:positive-matrix-positive-evec-eigenvalue}]
+Suppose $A > \mathbf{0}$. Then $\rho(A) > 0$. Next, $A > \mathbf{0}$ and $|x| \not=\Vec{0}$ implies $A|x| > \Vec{0}$. Note, $|x|\not=\Vec{0}$ means $|x|$ is nonnegative, but also nonzero. Now,
+\[
+A|x| = |A||x| \ge |Ax| = |\lambda x| = |\lambda||x|,
+\]
+and so, $A|x| - \lambda|x| \ge \Vec{0}$.
+
+If $A|x| - |\lambda||x|\not=\Vec{0}$, then $A\left(A|x|-\lambda|x|\right) > \Vec{0}$. Thus, $AA|x| > |\lambda|(A|x|)$ and by Theorem \ref{thm:positive-vec-spectral-radius-bound}, $\rho(A) > |\lambda|$, which is a contradiction. Thus, $A|x| = |\lambda||x|$, and so $\frac{1}{|\lambda|}A|x| = |x|$.
+\end{proof}
+
+\begin{theorem}[Perron]
+\label{thm:Perron}
+If $A \in M_n$ and $A > \mathbf{0}$, then the following are equivalent:
+\begin{enumerate}
+    \item $\rho(A) > 0$.
+    \item $\rho(A)$ is an eigenvalue of $A$.
+    \item $\exists x \in \C^n$, $x > \Vec{0}$ such that $Ax = \rho(A)x$.
+    \item The algebraic multiplicity of $\rho(A)$ is 1 (and so the geometric multiplicity of $\rho(A)$ is also 1).
+    \item $\forall\lambda\in\sigma(A)$ such that $\lambda\not=\rho(A)$, then $|\lambda|<\rho(A)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{definition}
+\label{def:Perron-vector}
+If $A > \mathbf{0}$, then $\exists! x>\Vec{0}$ such that $Ax = \rho(A)x$ where $\norm{x}_1 = 1$. We call $x$ a \textit{Perron vector}.
+\end{definition}
+
+\begin{note*}
+In a Markov model, the Perron vector for a transition matrix $M$ is the limiting distribution of the states. Further, if $M$ is doubly stochastic, then the Perron vector is $\Vec{p} = \frac{1}{n}\mathrm{e}$.
+\end{note*}
+
+\subsection{Consequences of Perron's Theorem}
+\begin{lemma}
+\label{lem:rotate-vector-all-real}
+Suppose $A \in M_n$, $A > \mathbf{0}$ and $\lambda$ is an eigenvalue of maximum modulus with associated eigenvector $x$. Then there exists an angle $\theta$ such that $e^{i\theta}x = |x| > \Vec{0}$, i.e. rotate each component of the vector $x$ so that it lies on the real axes.
+\end{lemma}
+\begin{proof}[Proof of Lemma \ref{lem:rotate-vector-all-real}]
+By Lemma \ref{lem:positive-matrix-positive-evec-eigenvalue}, $|A||x| = |\lambda||x|$ and $|x| > \Vec{0}$. We also know that $|\lambda||x| = |\lambda x| = |Ax|$. So for every $i$, $\left(|A||x|\right)_i = \left(|Ax|\right)_i$, i.e. $\sum_j |a_{ij}||x_j| = |\sum_j a_{ij}x_j|$, which is an equality in the triangle inequality. Thus, the angle for each of the $x_j$ are all equal.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:Perron} (v)]
+If $Ax = \lambda x$, $|\lambda| = \rho(A)$, $x \not=\Vec{0}$, then by Lemma \ref{lem:rotate-vector-all-real}, then $\exists\theta$ such that $e^{i\theta}x = |x| > \Vec{0}$. By Lemma \ref{lem:positive-matrix-positive-evec-eigenvalue}, $A|x| = |\lambda||x|$, so
+\[
+\lambda e^{i\theta}x = A(e^{i\theta}x) = A|x| = |\lambda||x| = |\lambda|e^{i\theta}x,
+\]
+and so $\lambda = |\lambda| = \rho(A)$.
+\end{proof}
+
+\begin{theorem}[Perron-Frobenius]
+\label{thm:Perron-Frobenius}
+Let $A \in M_n$, $A \ge \mathbf{0}$, and $A$ irreducible. Then the following are equivalent:
+\begin{enumerate}
+    \item $\rho(A) > 0$.
+    \item $\rho(A) \in \sigma(A)$.
+    \item $\exists$ positive eigenvector associated with eigenvalue $\rho(A)$.
+    \item The algebraic multiplicity of $\rho(A)$ is 1.
+\end{enumerate}
+\end{theorem}

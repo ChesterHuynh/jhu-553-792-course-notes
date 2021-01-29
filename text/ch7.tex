@@ -1,0 +1,234 @@
+\section{Chapter 7 -- Positive Definite and Semidefinite Matrices}
+
+\subsection{Introduction of Singular Value Decomposition}
+\begin{theorem}
+\label{thm:svd-primer}
+Let $A \in M_{m,n}$ such that $m \leq n$. Then there exist $U \in M_m$ unitary, $\Sigma = \diag(\sigma_1, \sigma_2, \dots, \sigma_m) \in M_m$ diagonal with $\sigma_i \geq 0$ and $\sigma_i$'s in nonincreasing order ($\sigma_i \geq \sigma_{i+1}$ for all $i$), $W \in M_{m,n}$ with orthonormal rows such that $A = U\Sigma W$.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:svd-primer}]
+Observe that $AA^*$ is Hermitian and positive semidefinite since for all $x \in \C^n$, $x^*AA^*x = \norm{Ax}_2^2 \geq 0$, so there exist $U = [\begin{array}{c|c|c|c} \mu_1 & \mu_2 & \cdots & \mu_m \end{array}] \in M_m$ unitary and $D = \diag(\sigma_1^2, \sigma_2^2, \dots, \sigma_m^2)$ with $\sigma_i \geq 0$ in nonincreasing order, such that $AA^* = UDU^*$. Define $\Sigma \defeq \diag(\sigma_1, \sigma_2, \dots, \sigma_m) \in M_m$.
+
+Let $\rank A = k$ and say that $\sigma_k \not= 0$ and $\sigma_{k+1} = 0$. For $i = 1, 2, \dots, k$, define the $i^{\text{th}}$ row of $W$ to be $\frac{1}{\sigma_i} \mu_i^* A$. It is easy to see that the columns are all orthonormal. For $i = k+1, k+2, \dots, m$, define the $i^{\text{th}}$ row of $W$ in any way so long as they are orthonormal to all rows of $W$ (which can be done by Gram-Schmidt).
+
+\underline{Claim:} $U^*A = \Sigma W \Longrightarrow A = U\Sigma W$.
+\noindent For rows $i = 1, 2, \dots, k$ equality holds by definition since $\mu_i^* A = \sigma_i$, the $i^{\text{th}}$ row of $W$. We also have
+$$
+AA^*\mu_i = \Vec{0} \Longrightarrow \mu_i^*AA^*\mu_i = \norm{A^*\mu_i}_2^2 \Longrightarrow A^*\mu_i = \Vec{0}^T,
+$$
+so the $i^{\text{th}}$ of the LHS is also the $i^{\text{th}}$ row of the RHS, which is $\Vec{0}^T$.
+\end{proof}
+
+\begin{remark*}
+Note the following:
+\begin{itemize}
+    \item If $A$ is real, then $U, \Sigma, W$ may be chosen real,
+    \item $\sigma_i$ is uniquely determined.
+\end{itemize}
+\end{remark*}
+
+\begin{theorem}[Singular Value Decomposition]
+\label{thm:svd}
+For all $A \in M_{m,n}$, there exist $U \in M_m$ unitary, $V \in M_n$ unitary, and $\Sigma \in M_{m,n}$ ``diagonal" such that $A = U\Sigma V^*$.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:svd}]
+If $m \leq n$, then by Theorem \ref{thm:svd-primer}, then $A = U\Sigma W = U[\begin{array}{c|c}\Sigma & 0\end{array}] \underbrace{\left[\begin{array}{c}W \\ *\end{array}\right]}_{V^*}$, where $*$ is chosen to maintain orthonormality. If $m > n$, then say $A^* = U\Sigma V^*$ is an SVD of $A^*$. Then $V \Sigma^* U^*$ is an SVD of $A$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:polar-decomposition}
+For all $A \in M_n$, there exist $P \in M_n$ Hermitian and $W \in M_n$ unitary such that $A = PW$. This is called a polar decomposition of $A$.
+\end{corollary}
+
+\begin{proof}[Proof of Corollary \ref{cor:polar-decomposition}]
+Say $A = U\Sigma V^*$ is an SVD. Then $A = \underbrace{U\Sigma U^*}_{P}\underbrace{U V^*}_W$. Since $U^*U = I$.
+\end{proof}
+
+\begin{note*}
+Let $A = U\Sigma V^*$ be an SVD with $U = [\begin{array}{c|c|c|c} \mu_1 & \mu_2 & \cdots & \mu_m \end{array}]$, $V = [\begin{array}{c|c|c|c} v_1 & v_2 & \cdots & v_m \end{array}]$ and $\sigma_k \not= 0$ and $\sigma_{k+1}=0$. Then the following are true:
+\begin{itemize}
+    \item $A = U\Sigma V^* = \sum_{i=1}^k \sigma_i \mu_i v_i^*$.
+    \item $\rank A = \rank \Sigma = k$.
+    \item $\range A = \Span\{\mu_1, \mu_2, \dots, \mu_k\}$, so $Ax = \sum_{i=1}^k \sigma_i \mu_i (v_i^* x) = \sum_{i=1}^k (\sigma_i v_i^* x) \mu_i$.
+    \item $\Ker A = \Span\{v_{k+1}, v_{k+2}, \dots, v_n\}$, so $Ax = A\sum_{j=1}^n c_j v_j = \sum_{i=1}^k \sigma_i \mu_i v_i^* \sum_{j=1}^n c_j v_j = \sum_{i=1}^k \sigma_i c_i \mu_i = \Vec{0}$ if and only if $c_i = 0$ for all $i = 1, 2, \dots, n$.
+    \item $\range A^* = \Span \{v_1, v_2, \dots, v_k\}$.
+    \item $\Ker A^* = \Span \{\mu_{k+1}, \mu_{k+2}, \dots, \mu_m\}$, and $A^* = V\Sigma^* U^*$.
+\end{itemize}
+\end{note*}
+
+\subsection{Consequences of Singular Value Decomposition and Generalized Inverses}
+
+\begin{definition}[Matrix 2-norm]
+\label{matrix-2-norm}
+For all $A \in M_{m,n}$ define the \textit{matrix 2-norm} as
+$$
+\norm{A}_2 \defeq \max_{x \in \C^n \setminus \{\Vec{0}\}} \frac{\norm{Ax}_2}{\norm{x}_2}.
+$$
+\end{definition}
+
+\begin{proposition}
+\label{prop:matrix-norm}
+For all $A \in M_{m,n}$, $\norm{A}_2 = \sigma_1(A)$, which is the largest singular value of $A$.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition \ref{prop:matrix-norm}]
+We show this directly:
+\begin{align*}
+    \norm{A}_2^2 
+        &= \max_{x \in \C^n \setminus \{\Vec{0}\}} \left(\frac{\norm{Ax}_2}{\norm{x}_2}\right)^2 \\
+        &= \max_{x \in \C^n \setminus \{\Vec{0}\}} \frac{x^*A^*Ax}{x^*x} \\
+        &\underset{\text{R-R}}{=} \lambda_n(A^*A) \\
+        &= \sigma_1^2(A),
+\end{align*}
+where we use the fact that $A^*A = U\Sigma V^*V\Sigma^*U^* = U\Sigma\Sigma^*U^*$ is Hermitian and has eigenvalues $\sigma_i^2$.
+\end{proof}
+
+\begin{proposition}
+\label{prop:frobenius-norm-sing-vals}
+For all $A \in M_{m,n}$, $\norm{A}_F = \sqrt{\sum_i \sigma_i^2(A)}$.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition \ref{prop:frobenius-norm-sing-vals}]
+$$
+\norm{A}_F^2 = \norm{U\Sigma V^*}_F^2 = \norm{\Sigma}_F^2 = \sum_{i} \sigma_i^2.
+$$
+\end{proof}
+
+\begin{definition}[C-generalized inverses]
+\label{def:C-generalized-inverse}
+Let $A \in M_{m,n}$ and $C \subseteq \{1,2,3,4\}$. The matrix $B \in M_{n,m}$ is called a \textit{$C$-generalized inverse} of $A$ if
+\begin{enumerate}[label=(\roman*)]
+    \item $1 \in C \Longrightarrow ABA = A$
+    \item $2 \in C \Longrightarrow AB$ Hermitian
+    \item $3 \in C \Longrightarrow BAB = B$
+    \item $4 \in C \Longrightarrow BA$ Hermitian.
+\end{enumerate}
+\end{definition}
+
+\begin{remark*}
+Here are some examples and about $C$-generalized inverses:
+\begin{itemize}
+    \item \{1,2\}-generalized inverse means $A,B$ satisfy conditions (i) and (ii). It is possible the others are satisfied, but not guaranteed to hold always.
+    \item An example of a \{2,3,4\}-generalized inverse is the 0 matrix.
+    \item Note, if $A \in M_n$ invertible, then $A^{-1}$ is uniquely the $\{1,2,3,4\}$-generalized inverse of $B$
+\end{itemize}
+\end{remark*}
+
+\begin{proposition}
+\label{prop:1-gen-inv-consistent}
+Let $A \in M_{m,n}$, $b \in \C^m$ be given. Suppose $B \in M_{n,m}$ is a 1-generalized inverse for $A$. If $Ax = b$ is consistent (there is at least 1 solution to the system), then $x = Bb$ is a solution.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition \ref{prop:1-gen-inv-consistent}]
+Say $Az = b$ for $z \in \C^n$ since the system is consistent. Then,
+$$
+A(Bb) = ABAz = Az = b.
+$$
+\end{proof}
+
+\begin{theorem}
+\label{thm:1-2-gen-inv-least-squares}
+Let $A \in M_{m,n}$ and $b \in C^m$ be given. Suppose $B \in M_{m,n}$ is a \{1,2\}-generalized inverse of $A$. Then $x = Bb$ solves $Ax=b$ in a least squares sense, that is,
+$$
+\min_{x \in \C^n} \norm{Ax-b}_2
+$$
+has optimal solution $\Hat{x} = Bb$. Note, there is no assumption on consistency.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:1-2-gen-inv-least-squares}]
+Any vector in $\C^n$ can be expressed as $Bb+y$, where $y \in \C^n$. We will show that $\norm{A(Bb+y)-b}_2^2$ is minimized when $y = \Vec{0}$. Then,
+\begin{align*}
+    \norm{A(Bb+y)-b}_2^2 
+        &= [(AB-I)b + Ay]^*[(AB-I)b + Ay] \\
+        &= \norm{(AB-I)b}_2^2 + \norm{Ay}_2^2 + y^*A^*(AB-I)b + b^*(AB-I)^*Ay \\
+        &= \norm{(AB-I)b}_2^2 + \norm{Ay}_2^2,
+\end{align*}
+which is optimal when $y = \Vec{0}$. The third equality comes from the fact that $A^*(AB-I) = 0$ since $[A^*(AB-I)]^* = (AB-I)A = ABA-A = 0$.
+
+Note, the set of solutions to $\min_{x \in \C^n} \norm{Ax-b}_2$ are $Bb \oplus \Ker A$, which is an affine space.
+\end{proof}
+
+\subsection{The Moore-Penrose Inverse}
+
+\begin{theorem}
+\label{thm:moore-penrose-gen-inv}
+For every $A \in M_{m,n}$, there exists a unique $\{1,2,3,4\}$-generalized inverse of $A$. It is called the \textit{Moore-Penrose generalized inverse}.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:moore-penrose-gen-inv}]
+We first show existence, consider the first special case where $\Sigma \in M_{m,n}$ is diagonal (i.e. $\forall i\not=j, \Sigma_{ij} = 0$). Define $\Sigma^\dag \in M_{n,m}$ diagonal such that for all $i$, 
+$$
+\Sigma_{ii}^\dag 
+    = \begin{cases}
+    1/\Sigma_{ii} & \text{if } \Sigma_{ii} \not= 0 \\
+    0 & \text{if } \Sigma_{ii} = 0.
+    \end{cases}
+$$
+
+By inspection, then $\Sigma^\dag$ is the \{1,2,3,4\}-generalized inverse of $\Sigma$:
+\begin{enumerate}[label=(\roman*)]
+    \item $\Sigma\Sigma^\dag\Sigma = \Sigma$
+    \item $\Sigma\Sigma^\dag = \begin{bmatrix}
+        0 & & & & 0 \\
+         & 0 & & & \\
+         & & 1 & & \\
+         & & & \ddots & \\
+        0 & & & & 0 \\
+    \end{bmatrix}$
+    \item $\Sigma^\dag\Sigma\Sigma^\dag = \Sigma^\dag$ 
+    \item $\Sigma^\dag\Sigma = \begin{bmatrix}
+        1 & & & & 0 \\
+         & 0 & & & \\
+         & & 0 & & \\
+         & & & \ddots & \\
+        0 & & & & 1 \\
+    \end{bmatrix}$
+\end{enumerate}
+
+Next, consider any $E \in M_{m,n}$ with a \{1,2,3,4\}-generalized inverse $F \in M_{n,m}$. Let $U \in M_m$ unitary, $V \in M_n$ unitary. Then $UEV^*$ has a \{1,2,3,4\}-generalized inverse $VFU^*$ since $(UEV^*)(VFU^*)(UEV^*)=UEV^*$, so $UEFU^*$ is Hermitian since $EF$ is Hermitian. Thus, for $A$, say $A = U\Sigma V^*$ is an SVD. By the above, the \{1,2,3,4\}-generalized inverse is $V\Sigma^\dag U^* = A^\dag$. Note, that if $A$ is real, then $A^\dag$ is real. Also, note that $\left(A^\dag\right)^\dag = A$.
+
+We now show uniqueness. Suppose $B, C \in M_{m,n}$ such that $B,C$ are $\{1,2,3,4\}$-generalized inverses of $A$. We show that $AB = AC$ and $BA=CA$:
+$$
+AB = ACAB = C^*A^*B^*A^* = C^*(ABA)^* = C^*A^* = AC
+$$
+$$
+BA = BACA = A^*B^*A^*C^* = (ABA)^*C^* = A^*C^* = CA
+$$
+Thus, $B = BAB = CAB = CAC = C$.
+\end{proof}
+
+\begin{theorem}
+\label{thm:least-squares-moore-penrose}
+Let $A \in M_{m,n}$ and $b \in \C^n$ be given. Among all least square solutions to $\min_{x \in \C^n} \norm{Ax-b}_2$, $A^\dag b$ is the unique solution of minimum 2-norm.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:least-squares-moore-penrose}]
+The solutions to the least squares problem are $\{A^\dag b + y : y \in \Ker A\}$. Let $A=U\Sigma V^*$ be an SVD with $k = \rank A$. Then the following are true:
+\begin{itemize}
+    \item $\ker A = \Span\{v_{k+1}, v_{k+2}, \dots, v_n\}$
+    \item $\range A^\dag = \Span\{v_1, v_2, \dots, v_k\}$ since $A^\dag = V\Sigma^\dag U^*$ is (almost) an SVD (since $\sigma_i$'s are out of order).
+\end{itemize}
+
+Thus, $\forall y \in \ker A$, $y \perp A^\dag b$ by orthonormality of $V$. Consequently, for any $y \in \ker A$,
+$$
+\norm{A^\dag b + y}_2^2 = (A^\dag b + y)^*(A^\dag b + y) = \norm{A^\dag b}_2^2 + \norm{y}_2^2 + 0 + 0
+$$
+The minimum is clearly obtained when $y = \Vec{0}$ uniquely. Thus, $A^\dag b$ is the unique solution of minimum 2-norm.
+\end{proof}
+
+\begin{note*}
+If $A \in M_{m,n}$ has full column rank, then $A^\dag = (A^*A)^{-1}A^*$. Similarly, if $A \in M_{m,n}$ has full row rank, then $A^\dag = A^*(AA^*)^{-1}$. In either of these cases, $AA^*$ is invertible since, if $A = U\Sigma V^*$ is an SVD, then 
+$$
+AA^* = V\Sigma^* U U^* \Sigma V^* = V^* \Sigma^*\Sigma V^* = V\begin{bmatrix}\sigma_1^2 & & & 0 \\ & \sigma_2^2 & & \\ & & \ddots & \\ 0 & & & \sigma_n^2\end{bmatrix}V^*,
+$$
+where none of the $\sigma_i^2$ terms are 0 by full rank. Then,
+\begin{align*}
+    AA^\dag &= AA^*(AA^*)^{-1} = I \\
+    A^\dag A &= (A^*A)^{-1}A^*A = I
+\end{align*}
+\end{note*}
+
+\begin{note*}
+$A^\dag A$ and $AA^\dag$ are orthogonal projections onto the range of $A$ and $A^*$, respectively. This is because the two matrices are also Hermitian by the properties of a \{1,2,3,4\}-generalized inverse and they are idempotent since $(A^\dag A)^2 = A^\dag A A^\dag A = A^\dag A$.
+\end{note*}

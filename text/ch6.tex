@@ -1,0 +1,202 @@
+\section{Chapter 6 -- Gerschgorin Theorem and Eigenvalue Perturbations}
+
+\subsection{Gerschgorin Discs}
+\begin{definition}[Gerschgorin Disc and Gerschgorin Region]
+\label{def:Gerschgorin-disc-region}
+Consider $A \in M_n$. For $i = 1, \dots, n$, the $i^{\text{th}}$ \textit{Gerschgorin disc} is
+\[
+    G_i(A) \defeq \{z \in \C: |z-a_{ii}| \le \sum_{j\not=i}|a_{ij}|\},
+\]
+that is, the $i^{\text{th}}$ Gerschgorin disc (G-disc) is the disc in $\C$ centered at $a_{ii}$ with radius equal to the row sum of the remaining entries. If the radius of a G-disc is 0, then the disc is called a \textit{degenerate disc}. The \textit{Gerschgorin region} for $A$ is the union of its G-discs
+\[
+    G(A) \defeq \bigcup_{i=1}^n G_i(A).
+\]
+\end{definition}
+
+\begin{example}
+Consider $A = \begin{bmatrix}2+i & i & -1 \\ 0.01 & 4 & 0 \\ 0.5 & 0 & 3\end{bmatrix}$. The first G-disc of $A$ is centered at $2+i$ with radius 2. The second G-disc is centered at $4+0i$ with radius $0.01$. The third G-disc is centered at $3+0i$ with radius $0.5$.
+\end{example}
+
+\begin{theorem}[Gerschgorin]
+\label{thm:Gerschgorin}
+For all $A \in M_n$, $\sigma(A) \subseteq G(A)$. Furthermore, if a connected component of $G(A)$ consists of, say, $k$ G-discs, then it contains exactly $k$ eigenvalues.
+\end{theorem}
+\begin{proof}[Proof of Theorem \ref{thm:Gerschgorin}]
+Let $\lambda \in \sigma(A)$ with eigenvector $x$. Let $k \in \argmax_i |x_i|$ i.e. $|x_k| = \norm{x}_\infty > 0$. Since $Ax = \lambda x$, then looking at the $k^\text{th}$ component of both sides gives $\lambda x_k = \sum_j a_{kj}x_j$, then $(\lambda-a_{kk})x_k = \sum_{j\not=k}a_{kj}x_j$. By the triangle inequality,
+\[
+    |(\lambda - a_{kk})x_k| = |\lambda - a_{kk}||x_k| = \left|\sum_{j\not=k}a_{kj}x_j\right| \le \sum_{j\not=k}|a_{kj}||x_j| \le \left(\sum_{j\not=k}|a_{kj}|\right)|x_k|.
+\]
+Since $x\not=\Vec{0}$, then $|x_k| \not= 0$, and so $|\lambda-a_{kk}| \le \sum_{j\not=k}|a_{kj}|$. So $\lambda \in G_k(A)$.
+
+Let $A \equiv D + N$ where $D = \diag(a_{11}, \dots, a_{nn})$. Define for $\e>0$, $A_\e \defeq D+\e N$. Note, $\sigma(A_\e)$ is continuous in $\e$, that is, the roots of the characteristic polynomial are continuous in its coefficients, which are continuous in the entries of the matrix. As $\e$ goes from 0 to 1, the discs proportionally expand and the eigenvalues cannot jump to disconnected regions by continuity.
+\end{proof}
+
+\begin{note*}
+For all $A \in M_n$, $\sigma(A) = \sigma(A^T) \subseteq G(A^T)$, i.e. we have column G-discs. Further for any invertible $S \in M_n$, $\sigma(A) = \sigma(S^{-1}AS) \subseteq G(S^{-1}AS)$.
+\end{note*}
+
+\begin{example}
+Consider $A = \begin{bmatrix}0 & 1\\0 & 1\end{bmatrix}$. Then $\sigma(A)$ lies in the intersection of the disc centered at 0 with radius 1 (from from $G(A^T)$) and the disc centered at 1 with radius 1 (from $G(A^T)$).
+\end{example}
+
+\begin{example}
+Consider $A = \begin{bmatrix}0 & 1\\0 & 1\end{bmatrix}$. Now consider pre-multiplying $A$ by $\begin{bmatrix}\e^1 & 0 \\ 0 & \e^2\end{bmatrix}^{-1}$ and post-multiplying $A$ by $\begin{bmatrix}\e^1 & 0 \\ 0 & \e^2\end{bmatrix}$, which gives $ \begin{bmatrix}0 & \e\\0 & 1\end{bmatrix}$. The first G-disc for this matrix is a disc centered at 0 with radius $\e$ and the other G-disc is a disc centered at 1 with radius 0, which gives a tight region for eigenvalues.
+\end{example}
+
+\begin{example}
+Note that $\sigma(A) = \bigcap_{S\in M_n \text{ invertible}} G(S^{-1}AS)$. Clearly, $\sigma(A) \subseteq \bigcap_{S\in M_n \text{ invertible}} G(S^{-1}AS)$. Consider the JCF of $A$ and then pre-multiplying by the inverse of $D = \diag(e^1, \dots, e^n)$ and post-multiplying by $D = \diag(e^1, \dots, e^n)$. Then we can control the radius of the G-discs for any $\e$.
+\end{example}
+
+\begin{definition}[Diagonally dominant]
+\label{def:diagonally-dominant}
+We say that $A \in M_n$ is \textit{diagonally dominant} if for all $i$, $|a_{ii}| \ge \sum_{j \not=i} |a_{ij}|$. $A$ is \textit{strictly diagonally dominant} if the inequality is strict.
+\end{definition}
+
+\begin{theorem}
+\label{thm:strictly-diagonally-dominant-invertible}
+If $A \in M_n$ is strictly diagonally dominant, then $A$ is invertible.
+\end{theorem}
+\begin{proof}[Proof of Theorem \ref{thm:strictly-diagonally-dominant-invertible}]
+We prove the contrapositive. If $A$ is singular, then $0 \in \sigma(A)$, so there exists $i$ such that $|0 - a_{ii}| \le \sum_{j\not=i} |a_{ij}|$, so $A$ is not strictly diagonally dominant.
+\end{proof}
+
+\subsection{Gerschgorin Theorem -- A Closer Look}
+\begin{theorem}
+\label{thm:almost-strictly-diagonally-dominant-invertible}
+Suppose $A \in M_n$ is diagonally dominant, and strictly so in all rows except, say, the $k^{\text{th}}$ row, and suppose $a_{kk} \not=0$. Then $A$ is invertible.
+\end{theorem}
+\begin{proof}[Proof of Theorem \ref{thm:almost-strictly-diagonally-dominant-invertible}]
+FSOC, suppose the above condition holds, but $A$ is singular. Let $D = \diag(1, \dots, 1, 1+\e, 1,\dots, 1)$, where the $1+\e$ entry is the $k^{\text{th}}$ diagonal entry of $D$ and $\e$ is sufficiently small. Specifically, choose $\e$ such that $0 < \e < \min_i \frac{|a_{ii}| - \sum_{j\not=i}|a_{ij}|}{|a_{ik}|}$. Note that $D^{-1}AD$ is the matrix $A$ but with the $k^{\text{th}}$ row multiplied by $(1+\e)^{-1}$ and the $k^{\text{th}}$ column multiplied by $(1+\e)$. For every $i \not=k$, $G_i(D^{-1}AD) = \left\{z \in \C: |z-a_{ii}| \le \left(\sum_{j\not=i}|a_{ij}| + \e|a_{ik}|\right)\right\}$. If $0 \in G_i(D^{-1}AD)$, then this contradicts $|a_{ii}| > \sum_{j\not=i}|a_{ij}|$ since $\e$ was chosen sufficiently small. Also, $G_k(D^{-1}AD) = \{z \in \C: |z-a_{kk}| \le \frac{1}{1+\e} \sum_{j\not=k} |a_{kj}|\}$. If $0 \in G_i(D^{-1}AD)$, then $|a_{kk}| < (1+\e)|a_{kk}| \le \sum_{j\not=k}|a_{kj}|$, contradicting the diagonal dominance in row $k$. Thus, $A$ is invertible.
+\end{proof}
+
+\begin{definition}[Entry digraph]
+\label{def:entry-digraph}
+Let $A \in M_n$. We associate with $A$ the \textit{entry digraph} of $A$, denoted as $\Gamma(A)$. Note digraph is an abbreviation for directed graph. The vertex set is $\{1,2,\dots,n\}$ and for all $i,j \in \{1,2, \dots,n\}$, the edge $(i,j) \in \Gamma(A)$ if and only if $a_{ij} \not= 0$.
+\end{definition}
+
+\begin{definition}[Strongly connected]
+\label{def:strongly-connected}
+$\Gamma(A)$ is \textit{strongly connected} if for all $i,j \in \{1,2,\dots,n\}$, there exists an $(i,j)$-directed walk. A directed walk exists if there is a sequence of directed edges that starts from $i$ and ends at $j$. As an exception, we only have a single node $1$, then we only consider it to be strongly connected if $(1,1) \in \Gamma(A)$, else it is not strongly connected.
+\end{definition}
+
+\begin{definition}[Reducible]
+\label{def:reducible}
+A matrix $A \in M_n$ is \textit{reducible} if $n=1$ and $A = \mathbf{0}$, or $n \ge 2$ and there exists a permutation matrix $P \in M_n$ and $r$ such that $1 \le r \le n-1$ and
+\[
+    PAP^T = \left[
+                \begin{array}{c|c}
+                * & * \\
+                \hline
+                \mathbf{0}_{(n-r)\times r} & *
+                \end{array}
+            \right],
+\]
+i.e. a rectangular block of zeros exists in the lower left partition of $PAP^T$. Else, we say $A$ is \textit{irreducible}.
+\end{definition}
+
+\begin{theorem}
+\label{thm:irreducible-equivalencies}
+Let $A \in M_n$. The following are equivalent:
+\begin{enumerate}
+    \item $A$ is irreducible.
+    \item $\Gamma(A)$ is strongly connected.
+    \item $(I+|A|)^{-1} > \mathbf{0}$ component-wise.
+\end{enumerate}
+\end{theorem}
+\begin{proof}[Proof of Theorem \ref{thm:irreducible-equivalencies}]
+Note that if $A$ induces $\Gamma(A)$, then $\Gamma(PAP^T)$ is simply a relabeling of the vertices. If $A$ is reducible, then $A$ is re-indexed as 
+$PAP^T = \left[
+                \begin{array}{c|c}
+                * & * \\
+                \hline
+                \mathbf{0}_{(n-r)\times r} & *
+                \end{array}
+            \right]$. 
+Note, from any vertex in the ``$r+1$-to-$n$-relabeled", there is no directed walk to any of the ``1-to-$r$-relabeled" vertices, so $\Gamma(A)$ is not strongly connected.
+
+Conversely, suppose $\Gamma$ is not strongly connected, i.e. $\exists (i,j)$ such that there is no $(i,j)$-directed walk. Define $\Lambda \defeq \{\text{vertices reachable from } i \text{ by a directed walk}\}$. Note $i \in \Lambda$ implies $j \not\in \Lambda$. Then, re-index $A$ via permutation $P$ so that the first $r$ rows and columns are the edges going from vertices in $\Lambda^c$ to vertices in $\Lambda^c$ and the last $n-r$ rows and first $r$ columns correspond to edges going from vertices in $\Lambda$ to vertices in $\Lambda^c$. This lower left partition of $PAP^T$ is all zeros, else there would be a walk from a vertex reachable from $i$ to a vertex not reachable from $i$. which would be a contradiction of membership in $\Lambda^c$. Thus, $A$ reducible.
+
+Define $Z \in M_n$ such that for all $i,j$, $Z_{ij} = \begin{cases}1 & \text{if } a_{ij} \not=0 \\ 0 & \text{if } a_{ij} = 0\end{cases}$. We claim that for any $i,j,k$, $Z^{k}_{ij}$ is the number of direct walks from $i$ to $j$ of length $k$ in $\Gamma(A)$. This is seen by induction, where $Z^0 = I$, the walks from anywhere to itself has only 1 walk using 0 edges. Otherwise, there are 0 possible walks using 0 edges. Suppose the claim holds for $Z^k$. Consider $Z^{k+1}_{ij} = \sum_{\ell}Z^{k}_{i\ell}Z^{1}_{\ell j}$. Wherever $Z^{1}_{\ell j}$ is 1, then there is a walk that allows you to take any other path one edge longer, so indeed $Z^{k}_{ij}$ counts the number of walks from $i$ to $j$ in $\Gamma(A)$. Now consider $|A|^k$. Note that $(|A|^k)_{ij} \not=0$ if and only if $Z^{k}_{ij} \not= 0$. Then we have strong connectivity if and only if for each $i$ and $j$, there exists a $k \in \{0, \dots, n-1\}$ such that $Z^k_{ij} \not=0$. Then performing a binomial expansion of $(I+|A|)^{n-1}$ we have that $(I+|A|)^{n-1} = \sum_{k=0}^{n-1}(>0)|A|^k > \mathbf{0}$ if and only if for every pair $i,j$ there exists a $k \in \{0, \dots, n-1\}$ such that $Z^k_{ij} \not=0$.
+\end{proof}
+
+\subsection{Guarantees of Irreducibility}
+\begin{definition}[Interior of G-discs]
+\label{def:interior-Gerschgorin-disc}
+For $A \in M_n$, we say that $\lambda \in \sigma(A)$ is \textit{interior} of some G-disc if $\exists i$ such that $|\lambda - a_{ii}| < \sum_{j\not=i} |a_{ij}|$. We say that $\lambda \in \sigma(A)$ is \textit{not interior} of any G-disc if $\forall i$, $|\lambda-a_{ii}| \ge \sum_{j\not=i}|a_{ij}|$.
+\end{definition}
+
+\begin{theorem}
+\label{thm:not-interior-argmax}
+Let $A \in M_n$ and $\lambda \in \sigma(A)$ be not interior of any G-disc. Let $x$ be an associated eigenvector. Set $\Cal{I} \defeq \argmax_i |x_i|$. Then, the following are true:
+\begin{enumerate}
+    \item $\forall i \in \Cal{I}$, $\lambda \in \partial G_i(A)$, where $\partial G_i(A)$ is the boundary of $G_i(A)$. That is, $|\lambda-a_{ii}| = \sum_{j\not=i}|a_{ij}|$
+    \item $\forall i \in \Cal{I}$, $(i,j) \in \Gamma(A)$ implies $j \in \Cal{I}$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:not-interior-argmax}]
+For all $i \in \Cal{I}$, i.e. $|x_i| = \norm{x}_\infty$. Then,
+\begin{alignat*}{2}
+    && Ax &= \lambda x \\
+    & \Longrightarrow & \lambda x_i &= \sum_j a_{ij}x_j \\
+    & \Longrightarrow & (\lambda-a_{ii})x_i &= \sum_{j \not=i} a_{ij}x_j \\
+    & \Longrightarrow & |\lambda-a_{ii}| |x_i| &\le \sum_{j\not=i}|a_{ij}||x_j| \\
+    &&&\le \left(\sum_{j \not=i} |a_{ij}|\right)|x_i| \\
+    & \Longrightarrow & |\lambda - a_{ii}| &\le \sum_{j \not=i}|a_{ij}|.
+\end{alignat*}
+But since $\lambda$ is not interior of any G-disc, then for all $i$, we have $|\lambda-a_{ii}| \ge \sum_{j\not=i}|a_{ij}|$. Combining these two inequalities we have $|\lambda-a_{ii}| = \sum_{j\not=i}|a_{ij}|$, i.e. $\lambda \in \partial G_i(A)$ and we have exact equality in the above derivation. Thus, $\sum_{j\not=i}|a_{ij}|(\norm{x}_\infty - |x_j|) = 0$. Since $|a_{ij}| \ge 0$ and $(\norm{x}_\infty - |x_j|) \ge 0$, then for any $j$ such that $a_{ij} \not= 0$, then $(\norm{x}_\infty - |x_j|) = 0$, so $j \in \Cal{I}$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:irreducible-not-interior-boundary}
+Let $A \in M_n$ be irreducible. If $\lambda \in \sigma(A)$ is not interior of any G-disc, then $\lambda$ is on the boundary of all G-discs.
+\end{corollary}
+\begin{proof}[Proof of Corollary \ref{cor:irreducible-not-interior-boundary}]
+Recall by Theorem \ref{thm:irreducible-equivalencies}, $A$ being irreducible implies that $\Gamma(A)$ is not strongly connected. Let $x$ be an eigenvector associated with $\lambda$. Note that $\Cal{I} \defeq \argmax_i |x_i|$ is not empty. Say $i' \in \Cal{I}$. For all $i = 1,\dots,n$, there exists a directional path from $i'$ to $i$ by strong connectivity. Hence, by Theorem \ref{thm:not-interior-argmax} and $\lambda$ not being interior of any G-disc, we have $i \in \Cal{I}$ (the immediate neighbors of $i'$ are clearly in $\Cal{I}$, but this recursively implies the neighbors of those neighbors are also in $\Cal{I}$, thus any $i$ reachable from $i'$ is also in $\Cal{I}$). Thus, for all $i = 1, \dots,n$, $\lambda \in \partial G_i(A)$. This means all components of $x_i$ are of maximum modulus.
+\end{proof}
+
+\begin{corollary}[Tausky]
+\label{cor:Tausky}
+Let $A \in M_n$ be irreducible, diagonally dominant, and strict diagonal dominance in one row, that is, $\exists k$ such that $|a_{kk}| > \sum_{j\not=k}|a_{kj}|$. Then $A$ is invertible.
+\end{corollary}
+\begin{proof}[Proof of Corollary \ref{cor:Tausky}]
+Suppose $A \in M_n$ is irreducible, diagonally dominant, and $\exists k$ such that $|a_{kk}| > \sum_{j\not=k} |a_{kj}|$. FSOC, suppose $A$ is singular i.e. $0 \in \sigma(A)$. By diagonal dominance, then
+\[
+\forall i = 1,2,\dots,n, \quad \quad |0 - a_{ii}|\ge\sum_{j\not=i}|a_{ij}|
+\]
+implies 0 is not interior of any G-disc. Thus, since $A$ is irreducible then $0$ is on the boundary of all G-discs by Corollary \ref{cor:irreducible-not-interior-boundary}. So, in particular, $|0-a_{kk}| = \sum_{j\not=k}|a_{kj}|$, which is a contradiction to the fact that we have strict diagonal dominance in row $k$ of $A$. Thus, $A$ is invertible.
+\end{proof}
+
+\subsection{Norms and Gerschgorin Discs}
+\begin{corollary}
+\label{cor:irreducible-spectral-radius-inf-norm}
+Let $A \in M_n$ be irreducible and suppose $\exists k$ such that $\sum_j |a_{kj}| < \norm{A}_{\infty,\infty}$. Then $\rho(A) < \norm{A}_{\infty,\infty}$. That is, if there exists a row such that its row sum is smaller than the maximum row sum of $A$, then $\rho(A)$ is smaller than the maximum row sum of $A$.
+\end{corollary}
+\begin{proof}[Proof of Corollary \ref{cor:irreducible-spectral-radius-inf-norm}]
+FSOC, suppose $\exists \lambda \in \sigma(A)$ such that $|\lambda| = \norm{A}_{\infty,\infty}$. For all $i=1,\dots,n$, 
+\[
+|\lambda-a_{ii}| \ge |\lambda| - |a_{ii}| = \norm{A}_{\infty,\infty} - |a_{ii}| \ge \sum_j|a_{ij}| - |a_{ii}| = \sum_{j\not=i}|a_{ij}|.
+\]
+This implies that $\lambda$ is not interior of any G-disc. By Corollary \ref{cor:irreducible-not-interior-boundary}, since $A$ is irreducible, we have $\lambda$ on the boundary of all G-discs. Thus, we have equality in the above inequalities, and so 
+\[
+    \norm{A}_{\infty, \infty} = \sum_{j}|a_{kj}|.
+\]
+This contradicts the assumption that there is a $k$ such that $\sum_j |a_{kj}| < \norm{A}_{\infty,\infty}$.
+\end{proof}
+
+\begin{theorem}
+\label{thm:matrix-perturbations}
+Let $A, \Delta A \in M_n$ be such that $A = SDS^{-1}$ is a diagonalization. Then $\forall \lambda \in \sigma(A+\Delta A)$, there exists $\tau \in \sigma(A)$ such that $|\lambda-\tau|\le \kp_{\norm{\cdot}_{\infty,\infty}}(S)\norm{\Delta A}_{\infty,\infty}$.
+\end{theorem}
+\begin{proof}[Proof of Theorem \ref{thm:matrix-perturbations}]
+This proof will be done using the Gerschgorin framework, but has been proved earlier with matrix norm properties. 
+
+Let $\lambda \in \sigma(A+\Delta A) = \sigma(S^{-1}(A+\Delta A)S) = \sigma(D + S^{-1}\Delta AS)$. By Gerschgorin's Theorem (Theorem \ref{thm:Gerschgorin}), there exists an $i$ such that
+\[
+    |\lambda-d_{ii}| - \left|[S^{-1}\Delta AS]_{ii}\right| \le \left|\lambda - (d_{ii}+[S^{-1}\Delta AS]_{ii})\right| \le \sum_{j\not=i}\left|[S^{-1}\Delta AS]_{ij}\right|.
+\]
+The first inequality is by the reverse triangle inequality and the second inequality is by the Gerschgorin Theorem applied to $S^{-1}\Delta AS$. Then,
+\[
+    |\lambda-d_{ii}| \le \sum_{j=1}^n[S^{-1}\Delta AS]_{ij} \le \norm{S^{-1}\Delta AS}_{\infty,\infty} \le \norm{S^{-1}}_{\infty,\infty} \norm{\Delta A}_{\infty,\infty} \norm{S}_{\infty,\infty} = \kp_{\norm{\cdot}_{\infty,\infty}}(S)\norm{\Delta A}_{\infty,\infty}.
+\]
+\end{proof}

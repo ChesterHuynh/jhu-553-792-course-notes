@@ -1,0 +1,787 @@
+\section{Chapter 5 -- Norms for Vectors and Matrices}
+
+\subsection{Inner Product and Normed Linear Spaces}
+
+In this chapter, we denote $V$ as a vector space over $\Cal{K}$, where $\Cal{K}$ is either $\R$ or $\C$.
+
+\begin{definition}[Inner product]
+\label{def:inner-product}
+Suppose $V$ is a vector space over $\Cal{K}$. We define an \textit{inner product} to be a function $\innerprod{\cdot}{\cdot} : V \times V \rightarrow \Cal{K}$ such that $\forall x,y,z \in V$, $c \in \Cal{K}$, the following axioms hold:
+\begin{enumerate}[label=(\roman*)]
+    \item $\innerprod{x}{x}$ is real and non-negative, with $\innerprod{x}{x} = 0$ if and only if $x = \Vec{0}$
+    \item $\innerprod{x+y}{z} = \innerprod{x}{z} + \innerprod{y}{z}$
+    \item $\innerprod{cx}{z} = c\innerprod{x}{z}$
+    \item $\innerprod{x}{z} = \overline{\innerprod{z}{x}}$
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Inner product space]
+\label{def:inner-product-space}
+We call the pair $(V, \innerprod{\cdot}{\cdot})$ an \textit{inner product space} (IPS).
+\end{definition}
+
+\begin{example}
+In $\C^n$ over $\C$, an example of an inner product is $\forall x, y$ we have $\innerprod{x}{y} \defeq y^*x$.
+\end{example}
+
+\begin{example}
+In $\C^n$ over $\C$, and $A \in M_n$ positive semidefinite, an example of an inner product is $\forall x, y$ we have $\innerprod{x}{y}_A \defeq y^*Ax$.
+\end{example}
+
+\begin{note*}
+For all $x,y,z,w \in V$ and $a,b,c,d \in \Cal{K}$,
+\begin{enumerate}[label=(\arabic*)]
+    \item $\innerprod{x}{cz} = \overline{\innerprod{cz}{x}} = \overline{c \innerprod{z}{x}} = \Bar{c} \overline{\innerprod{z}{x}} = \Bar{c} \innerprod{x}{z}$
+    \item $\innerprod{x}{y+z} = \overline{\innerprod{y+z}{x}} = \overline{\innerprod{y}{x} + \innerprod{z}{x}} = \innerprod{x}{y} + \innerprod{x}{z}$
+    \item $\innerprod{ax+by}{cz+dw} = a\Bar{c}\innerprod{x}{z} + a\Bar{d}\innerprod{x}{w} + b\Bar{c}\innerprod{y}{z} + b\Bar{d}\innerprod{y}{w}$
+\end{enumerate}
+\end{note*}
+
+\begin{definition}[Vector norm]
+\label{def:vector-norm}
+Suppose $V$ is a vector space over $\Cal{K}$. We define a \textit{(vector) norm} to be a function $\norm{\cdot}:V \rightarrow \R_{\geq 0}$ such that $\forall x,y, \in V$, $c \in \Cal{K}$, the following axioms hold:
+\begin{enumerate}[label=(\roman*)]
+    \item $\norm{x} = 0$ if and only if $x = \Vec{0}$ (positivity)
+    \item $\norm{cx} = |c|\norm{x}$ (homogeneity)
+    \item $\norm{x+y} \leq \norm{x} + \norm{y}$ (triangle inequality)
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Normed linear space]
+\label{def:normed-linear-space}
+We call the pair $(V, \norm{\cdot})$ a \textit{normed linear space} (NLS).
+\end{definition}
+
+\begin{example}
+In $\Cal{K}^n$ over $\Cal{K}$, given a positive integer $p$, $\forall x \in \Cal{K}^n$, the $L_p$-norm is $\norm{x}_p \defeq \left(\sum_{i=1}^n |x_i|^p\right)^{1/p}$. When $p = 1$, we call the $L_1$-norm the \textit{Manhattan norm}. We can also define $\norm{x}_\infty \defeq \max_i |x_i|$, which is indeed a norm (the triangle inequality requires utilizing Holder's inequality).
+\end{example}
+
+\begin{example}
+Suppose we have the NLS $(\Cal{K}^n, \norm{\cdot})$ over $\Cal{K}$ and $A \in M_n(\Cal{K})$ invertible. Define $\forall x \in \Cal{K}^n$, $\norm{x}_A \defeq \norm{Ax}$ is a norm. Observe that the triangle inequality holds since
+$$
+\norm{x+y}_A = \norm{A(x+y)} = \norm{Ax+Ay} \leq \norm{Ax} + \norm{Ay} = \norm{x}_A + \norm{y}_A.
+$$
+\end{example}
+
+\begin{theorem}[Cauchy-Schwarz Inequality]
+\label{thm:cauchy-schwarz-inequality}
+Let $(V, \innerprod{\cdot}{\cdot})$ be an IPS. Then, $\forall x, y \in V$, 
+$$
+|\innerprod{x}{y}|^2 \leq \innerprod{x}{x}\innerprod{y}{y}.
+$$
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:cauchy-schwarz-inequality}]
+For $\Cal{K = \C}$, then $\forall x,y \in V$ and $\forall t, \theta \in \R$, 
+\begin{align*}
+    0 
+        &\leq \innerprod{te^{i\theta}x + y}{te^{i\theta}x + y} \\
+        &= t^2e^{i\theta}e^{-i\theta}\innerprod{x}{x} + te^{i\theta}\innerprod{x}{y} + te^{-i\theta}\innerprod{y}{x} + \innerprod{y}{y} \\
+        &= \innerprod{x}{x}t^2 + 2\Re(e^{i\theta}\innerprod{x}{y})t + \innerprod{y}{y}
+\end{align*}
+
+Observe that the final line is a quadratic polynomial in $t$. Then, choosing $\theta$ such that $\Re(e^{i\theta}\innerprod{x}{y}) = |\innerprod{x}{y}|$ $\innerprod{x}{x}t^2 + 2|\innerprod{x}{y}|t + \innerprod{y}{y} \geq 0$. This only occurs when the quadratic polynomial has no real roots in $t$, i.e. when the discriminant is negative:
+\begin{alignat*}{2}
+    && \left(2|\innerprod{x}{y}|\right)^2 - 4 \innerprod{x}{x}\innerprod{y}{y} &\leq 0 \\
+    &\Longleftrightarrow \quad& |\innerprod{x}{y}|^2 &\leq \innerprod{x}{x}\innerprod{y}{y}.
+\end{alignat*}
+\end{proof}
+
+\begin{theorem}
+\label{thm:ips-generates-nls}
+If we have an IPS $(V, \innerprod{\cdot}{\cdot})$ over $\Cal{K}$, it induces a norm $\norm{\cdot}$. In particular, $\forall x \in V$, $\norm{x} \defeq \sqrt{\innerprod{x}{x}}$.
+\end{theorem}
+
+Observe that we have positivity of $\norm{\cdot}$ by positivity of $\innerprod{\cdot}{\cdot}$. We also have homogeneity. It suffices to show triangle inequality.
+
+\begin{proof}[Proof of Theorem \ref{thm:ips-generates-nls}]
+We show the triangle inequality of the induced norm $\norm{\cdot}$ is satisfied. Indeed, $\forall x,y \in V$,
+\begin{align*}
+    \norm{x+y}^2 
+        &= \innerprod{x+y}{x+y} \\
+        &= \innerprod{x}{x} + \innerprod{x}{y} + \innerprod{y}{x} + \innerprod{y}{y} \\
+        &= \norm{x}^2 + \norm{y}^2 + 2\Re(\innerprod{x}{y}) \\
+        &\leq \norm{x}^2 + \norm{y}^2 + 2|\innerprod{x}{y}| \\
+        &\underset{\text{C-S}}{\leq} \norm{x}^2 + \norm{y}^2 + 2\norm{x}\norm{y} \\
+        &= (\norm{x}+\norm{y})^2
+\end{align*}
+\end{proof} 
+
+\subsection{Hilbert Spaces and Banach Spaces}
+
+\begin{definition}[Metric space]
+\label{def:metric-space}
+Recall from real analysis that we define a \textit{metric space} to be a pair $(S,d)$, where $S$ is a set and $d: S \times S \rightarrow \R_{\geq 0}$ is a function (i.e. a distance metric) such that $\forall x,y,z \in S$, the following axioms hold:
+\begin{enumerate}[label=(\roman*)]
+    \item $d(x,y)=0$ if and only if $x = y$
+    \item $d(x,y) = d(y,x)$
+    \item $d(x,z) \leq d(x,y) + d(y,z)$
+\end{enumerate}
+\end{definition}
+
+\begin{note*}
+If $(V, \norm{\cdot})$ is a NLS, then define the distance metric 
+$$
+d(x,y) \defeq \norm{x-y} \quad \forall x,y \in V .
+$$
+Indeed, this induces a metric space $(V, d)$ since
+\begin{enumerate}[label=(\roman*)]
+    \item $\norm{x-y}=0$ if and only if $x - y = \Vec{0}$ if and only if $x = y$
+    \item $\norm{y-x} = \norm{(-1)(x-y)} = |-1|\norm{x-y} = \norm{x-y}$
+    \item $\norm{x-z} = \norm{x-y+y-z} \leq \norm{x-y} + \norm{y-z}$,
+\end{enumerate}
+where the final inequality in (iii) is due to the triangle inequality of the norm $\norm{\cdot}$.
+\end{note*}
+
+\begin{definition}[Banach Space]
+\label{def:banach-space}
+We saw that an NLS $(V, \norm{\cdot})$ induces a metric $d(x,y) \defeq \norm{x-y}$. If the metric space $(V,d)$ is also complete, that is, if all Cauchy sequences converge in $V$, then we call $V$ a \textit{Banach space}. More succinctly, a Banach space is a complete normed vector space.
+\end{definition}
+
+\begin{definition}[Hilbert Space]
+\label{def:hilbert-space}
+We saw that an IPS $(V, \innerprod{\cdot}{\cdot}$ induces a norm $\norm{x} = \sqrt{\innerprod{x}{x}}$, which induces a distance metric $d(x,y) \defeq \norm{x-y}$. If the metric space $(V,d)$ is also complete, that is, if all Cauchy sequences converge in $V$, then we call $V$ a \textit{Hilbert space}. More succinctly, a Hilbert space is a complete inner product space.
+\end{definition}
+
+\begin{theorem}
+\label{thm:induced-banach-and-hilbert-spaces}
+If we have a NLS $(V, \norm{\cdot})$ with $V$ being finite-dimensional, then $V$ is also a metric space with an associated distance metric $d(x,y) \defeq \norm{x-y}$, and in particular, $V$ is complete.
+If we have an IPS $(V, \innerprod{\cdot}{\cdot})$ with $V$ being finite-dimensional, then $V$ is also a NLS with an associated norm $\norm{x} = \sqrt{\innerprod{x}{x}}$ and a metric space with an associated distance metric $d(x,y) \defeq \norm{x-y}$, and in particular, $V$ is complete.
+\end{theorem}
+
+To give some intuition to the above theorem, consider an NLS $(V, \norm{\cdot})$ and observe that 
+$$
+|\norm{x} - \norm{y}| \leq \norm{x-y} \quad \forall x,y \in V.
+$$
+This tell us that $\norm{\cdot}$ is a (Lipschitz) continuous function since $\norm{y+x-y} \leq \norm{y} + \norm{x-y}$.
+
+\begin{theorem}
+\label{thm:nls-fin-dim-equivalencies}
+Let $(V, \norm{\cdot})$ be a NLS. The following are equivalent:
+\begin{enumerate}[label=(\arabic*)]
+    \item $V$ is finite dimensional
+    \item The unit sphere $\{x \in V : \norm{x} = 1\}$ is compact, that is, every sequence has a converging subsequence
+    \item The unit ball $\{x \in V: \norm{x} \leq 1\}$ is compact, that is, every sequence has a converging subsequence
+    \item $S \subseteq V$ is compact if and only if $S$ is closed and bounded.
+\end{enumerate}
+\end{theorem}
+
+\begin{theorem}
+\label{thm:equivalent-norms}
+On a finite-dimensional vector space, all norms are equivalent. That is, for $(V, \norm{\cdot})$ and $(V, \norm{\cdot}')$, where $V$ is finite-dimensional, then there exist positive real numbers $m, M$ (which can depend on the chosen pair of norms) such that
+$$
+m \norm{x}' \leq \norm{x} \leq M \norm{x}' \quad \forall x \in V.
+$$
+\end{theorem}
+
+\begin{corollary}
+\label{cor:equivalent-norms-convergence}
+Suppose we have a finite-dimensional vector space $V$ and normed linear spaces $(V, \norm{\cdot})$ and $(V, \norm{\cdot}')$. 
+Let $\{x^{(k)}\}_{k=1}^\infty \subseteq V$ be a sequence in $V$ and $x \in V$. 
+Then 
+$x^{(k)} \underset{\norm{\cdot}}{\longrightarrow} x$ 
+if and only if 
+$x^{(k)} \underset{\norm{\cdot}'}{\longrightarrow} x$. This holds for all notions of convergence.
+\end{corollary}
+
+\begin{proof}[Proof Sketch of Corollary \ref{cor:equivalent-norms-convergence}]
+By the squeeze theorem, if $\norm{x^{(k)}-x}' \longrightarrow 0$, then $\norm{x^{(k)}-x} \longrightarrow 0$ since $\norm{x^{(k)}-x} \leq M\norm{x^{(k)}-x}'$. Similarly, by the squeeze theorem, if $\norm{x^{(k)}-x} \longrightarrow 0$, then $\norm{x^{(k)}-x}' \longrightarrow 0$ since $\norm{x^{(k)}-x}' \leq \frac{1}{m}\norm{x^{(k)}-x}$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:componentwise-convergence-norms}
+Consider the NLS $(\Cal{K}, \norm{\cdot})$ over $\Cal{K}$. For a sequence $\{x^{(k)}\} \subseteq \Cal{K}^n$ and $x \in \Cal{K}$, $x^{(k)} \underset{\norm{\cdot}}{\longrightarrow} x$ if and only if $[x^{(k)}]_j \longrightarrow x_j$ for all $j = 1,2,\dots,n$. That is, we have component-wise convergence.
+\end{corollary}
+
+\begin{proof}[Proof of Corollary \ref{cor:componentwise-convergence-norms}]
+$\norm{x^{(k)}-x} \longrightarrow 0$ if and only if $\norm{x^{(k)}-x}_\infty \longrightarrow 0$ if and only if $|x_j^{(k)}-x_j| = \max_j |x_j^{(k)}-x_j| \longrightarrow 0$ for all $j = 1,2,\dots,n$.
+\end{proof}
+
+\begin{definition}[Linear transformation]
+\label{def:linear-transformation}
+Recall from linear algebra, for two vector spaces $V,W$ over $\Cal{K}$, a \textit{linear transformation} $T:V \rightarrow W$ is a function such that for all $x,y \in V$ and $\alpha, \beta \in \Cal{K}$,
+$$
+T(\alpha x + \beta y) = \alpha T(x) + \beta T(y).
+$$
+\end{definition}
+
+\begin{example}
+Any matrix $A \in M_{m,n}(\Cal{K}): \Cal{K}^n \rightarrow \Cal{K}^m$ is a linear transformation.
+\end{example}
+
+\begin{example}
+The derivative operator $\frac{d}{dt}: c^1[a,b] \rightarrow c^0[a,b]$ is a linear transformation since for $f,g \in c^1[a,b]$ (the set of continuous and once-differentiable functions over $[a,b]$), $(\alpha f + \beta g)'(x) = \alpha f'(x) + \beta g'(x)$ for all $x \in [a,b]$.
+\end{example}
+
+Recall that if $V$ is a finite-dimensional vector space over $\Cal{K}$, say with $\dim V = n$, then $V$ is isomorphic to $\Cal{K}^n$ over $\Cal{K}$, that is, there is a 1-1 correspondence between elements of the vector space $V$ and the $n$-vectors in $\Cal{K}^n$. Suppose that $\Cal{B} = \{b^{(1)}, b^{(2)}, \dots, b^{(n)}\}$ is a basis for $V$. Then for all $x \in V$, there exist unique $\alpha_1, \alpha_2, \dots, \alpha_n \in \Cal{K}$ such that $x = \sum_{i=1}^n \alpha_i b^{(i)}$. This gives the following correspondence: 
+$$
+x \longleftrightarrow \begin{bmatrix} \alpha_1 \\ \alpha_2 \\ \vdots \\ \alpha_n \end{bmatrix} = x_\Cal{B},
+$$
+where $x_\Cal{B}$ is the representation of the object $x \in V$ under the basis $\Cal{B}$.
+
+Recall that if we have finite-dimensional vector spaces $V,W$ which have associated bases $\Cal{B} = \{b^{(1)}, b^{(2)}, \dots, b^{(n)}\}$ for $V$ and $\Cal{B}' = \{b'^{(1)}, b'^{(2)}, \dots, b'^{(n)}\}$ for $W$, then $T: V \rightarrow W$ is a linear transformation if and only if there exists $A \in M_{m,n}(\Cal{K})$ such that for every $x \in V, y \in W$, $T(x) = y$ if and only if $Ax_\Cal{B} = y_\Cal{B}'$.
+
+\subsection{Dual Spaces and Operator Norms}
+\begin{definition}[Linear functional]
+\label{def:linear-functional}
+Let $V$ be a vector space over $\Cal{K}$. A linear transformation $T: V \rightarrow \Cal{K}$ is a \textit{linear functional} because it maps a vector to its underlying field of scalars.
+\end{definition}
+
+\begin{note*}
+The linear functionals on $\Cal{K}^n$ over $\Cal{K}$ are precisely of the form $T: \Cal{K}^n \rightarrow K$. A linear functional applied to a vector $x \in \Cal{K}^n$ can be thought of as left multiplying $x$ by a $1 \times n$ matrix.
+\end{note*}
+
+\begin{definition}[Linear functional in $\Cal{K}^n$]
+\label{def:linear-functional-kn}
+Let $w \in \Cal{K}^n$. Then $\hat{w}$ is a linear functional $\hat{w}: \Cal{K}^n \rightarrow \Cal{K}$ whereby for all $x \in \Cal{K}^n$, $\hat{w}(x) \defeq w^*x$.
+\end{definition}
+
+\begin{theorem}
+\label{thm:continuity-of-linear-operator}
+Let $(V, \norm{\cdot}_V)$ and $(W, \norm{\cdot}_W)$ be two normed linear spaces, and let $T: V \rightarrow W$ be a linear operator. $T$ is continuous if and only if
+$$
+\sup_{x \in V\setminus\{\Vec{0}\}} \frac{\norm{Tx}_W}{\norm{x}_V} < \infty.
+$$
+The following two observations follow from linearity and a re-expression of the operator norm expression:
+\begin{enumerate}
+    \item $T(\Vec{0}) = \Vec{0}$ since $T(\Vec{0}) = T(0 \cdot \Vec{0}) = 0 \cdot T(\Vec{0}) = \Vec{0}$, and
+    \item $\sup_{x \in V\setminus\{\Vec{0}\}} \frac{\norm{Tx}_W}{\norm{x}_V} = \sup_{x \in V\setminus\{\Vec{0}\}} \norm{T\left(\frac{1}{\norm{x}_V} x\right)}_W = \sup_{\substack{z \in V\setminus\{\Vec{0}\} \\ \norm{z}_V = 1}} \norm{Tz}_W$. 
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:continuity-of-linear-operator}]
+($\Longleftarrow$) Suppose that for all $x \in V \setminus \{\Vec{0}\}$, $\frac{\norm{Tx}}{\norm{x}} \leq M$ for some $M < \infty$. In particular, for all $y, z \in V$,
+\[
+    \frac{\norm{T(y-z)}}{\norm{y-z}} \leq M 
+        \quad \Longrightarrow \quad
+    \norm{Ty - Tz} \leq M\norm{y-z}.
+\]
+The last inequality tells us that $T$ is Lipschitz continuous.
+
+($\Longrightarrow$) Suppose $T$ is continuous. In particular, there exists $\delta > 0$ such that for all $y$ such that $\norm{y - \Vec{0}} \leq \delta$ implies $\norm{Ty - T\Vec{0}} \leq \epsilon = 1$. Thus, for all $x \in V \setminus \{\Vec{0}\}$,
+$$
+\frac{\norm{Tx}}{\norm{x}} = \frac{1}{\delta}\norm{T\left(\delta\frac{1}{\norm{x}}x\right)} \leq \frac{1}{\delta} \cdot 1 < \infty.
+$$
+\end{proof}
+
+\begin{theorem}
+\label{thm:fin-dim-NLS-continuous-operators}
+Suppose $(V, \norm{\cdot})$ and $(W, \norm{\cdot})$ are two normed linear spaces with $V$ being finite-dimensional, and $T: V \rightarrow W$ is linear. Then $T$ is continuous.
+\end{theorem}
+
+\begin{example}
+An example of a discontinuous linear operator in infinite-dimensional space. Consider the derivative operator $\frac{d}{dt}: c^1[0,1] \rightarrow c^0[0,1]$. Clearly $\frac{d}{dt}$ is linear since for any $f,g \in c^1[0,1]$ and $\alpha, \beta \in \Cal{K}$, $(\alpha f + \beta g)' = \alpha f' + \beta g'$. Define $\norm{f} \defeq \max_{t \in [0,1]} |f(t)|$ which is a norm in both the domain and codomain of $\frac{d}{dt}$. For $t^k$ on $[0,1]$, $\norm{t^k} = 1$ and $\norm{\frac{d}{dt}t^k} = k$. Since $\frac{\norm{\frac{d}{dt} t^k}}{\norm{t^k}} = k$ is unbounded above (take $k$ as large as you like), then the derivative operator is not continuous relative to $\norm{\cdot}$.
+\end{example}
+
+\begin{definition}[Operator norm]
+\label{def:operator-norm}
+Let $(V, \norm{\cdot})$ and $(W, \norm{\cdot})$ are normed linear spaces, $T: V \rightarrow W$ be linear. If $T$ is continuous, then the \textit{operator norm} of $T$ is 
+$$
+\norm{T}_{(V,W)} \defeq \sup_{x \in V\setminus\{\Vec{0}\}} \frac{\norm{Tx}_W}{\norm{x}_V}.
+$$
+\end{definition}
+
+\begin{note*}
+If $(V, \norm{\cdot})$ and $(W, \norm{\cdot})$ are normed linear spaces, $T, S: V \rightarrow W$ are linear, and $\alpha, \beta \in \Cal{K}$, then define $\alpha T + \beta S: V \rightarrow W$ as
+$$
+[\alpha T + \beta S](x) = \alpha T(x) + \beta S(x) \quad \quad \forall x \in V,
+$$
+which shows that $\alpha T + \beta S$ is linear.
+
+If $T, S$ are also continuous, then
+\begin{enumerate}
+    \item $\norm{T} = 0$ if and only if $T \equiv 0$, i.e. $T$ is the zero function
+    \item $\norm{\alpha T} = |\alpha| \norm{T}$
+    \item $\norm{T + S} \leq \norm{T} + \norm{S}$
+\end{enumerate}
+
+Observe that the above three consequences from the continuity of $T,S$ are true and tell us that the operator norm is indeed a norm since
+\begin{enumerate}
+    \item If $T \not\equiv 0$, then there exists $x \not= \Vec{0}$ such that $T(x) \not= \Vec{0}$, and so $\frac{\norm{Tx}}{\norm{x}} > 0$, so the supremum is positive as well, and therefore, $\norm{T} > 0$.
+    \item $\sup \frac{\norm{\alpha T(x)}}{\norm{x}} = \sup |\alpha| \frac{\norm{Tx}}{\norm{x}} = |\alpha| \sup \frac{\norm{Tx}}{\norm{x}} = |\alpha| \norm{T}$
+    \item $\sup \frac{\norm{[T+S](x)}}{\norm{x}} = \sup \frac{\norm{Tx + Sx}}{\norm{x}} \leq \sup \frac{\norm{Tx} + \norm{Sx}}{\norm{x}} \leq \sup \frac{\norm{Tx}}{\norm{x}} + \sup \frac{\norm{Sx}}{\norm{x}}$
+\end{enumerate}
+\end{note*}
+
+\begin{definition}[Continuous linear functionals]
+\label{def:continuous-linear-functionals}
+Given normed linear spaces $(V, \norm{\cdot})$ and $(W, \norm{\cdot})$, the set $\Cal{B}(V,W)$ is the \textit{set of continuous linear functions} $V \rightarrow W$. This set is a NLS with operator norm $\norm{\cdot}$.
+\end{definition}
+
+\begin{definition}[Dual space]
+\label{def:dual-space}
+Given $(V, \norm{\cdot})$ NLS, $\Cal{B}(V, \Cal{K})$, which is the set of linear functionals on $V$, sometimes denoted $V^*$, is the \textit{dual} of $V$.
+\end{definition}
+
+\begin{note*}
+If we have $(V, \norm{\cdot})$ and $(W, \norm{\cdot})$ normed linear spaces with $T: V \rightarrow W$ continuous, that is $T \in \Cal{B}(V,W)$, then for all $x \in V$,
+$$
+\norm{Tx} \leq \norm{T}\norm{x}.
+$$
+
+This is clear since $\sup \frac{\norm{Tx}}{\norm{x}} = \norm{T}$, so $\frac{\norm{Tx}}{\norm{x}} \leq \norm{T}$.
+\end{note*}
+
+\begin{note*}
+Consider normed linear spaces $(V, \norm{\cdot})$, $(W, \norm{\cdot})$, $(U, \norm{\cdot})$, and $T \in \Cal{B}(V,W)$, $S \in \Cal{S}(W,V)$ then $S \circ T \in \Cal{B}(V,U)$. Also,
+$$
+\norm{S \circ T} \leq \norm{S} \norm{T}
+$$
+since for all $x \in V \setminus \{\Vec{0}\}$
+$$
+\norm{[S\circ T](x)} = \norm{S(T(x))} \leq \norm{S}\norm{Tx} \leq \norm{S}\norm{T}\norm{x}
+$$
+by the preceding note.
+\end{note*}
+
+\begin{note*}
+If $A \in M_{m,n}(\Cal{K}): \Cal{K}^n \rightarrow \Cal{K}^m$, $B \in M_{m,n}(\Cal{K}): \Cal{K}^n \rightarrow \Cal{K}^m$, $C \in M_{p,m}(\Cal{K}): \Cal{K}^m \rightarrow \Cal{K}^p$, then $CA \in M_{p,n}: \Cal{K}^n \rightarrow \Cal{K}^p$ consisting of $C \circ A$. For any $\alpha, \beta \in \Cal{K}$,
+$$
+\alpha A + \beta B \in M_{m,n}: \Cal{K}^n \rightarrow \Cal{K}^m
+$$
+is represented by a matrix $\alpha A + \beta B$.
+\end{note*}
+
+
+\subsection{Dual Norms and Algebraic Properties of Norms}
+\begin{note*}
+For all $A \in M_{m,n}$, $\norm{A}_{2,2}$ is the max singular value $\sigma_1(A)$ since
+$$
+\norm{A}_{2,2} = \max_{x} \frac{\norm{Ax}}{\norm{x}}.
+$$
+\end{note*}
+
+\begin{proposition}
+\label{prop:operator-norm-examples}
+For all $A \in M_{m,n}$,
+\begin{align*}
+    \norm{A}_{1,1} &= \max_{1 \leq j \leq n} \sum_{i=1}^m |a_{ij}| \\
+    \norm{A}_{\infty, \infty} &= \max_{1 \leq i \leq m} \sum_{j=1}^n |a_{ij}|,
+\end{align*}
+that is, $\norm{A}_{1,1}$ is the largest column sum of $A$ and $\norm{A}_{\infty,\infty}$ is the largest row sum of $A$.
+\end{proposition}
+
+\begin{proof}[Proof of Proposiiton \ref{prop:operator-norm-examples}]
+Let $x \in \C^n$ be nonzero. Then
+\[
+    \norm{Ax}_1 = \sum_{i=1}^m|\sum_{j=1}^n a_{ij}x_j| \leq \sum_{i=1}^m \sum_{j=1}^n |a_{ij}| |x_j| = \sum_{j=1}^n|x_j| \sum_{i=1}^n|a_{ij}| \leq \sum_{j=1}^n |x_j| \left(\max_{1 \leq j \leq n} \sum_{i=1}^m |a_{ij}|\right) = \norm{x}_1 \left( \max_{1 \leq j \leq n} \sum_{i=1}^m |a_{ij}|\right),
+\]
+and so, $\frac{\norm{Ax}_1}{\norm{x}_1} \leq \max_j \sum_{i=1}^m |a_{ij}|$. Since this holds for any arbitrary $x$, then it holds for all $x$. Let $\hat{j} = \argmax_{1 \leq j \leq n} \sum_{i=1}^m|a_{ij}|$. Observe that $\norm{e_{\hat{j}}} = 1$, then
+$$
+\norm{Ae_{\hat{j}}}_1 = \norm{A_{\hat{j}}} = \max_{1 \leq j \leq n} \sum_{i=1}^m |a_{ij}|,
+$$
+so $e_{\hat{j}}$ achieves equality. Then the operator norm of $A$ maximizes the quantity, which can be achieved.
+\end{proof}
+
+\begin{note*} Let $(V, \norm{\cdot})$ be a finite-dimensional NLS. So all linear functionals for $V$ are continuous. Then, $V^* \underset{\text{isom.}}{\sim} V$ as a vector space. If we fix a basis $B$ for $V$, then there is a one-to-one correspondence -- for each $y \in V$, there is a corresponding linear functional that maps $x \mapsto y_B^T x_B$ for all $x \in V$.
+\end{note*}
+
+\begin{definition}[Dual norm]
+\label{def:dual-norm}
+Let $\norm{\cdot}$ be a norm on $\Cal{K}^n$. The \textit{dual norm} $\norm{\cdot}^D$ on $\Cal{K}^n$ is defined as
+$$
+\norm{y}^D \defeq \max_{x \in \Cal{K}^n\setminus\{\Vec{0}\}} \frac{|y^*x|}{\norm{x}} = \max_{\substack{x \in \Cal{K}^n \\ \norm{x}=1}} |y^*x|.
+$$
+\end{definition}
+
+\begin{note*}
+Indeed $\norm{\cdot}^D$ is a norm on $\Cal{K}^n$ since it is an operator norm (in the dual space) of a linear functional $\hat{y}$, where $\hat(y)(x) = y^*x$. To see this, simply substitute $T$ into the definition of the dual norm.
+\end{note*}
+
+\begin{lemma}
+\label{lem:dual-norm-submultiplicativity}
+Let $(V, \norm{\cdot})$ be a finite-dimensional NLS. For all $x,y \in \Cal{K}^n$, $|y^*x| \leq \norm{x}\norm{y}^D$.
+\end{lemma}
+
+\begin{proof}[Proof of Lemma \ref{lem:dual-norm-submultiplicativity}]
+This is direct:
+$$
+\max_x \frac{|y^*x|}{\norm{x}} = \norm{y}^D \quad \Longrightarrow \quad \frac{|y^*x|}{\norm{x}} \leq \norm{y}^D \quad \Longrightarrow \quad |y^*x| \leq \norm{x}\norm{y}^D.
+$$
+\end{proof}
+
+\begin{fact}[Holder's inequality]
+\label{fact:holders-inequality}
+For all $x,y \in \Cal{K}^n$, $|y^*x| \leq \norm{x}_1 \norm{y}_\infty$ since 
+$$
+|y^*x| = |\sum_{i}\Bar{y}_ix_i| \leq \sum_{i}|y_i||x_i| \leq \sum_i (\max_j |y_j|)|x_i| = \max_j|y_j| \sum_i |x_i| = \norm{y}_\infty \norm{x}_1.
+$$
+\end{fact}
+
+\begin{proposition}
+\label{prop:dual-to-primal-norms}
+On $\Cal{K}^n$, $\norm{\cdot}_1^D = \norm{\cdot}_\infty$, $\norm{\cdot}_\infty^D = \norm{\cdot}_1$, and $\norm{\cdot}_2^D = \norm{\cdot}_2$.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition \ref{prop:dual-to-primal-norms}]
+We leverage Holder's inequality.
+\begin{itemize}
+    \item Given any $y \in \Cal{K}^n$, if we restrict to $x$ such that $\norm{x}_1 = 1$, then we have that $|y^*x| \leq \norm{y}_\infty$ by Holder's inequality with equality for unit length $x$ with 1 in the component of $\argmax_i |y_i|$ and 0 elsewhere. Then,
+    $$
+    \norm{y}_1^D = \max_{x: \norm{x} = 1} |y^*x| \leq \norm{y}_\infty \quad \quad \forall y \in \Cal{K}^n
+    $$
+    with equality when $x = e_{\hat{j}}$, where $\hat{j} = \argmax_i |y_i|$.
+    \item Given any $x \in \Cal{K}^n$, if we restrict to $y$ such that $\norm{y}_\infty = 1$, then we have that $|y^*x| \leq \norm{x}_1$ by Holder's inequality with equality for unit length $y$ with all components as unit complex numbers/rotations $e^{i\theta}$. Then,
+    $$
+    \norm{x}_\infty^D = \max_{y: \norm{y}_\infty = 1} |x^*y| \leq \norm{x}_1 \quad \quad \forall x \in \Cal{K}^n
+    $$
+    with equality when $y$ has all unit complex components.
+    \item Given any $y \in \Cal{K}^n$, if we restrict to $x$ such that $\norm{x}_2 = 1$, then we have that $|y^*x| \leq \norm{y}_2$ by Cauchy-Schwarz with equality for unit length $x = \frac{1}{\norm{y}_2}y$. Then,
+    $$
+    \norm{y}_2^D = \max_{x: \norm{x}_2 = 1} |y^*x| \leq \norm{y}_2 \quad \quad \forall y \in \Cal{K}^n
+    $$
+    with equality when $x = \frac{1}{\norm{y}_2}y$.
+\end{itemize}
+\end{proof}
+
+\begin{fact}[Hahn-Banach Theorem]
+\label{fact:hahn-banach-thm}
+Let $(V, \norm{\cdot})$ be a NLS over $\Cal{K}$. If $x \in V$ is nonzero, then there exists $f \in V^*$ such that $\norm{f}_{V^*} = 1$ and $f(x) = \norm{x}_V$.
+\end{fact}
+
+\begin{corollary}[Corollary of Hahn-Banach Theorem]
+\label{cor:hahn-banach-corollary}
+Let $\norm{\cdot}$ be a norm of $\Cal{K}^n$. Then, $\left(\norm{\cdot}^D\right)^D = \norm{\cdot}$.
+\end{corollary}
+
+\begin{proof}[Proof of Corollary \ref{cor:hahn-banach-corollary}]
+Let $x \in \Cal{K}^n \setminus\{\Vec{0}\}$. Then
+$$
+\left(\norm{x}^D\right)^D = \max_{y:\norm{y}^D = 1} |y^*x| \leq \max_{y:\norm{y}^D = 1} \norm{y}^D \norm{x} = \norm{x}.
+$$
+By the Hahn-Banach Theorem, there exists $y \in \Cal{K}^n$ such that $\norm{y}^D = 1$ and $y^*x = \norm{x}$. Thus, we have equality.
+\end{proof}
+
+
+\subsection{Induced Matrix Norms}
+\begin{theorem}
+\label{thm:induced-matrix-norm}
+Let $\norm{\cdot}$ be a norm on $\Cal{K}^n$. For all $A \in M_n(\Cal{K})$,
+$$
+\norm{A}_{\norm{\cdot}, \norm{\cdot}} = \norm{A^*}_{\norm{\cdot}^D, \norm{\cdot}^D}
+$$
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:induced-matrix-norm}]
+For all $A \in M_n(\Cal{K})$, 
+\begin{align*}
+    \norm{A^*}_{\norm{\cdot}^D, \norm{\cdot}^D} 
+        &= \max_{x:\norm{x}^D = 1} \norm{A^*x}^D \\
+        &= \max_{x:\norm{x}^D = 1} \max_{y:\norm{y}=1} |(A^*x)^*y| \\
+        &= \max_{y:\norm{y}=1} \max_{x:\norm{x}^D=1} |(Ay)^*x| \\
+        &= \max_{y:\norm{y}=1} \left(\norm{Ay}^D\right)^D \\
+        &= \max_{y:\norm{y}=1} \norm{Ay} \\
+        &= \norm{A}_{\norm{\cdot}, \norm{\cdot}}.
+\end{align*}
+\end{proof}
+
+\begin{definition}[Matrix norm]
+\label{def:matrix-norm}
+A norm $\norm{\cdot}$ on $M_n(\Cal{K})$ over $\Cal{K}$ is called a \textit{matrix norm} if $\forall A, B \in M_n(\Cal{K})$, $\norm{AB} \leq \norm{A} \norm{B}$. This guarantees the following properties:
+\begin{enumerate}[label=(\roman*)]
+    \item $A \not= \mathbf{0} \Longrightarrow \norm{A} > 0$
+    \item $\norm{\alpha A} = |\alpha| \norm{A}$
+    \item $\norm{A + B} \leq \norm{A} + \norm{B}$
+    \item $\norm{AB} \leq \norm{A} \norm{B}$
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+In the following examples, consider the norm of any arbitrary matrix $A \in M_n$:
+\begin{itemize}
+    \item The $l_1$ norm on matrices defined as $||A||_1 \defeq \sum_{i,j} |a_{ij}|$ is a matrix norm. 
+    \item The $l_2$ norm on matrices defined as $||A||_2 = ||A||_F \defeq \sqrt{\sum_{i,j} |a_{ij}|^2}$ is a matrix norm.
+    \item The $l_\infty$ norm on matrices defined as $||A||_\infty \defeq \max_{i,j} |a_{i,j}|$ is \textit{not} a matrix norm. In particular, the submultiplicative property does not hold:
+    \[
+        \norm{
+        \begin{bmatrix}1 & 1 \\ 1 & 1\end{bmatrix}
+        \begin{bmatrix}1 & 1 \\ 1 & 1\end{bmatrix}
+        }_\infty 
+        = \norm{
+        \begin{bmatrix}2 & 2 \\ 2 & 2\end{bmatrix}
+        }_\infty 
+        \not\le 
+        \norm{\begin{bmatrix}1 & 1 \\ 1 & 1\end{bmatrix}}_\infty \norm{\begin{bmatrix}1 & 1 \\ 1 & 1\end{bmatrix}}_\infty 
+    \]
+\end{itemize}
+\end{example}
+
+\noindent Note that if we have a NLS $\Cal{K}^n, \norm{\cdot}'$ and consider matrices $M_n(\Cal{K}): \Cal{K}^n, \norm{\cdot}' \rightarrow \Cal{K}^n, \norm{\cdot}'$, then the operator norm $\norm{\cdot}_{\norm{\cdot}', \norm{\cdot}'}$ is also a matrix norm.
+
+\begin{definition}[Induced matrix norm]
+\label{def:induced-matrix-norm}
+Let $\norm{\cdot}'$ be a norm on $\Cal{K}^n$. Then $\norm{\cdot}'$ induces a matrix norm $\norm{\cdot}$ defined as
+\[
+    \norm{A} \defeq \max_{x \in \C^n\setminus\{\Vec{0}\}} \frac{\norm{Ax}'}{\norm{x}'}.
+\]
+We call $\norm{\cdot}$ an \textit{induced matrix norm}.
+\begin{itemize}
+    \item A necessary condition of an induced matrix norm $\norm{\cdot}$ is that $\norm{I} = 1$:
+    \[
+        \norm{I} = \max_{x \in \C^n\setminus\{\Vec{0}\}} \frac{\norm{Ix}'}{\norm{x}'} = \max_{x \in \C^n\setminus\{\Vec{0}\}} \frac{\norm{x}'}{\norm{x}'} = 1.
+    \]
+    \item The following are induced matrix norms: $\norm{\cdot}_{1,1}$, $\norm{\cdot}_{2,2}$, and $\norm{\cdot}_{\infty, \infty}$.
+\end{itemize}
+\end{definition}
+
+\begin{theorem}
+\label{thm:spectral-radius-lower-bound}
+Let $\norm{\cdot}$ be a matrix norm on $M_n$. Then for all $A \in M_n$, $\rho(A) \le \norm{A}$.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:spectral-radius-lower-bound}]
+Let $A \in M_n$ and $x$ be an eigenvector associated with eigenvalue $\lambda$ of maximum modulus. Then define $B \defeq [\begin{array}{c|c|c|c}x & x & \cdots & x\end{array}] \in M_n$. Then, 
+\[
+    |\lambda|\norm{B} = \norm{\lambda B} = \norm{[\begin{array}{c|c|c|c} Ax & Ax & Ax & Ax
+    \end{array}]} = \norm{AB} \le \norm{A}\norm{B}.
+\]
+Since $x \not= \Vec{0}$, then $B \not= \mathbf{0}$, so $\norm{B} > 0$. Then $\rho(A) = |\lambda| \le \norm{A}$.
+\end{proof}
+
+\begin{lemma}
+\label{lem:similarity-matrix-norms}
+Let $\norm{\cdot}$ be a matrix norm on $M_n(\Cal{K})$ and $S \in M_n$ be an invertible matrix. Then $\norm{\cdot}_S$ defined by $\forall A \in M_n(\Cal{K})$, $\norm{A}_S \defeq \norm{S^{-1}AS}$ is a matrix norm.
+\end{lemma}
+\begin{proof}[Proof of Lemma \ref{lem:similarity-matrix-norms}]
+We check that $\norm{\cdot}_S$ has all the properties of a matrix norm. $\forall A,B \in M_n$ and $\alpha \in \C$,
+\begin{enumerate}
+    \item $A \not= \mathbf{0} \Longrightarrow S^{-1}AS \not= \mathbf{0} \Longrightarrow \norm{A}_S = \norm{S^{-1}AS} > 0$
+    \item $\norm{\alpha A}_S = \norm{S^{-1}\alpha AS} = |\alpha| \norm{S^{-1}AS} = |\alpha|\norm{A}_S$
+    \item $\norm{A+B}_S = \norm{S^{-1}(A+B)S} = \norm{S^{-1}AS + S^{-1}BS} \le \norm{S^{-1}AS} + \norm{S^{-1}BS} = \norm{A}_S + \norm{B}_S$
+    \item $\norm{AB}_S = \norm{S^{-1}ABS} = \norm{S^{-1}ASS^{-1}BS} \le \norm{S^{-1}AS}\norm{S^{-1}BS} = \norm{A}_S\norm{B}_S$.
+\end{enumerate}
+Indeed $\norm{\cdot}_S$ is a matrix norm on $M_n(\Cal{K})$.
+\end{proof}
+
+\begin{theorem}
+\label{thm:spectral-radius-plus-epsilon}
+Let $A \in M_n$ be fixed and $\e > 0$. Then there exists a matrix norm $\norm{\cdot}$ on $M_n$ such that $\norm{A} \le \rho(A) + \e$.
+\end{theorem}
+\begin{proof}[Proof of \ref{thm:spectral-radius-plus-epsilon}]
+Let $A \in M_n$ be given and $\e > 0$ be given. Let $A = SJS^{-1}$ be a JCF. WLOG suppose $J$ has the form
+\[
+    J = \begin{bmatrix}
+    \lambda_1 & 1 & & 0 \\
+    & \lambda_2 & 1 & \\
+    & & \ddots & 1\\
+    & & & \lambda_n
+    \end{bmatrix}
+\]
+Define
+\[
+    D \defeq \begin{bmatrix}
+    \e & & & 0 \\
+    & \e^2 & & \\
+    & & \ddots & \\
+    & & & \e^n
+    \end{bmatrix}
+\]
+and observe that this turns any 1's on the superdiagonal of $J$ into $\e$'s:
+\[
+    D^{-1}JD = \begin{bmatrix}
+    \lambda_1 & \e & & 0 \\
+    & \lambda_2 & \e & \\
+    & & \ddots & \e\\
+    & & & \lambda_n
+    \end{bmatrix}
+\]
+Note that $\norm{D^{-1}JD}_{1,1} \le \rho(A) + \e$, where $\norm{\cdot}_{1,1}$ is the maximum column sum of a matrix. Then $\norm{A}_{1,1_{SD}} = \norm{D^{-1}S^{-1}ASD}_{1,1} = \norm{D^{-1}JD} \le \rho(A) + \e$.
+\end{proof}
+
+\begin{example}
+For the matrix $A = \begin{bmatrix}0&1\\0&0\end{bmatrix}$, it has a positive matrix norm by the positivity property of any matrix norm, but $\rho(A) = 0$. In this case, equality of $\rho(A)$ and any matrix norm $\norm{A}$ cannot be achieved.
+\end{example}
+
+\begin{corollary}
+\label{cor:spectral-radius-infimum}
+For all $A \in M_n$, $\inf_{\norm{\cdot} \text{ matrix norm}} \norm{A} = \rho(A)$.
+\end{corollary}
+
+\subsection{Analytical Properties of Matrix Norms}
+\begin{theorem}
+\label{thm:nilpotent-in-limit}
+For $A \in M_n$, $\lim_{k\rightarrow\infty}A^k = \mathbf{0}$ if and only if $\rho(A) < 1$. I.e. $\norm{A^k-\mathbf{0}} \rightarrow 0$.
+\begin{itemize}
+    \item This describes nilpotency in the limit
+    \item Recall, a nilpotent matrix has $\rho(A) = 0$.
+\end{itemize}
+\end{theorem}
+\begin{proof}[Proof of Theorem \ref{thm:nilpotent-in-limit}]
+$(\Longleftarrow)$ If $\rho(A) < 1$, then there exists a matrix norm $\norm{\cdot}$ such that $\norm{A} < 1$. Now observe that $\norm{A^k} \le \norm{A}^k$ by submultiplicativity. Since $\norm{A} < 1$, then as $k \rightarrow \infty$, $\norm{A}^k \rightarrow 0$, so $\norm{A^k}\rightarrow0$ as well.
+
+$(\Longrightarrow)$ Suppose $A^k \rightarrow \mathbf{0}$ as $k\rightarrow \infty$. Let $x$ be an eigenvector associated with eigenvalue $\lambda$ of maximum modulus. Then $A^kx = \lambda^k x \rightarrow \Vec{0}$ as $k \rightarrow\infty$. Then $|\lambda| < 1$ because $\lambda^k$ must exponentially decay to 0.
+\end{proof}
+
+\begin{theorem}
+\label{thm:limit-spectral-radius}
+For any matrix norm $\norm{\cdot}$ on $M_n$ and any $A \in M_n$, $\lim_{k\rightarrow\infty} \norm{A^k}^{\frac1k} = \rho(A)$.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:limit-spectral-radius}]
+First note that $[\rho(A)]^k = \rho(A^k)$ since $A^k$ has the same eigenvalues as $A$ but raised to the $k^{\text{th}}$ power. So, $\rho(A)^k = \rho(A^k) \le \norm{A^k} \Longrightarrow \rho(A)\le\norm{A^k}^{\frac{1}{k}}$. Let $\e>0$ be given. Then $\rho\left(\frac{1}{\rho(A)+\e}A\right) < 1$. Then by Theorem \ref{thm:nilpotent-in-limit}, $\left(\frac{1}{\rho(A)+\e}A\right)^k \rightarrow \mathbf{0}$. This means that $\exists M$ such that $\forall k \ge M$, $\norm{\left(\frac{1}{\rho(A)+\e}A\right)^k - \mathbf{0}} < 1$. This implies that $\norm{\left(\frac{1}{\rho(A)+\e}A\right)^k} = \frac{1}{(\rho(A)+\e)^k}\norm{A^k} < 1$, i.e. $\norm{A^k}^{\frac1k} < \rho(A)+\e$. Since $\e > 0$ was chosen arbitrarily, the result follows.
+\end{proof}
+
+\begin{theorem}
+\label{thm:complete-absolute-convergent}
+A NLS $(V,\norm{\cdot})$ over $\Cal{K}$ is complete if and only if all absolutely convergent series converge. That is, for all $\{x^{(i)}\}_{i=0}^\infty \subseteq V$, $\sum_{i=0}^\infty\norm{x^{(i)}} < \infty \Longleftrightarrow \sum_{i=0}^{\infty} x^{(i)} \in V$. Note, absolute convergent series means refers to taking the absolute value of terms in the series. This means that a complete vector space is equivalent to the condition that having all absolute series, which is a real series, converge imply all series of vectors $x^{(i)} \in V$ are in $V$.
+\end{theorem}
+\begin{definition}[Matrix exponential]
+\label{def:matrix-exponential}
+$\forall A \in M_n$, $e^A \defeq \sum_{i=0}^\infty \frac{1}{i!}A^i$ is well-defined.
+\begin{itemize}
+    \item Let $\norm{\cdot}$ be any matrix norm.
+    \[
+        \sum_{i=0}^\infty \norm{\frac{1}{i!}A^i} \le \sum_{i=0}^\infty \frac{1}{i!}\norm{A}^i = e^{\norm{A}} \Longrightarrow \sum_{i=0}^\infty \frac{1}{i!}A^i \text{ converges since all NLS are complete}.
+    \]
+    \item The specific case of $i=0$ where we use the submultiplicative property in the inequality does not always hold, that is, it is not always true that $\norm{A^0} = \norm{I} \le \norm{A}^0 = 1$ holds for every matrix norm (e.g. $\norm{\cdot}_F$). But we just need to argue convergence in a single matrix norm to argue convergence in all matrix norms. So we can argue convergence for any induced matrix norm.
+\end{itemize}
+\end{definition}
+
+\begin{theorem}
+\label{thm:identity-minus-B-invertible}
+Let $B \in M_n$ and $\norm{\cdot}$ be a matrix norm on $M_n$ such that $\norm{B} < 1$. Then $I-B$ is invertible and $(I-B)^{-1} = \sum_{i=0}^\infty B^i$.
+\end{theorem}
+\begin{proof}[Proof of Theorem \ref{thm:identity-minus-B-invertible}]
+Since $\norm{B} < 1$, then we have the following absolute converging series:
+\[
+\sum_{i=0}^\infty \norm{B^i} \le \sum_{i=0}^\infty \norm{B}^i = \frac{1}{1-\norm{B}} < \infty.
+\]
+This implies that $\sum_{i=0}^\infty B^i$ converges, and so
+\[
+(I-B) \sum_{i=0}^N B^i = \left(I + B + B^2 + B^3 + \cdots + B^N\right) - \left(B - B^2 - B^3 \cdots - B^N - B^{N+1}\right) = I-B^{N+1}.
+\]
+$\norm{B} < 1 \Longrightarrow \norm{B^{N+1}} \le \norm{B}^{N+1} \rightarrow 0$ as $N\rightarrow\infty$. So $(I-B) \sum_{i=0}^\infty B^i = I$, i.e. $\sum_{i=0}^\infty B^i = (I-B)^{-1}$.
+\end{proof}
+
+\begin{note*}
+By Theorem \ref{thm:identity-minus-B-invertible}, if $A\in M_n$ and $\norm{\cdot}$ is a matrix norm on $M_n$ such that $\norm{I-A} < 1$, then $A$ is invertible and $A^{-1} = \sum_{i=0}^\infty (I-A)^i$.
+\end{note*}
+
+\begin{note*}
+If $B \in M_n$, $\rho(B) < 1$, then $I-B$ invertible and $(I-B)^{-1} = \sum_{i=0}^\infty B^i$ since there exists a matrix norm $\norm{\cdot}$ such that $\norm{B} < 1$, and so the result directly follows from Theorem \ref{thm:identity-minus-B-invertible}.
+\end{note*}
+
+\subsection{Applications of Matrix Norms}
+\begin{definition}[Compatibility]
+\label{def:compatibility}
+The matrix norm $\norm{\cdot}$ on $M_n$ is \textit{compatible} with vector norm $\norm{\cdot}$ on $\C^n$ if $\forall A \in M_n, x \in \C^n$, $\norm{Ax} \le \norm{A}\norm{x}$, i.e. the subordinate property of the matrix norm holds.
+\begin{itemize}
+    \item If $\norm{\cdot}$ is an induced matrix norm by vector norm $\norm{\cdot}$, then they are compatible.
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Condition number]
+\label{def:condition-number}
+Let $\norm{\cdot}$ be a matrix norm on $M_n$. $\forall A \in M_n$ invertible, the \textit{condition number} of $A$ is $\kappa_{\norm{\cdot}}(A) \defeq \norm{A}\norm{A^{-1}}$.
+\end{definition}
+
+\begin{note*}
+$\norm{I\cdot I} \le \norm{I}\norm{I} \Longrightarrow \norm{I} \ge 1$. If $\norm{\cdot}$ is an induced matrix norm, then $\norm{I} = 1$. Then, $\kp(A) \ge 1$ since $\kp(A) = \norm{A}\norm{A^{-1}} \ge \norm{AA^{-1}} = \norm{I} \ge 1$. If $\norm{\cdot}$ is induced, then $\kp(I) = \norm{I}\norm{I^{-1}} = 1$.
+\end{note*}
+
+\begin{theorem}
+\label{thm:condition-number-perturbations}
+Suppose $A \in M_n$ invertible, $b, x, \Delta b, \Delta x \in \C^n$ with $b, x$ nonzero, and $\norm{\cdot}$ is a matrix norm on $M_n$ that is compatible with the vector norm $\norm{\cdot}$ on $\C^n$. Further, suppose $Ax = b$ and $A(x +\Delta x) = b+\Delta b$. Then,
+\[
+\frac{1}{\kp(A)}\frac{\norm{\Delta b}}{\norm{b}} \le \frac{\norm{\Delta x}}{\norm{x}} \le \kp(A) \frac{\norm{\Delta b}}{\norm{b}}.
+\]
+\end{theorem}
+\begin{proof}[Proof of Theorem \ref{thm:condition-number-perturbations}]
+Subtracting, we have $A\Delta x = \Delta b$. Thus, by the subordinate property
+\begin{enumerate}[label=(\arabic*)]
+    \item $\norm{b} \le \norm{A}\norm{x} \Longrightarrow \frac{1}{\norm{x}} \le \norm{A}\frac{1}{\norm{b}}$
+    \item $\norm{x} \le \norm{A^{-1}}\norm{b} \Longrightarrow \frac{1}{\norm{A^{-1}}} \frac{1}{\norm{b}} \le \frac{1}{\norm{x}}$
+    \item $\norm{\Delta x} \le \norm{A^{-1}}\norm{b}$
+    \item $\norm{\Delta b} \le \norm{A}\norm{\Delta x} \Longrightarrow \frac{\norm{\Delta b}}{\norm{A}} \le \norm{\Delta x}$
+\end{enumerate}
+Multiplying (1) and (3) together and (2) and (4) together, we get $\frac{\norm{\Delta x}}{\norm{x}} \le \norm{A}\norm{A^{-1}} \frac{\norm{\Delta b}}{\norm{b}} = \kp(A) \frac{\norm{\Delta b}}{\norm{b}}$ and $\frac{1}{\norm{A}\norm{A^{-1}}} \frac{\norm{\Delta b}}{\norm{b}} = \frac{1}{\kp(A)}\frac{\norm{\Delta b}}{\norm{b}} \le \frac{\norm{\Delta x}}{\norm{x}}$.
+\end{proof}
+
+\begin{theorem}
+\label{thm:condition-number-matrix-stability}
+Suppose $\norm{\cdot}$ is a matrix norm on $M_n$. Let $A, \Delta A \in M_n$ with $A$ being invertible and $\norm{A^{-1}}\norm{\Delta A} < 1$. Then $A + \Delta A$ is invertible (preserves invertibility). Define $\Delta(A^{-1}) \defeq A^{-1} - (A+\Delta A)^{-1}$ to be the error in the inverse $A^{-1}$. Then, we can form a bound about stability:
+\[
+    \frac{\norm{\Delta(A^{-1})}}{\norm{A^{-1}}} \le \frac{\kp(A) \frac{\norm{\Delta A}}{\norm{A}}}{1-\kp(A)\frac{\norm{\Delta A}}{\norm{A}}}
+\]
+\begin{itemize}
+    \item Note, $\frac{\norm{\Delta A}}{\norm{A}}$ is the relative error for $A$.
+    \item Typically, $\kp(A) \frac{\norm{\Delta A}}{\norm{A}}$ is very small, so the denominator is not very significant.
+\end{itemize}
+\end{theorem}
+\begin{proof}[Proof of Theorem \ref{thm:condition-number-matrix-stability}]
+Observe that
+\[
+    \norm{-A^{-1}\Delta A} \le |-1| \norm{A^{-1}}\norm{A} < 1.
+\]
+Then by Theorem \ref{thm:identity-minus-B-invertible}, $I - (-A^{-1}\Delta A)$ is invertible and $[I - (-A^{-1}\Delta A)]^{-1} = \sum_{i=0}^\infty\left(-A^{-1}\Delta A\right)^i$. So, $A + \Delta A = A(I + A^{-1}\Delta A)$ is invertible and $(A+\Delta A)^{-1} = (I + A^{-1}\Delta A)^{-1} A^{-1} = \sum_{i=0}^\infty (-A^{-1}\Delta A)^iA^{-1}$. Then,
+\begin{align*}
+    \Delta(A^{-1}) &= A^{-1} - (A+\Delta A)^{-1} = -\sum_{i=1}^\infty(-A^{-1}\Delta A)^i A^{-1} \\
+    \norm{\Delta(A^{-1})} &= \norm{-\sum_{i=1}^\infty(-A^{-1}\Delta A)^i A^{-1}} \le \sum_{i=1}^{\infty}\norm{A^{-1}\Delta A}^i \norm{A^{-1}} \\
+    \frac{\norm{\Delta(A^{-1}}}{\norm{A^{-1}}} &\le \sum_{i=1}^\infty \norm{A^{-1}\Delta A}^i = \frac{\norm{A^{-1}\Delta A}}{1 - \norm{A^{-1}\Delta A}} \le \frac{\norm{A^{-1}}\norm{\Delta A}}{1 - \norm{A^{-1}}\norm{\Delta A}} = \frac{\norm{A}\norm{A^{-1}}\frac{\norm{\Delta A}}{\norm{A}}}{1 - \norm{A}\norm{A^{-1}}\frac{\norm{\Delta A}}{\norm{A}}}.
+\end{align*}
+\end{proof}
+
+\subsection{Consequences of Absolute \& Monotone Norms}
+\begin{definition}[Absolute vector norm]
+\label{def:absolute-vector-norm}
+A vector norm $\norm{\cdot}$ on $\C^n$ is called \textit{absolute} if
+$\forall x \in \C^n$, $\norm{|x|} = \norm{x}$, where $|\cdot|$ is the component-wise absolute value, for instance,
+\[
+\left|\begin{bmatrix}3 \\ -4i \\ 3 + 4i \end{bmatrix}\right| = \begin{bmatrix}3 \\ 4 \\ 5\end{bmatrix}.
+\]
+\end{definition}
+
+\begin{definition}[Monotone vector norm]
+\label{def:monotone-vector-norm}
+A vector norm $\norm{\cdot}$ on $\C^n$ is called \textit{monotone} if
+$\forall x,y \in \C^n$, $|x|\le |y|$ implies $\norm{x} \le \norm{y}$.
+\end{definition}
+
+\begin{theorem}
+\label{thm:monotone-absolute-equivalencies}
+Let $\norm{\cdot}$ be a vector norm on $\C^n$. The following are equivalent:
+\begin{enumerate}
+    \item $\norm{\cdot}$ is monotone.
+    \item $\norm{\cdot}$ is absolute.
+    \item The matrix norm $\norm{\cdot}'$ on $M_n$ induced by $\norm{\cdot}$ satisfies the ``diagonal property" $\forall D \in M_n, \norm{D}' = \max_i |d_{ii}|$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:monotone-absolute-equivalencies}]
+$[(i) \Longrightarrow (ii)]$ Suppose $\norm{\cdot}$ is monotone. Then $|x| \le \Big| |x| \Big|$ implies $\norm{x} \le \norm{|x|}$ and $\Big| |x| \Big| \le |x|$ implies $\norm{|x|} \le \norm{x}$, so $\norm{x} = \norm{|x|}$. 
+
+\noindent $[(ii) \Longrightarrow (i)]$ See text. 
+
+\noindent $[(i) \Longrightarrow (iii)]$ Suppose $\norm{\cdot}$ is monotone. Let $D \in M_n$ be diagonal and $x \in \C^n$ be nonzero. Then
+\[
+    Dx = \begin{bmatrix}
+    d_{11}x_1 \\ d_{22}x_2 \\ \vdots \\ d_{nn}x_n
+    \end{bmatrix},
+\]
+so $|Dx| \le \left|\left(\max_i |d_{ii}|\right)x\right|$. By monotonicity, $\norm{Dx} \le \norm{\left(\max_i |d_{ii}|\right)x} = \max_{i}|d_{ii}|\norm{x}$, i.e. $\frac{\norm{Dx}}{\norm{x}} \le \max_i|d_{ii}|$, where equality is achieved for $x = \textrm{e}_k$ for $k = \argmax_i |d_{ii}|$. Then $\max_{x\in\C^n\setminus\{\Vec{0}\}} \frac{\norm{Dx}}{\norm{x}} = \max_i|d_{ii}|$.
+
+\noindent $[(iii) \Longrightarrow (i)]$ Suppose $\norm{\cdot}$ induces $\norm{\cdot}'$ with the diagonal property. Let $x,y \in \C^n$ such that $|x| \le |y|$. For $i = 1, \dots, n$, define $d_{ii} \defeq \begin{cases}x_i/y_i & \text{if }y_i\not=0 \\ 0 & \textrm{if } y_i = 0\end{cases}$, and let $D \defeq \diag(d_{11},d_{22}, \dots, d_{nn})$. Note that $Dy=x$ and $\norm{D}' = \max_i |d_{ii}| \le 1 $ by domination of $y$ to $x$. Thus, $\norm{x} = \norm{Dy} \le \norm{D}'\norm{y} \le 1 \cdot \norm{y}$, where we have the first inequality due to compatibility for any induced matrix norm. Thus, $\norm{x} \le \norm{y}$.
+\end{proof} 
+
+\begin{example}
+Note that any $l_p$ norm is absolute since we immediately take the absolute value anyway in the operation. They are also clearly monotone since if $x$ is dominated by $y$ component-wise, then clearly $\norm{x}_p \le \norm{y}_p$. Further for any diagonal matrix $D \in M_n$, any induced $l_p$ matrix norm will yield the maximum modulus diagonal entry, e.g. $\norm{\cdot}_{1,1}$ gives the maximum column sum, $\norm{\cdot}_{2,2}$ gives the maximum singular value, and $\norm{\cdot}_{\infty, \infty}$ gives the maximum row sum, which all give the maximum modulus diagonal entry of $D$.
+\end{example}
+
+\begin{theorem}[Bauer-Fike]
+\label{thm:Bauer-Fike}
+Let $\norm{\cdot}$ be a matrix norm on $M_n$ induced by a monotone norm. Let $A, \Delta A \in M_n$ be such that $A$ is diagonalizable, say $A = SDS^{-1}$. Then $\forall \lambda \in \sigma(A+\Delta A)$, there exists $\tau \in \sigma(A)$ such that $|\lambda -\tau| \le \kp(S)\norm{\Delta A}$. Further, if $A$ is normal, then there exists $\tau \in \sigma(A)$ such that $|\lambda - \tau| \le \norm{\Delta A}_{2,2}$.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:Bauer-Fike}]
+If $A$ is normal, then it is unitarily diagonalizable, so $S$ can be chosen to be unitary. Then $\norm{S}_{2,2} = \sqrt{\rho(S^*S)} = 1$ and $\kp(S) = \norm{S}_{2,2}\norm{S^*}_{2,2} = 1\cdot1 = 1$. Note, $\norm{\cdot}_{2,2}$ is induced by $\norm{\cdot}_2$, which in fact, a monotone vector norm. 
+
+For the general case, say $\lambda \in \sigma(A +\Delta A)$. If $\lambda \in \sigma(A)$, then the result is trivial, so suppose $\lambda \in \sigma(A)$. By definition of the characteristic polynomial, $\lambda I-(A+\Delta A)$ is singular. Pre-multiplying by $S^{-1}$ and post-multiplying by $S$, we have that $S^{-1}(\lambda I - (A + \Delta A))S = \lambda I - D-S^{-1}\Delta AS$ is singular. Now, pre-multiplying by $(\lambda I - D)^{-1}$, we have that $I - (\lambda I - D)^{-1}S^{-1}\Delta AS$ is singular. By the contrapositive of Theorem \ref{thm:identity-minus-B-invertible}, $\norm{(\lambda I - D)^{-1}S^{-1}\Delta AS} \ge 1$, so $\norm{(\lambda I - D)^{-1}}\norm{S^{-1}}\norm{\Delta A}\norm{S} \ge \norm{(\lambda I - D)^{-1}S^{-1}\Delta AS} \ge 1$. Since $\norm{\cdot}$ is induced by a monotone vector norm, then $\norm{\cdot}$ has the diagonal property, so $\norm{(\lambda I - D)^{-1}} = \max_i \left|\frac{1}{\lambda - d_{11}}\right| = \frac{1}{|\lambda - \tau|}$ for some $\tau \in \sigma(A)$. Then directly, $|\lambda - \tau| \le \norm{S^{-1}}\norm{\Delta A}\norm{S} = \kp(S) \norm{\Delta A}$.
+\end{proof}
+
+\begin{note*}
+If $A, \Delta A \in M_n$ are Hermitian with ordered eigenvalues $\lambda_1 \le \cdots \le \lambda_n$, then by Weyl's Theorem (Theorem \ref{thm:Weyl}), for all $k$ $\lambda_1(\Delta A) + \lambda_k(A) \le \lambda(A+\Delta A) \le \lambda_n(\Delta A) + \lambda_k(A)$, or equivalently $\lambda_1(\Delta A) \le \lambda_k(A+\Delta A) - \lambda_k(A) \le \lambda_n(\Delta A)$. This gives
+\[
+    |\lambda_k(A+\Delta A) - \lambda_k(A)| \le \rho(\Delta A) \le \norm{A}_{2,2},
+\]
+where we have equality of $\rho(\Delta A) = \norm{A}_{2,2}$ since $\Delta A$ is Hermitian. This is exactly gives the Bauer-Fike relationship: $|\lambda - \tau| \le \norm{A}_{2,2}$, but now we know $k^{\text{th}}$ eigenvalue of $A + \Delta A$ is near the $k^{\text{th}}$ eigenvalue of $A$.
+\end{note*}

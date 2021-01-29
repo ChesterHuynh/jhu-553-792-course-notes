@@ -1,0 +1,502 @@
+\section{Chapter 3 -- Canonical Forms}
+\subsection{Jordan Matrices and Jordan Canonical Form}
+
+\begin{definition}[Jordan block]
+\label{def:jordan-block}
+A ``$k \times k$ \textit{Jordan block} with eigenvalue $\lambda$", denoted ``$J_k(\lambda)"$ is the matrix
+$$
+\begin{bmatrix}
+\lambda & 1 & & & \mathbf{0} \\
+  & \lambda & 1 & &   \\
+  & & \lambda & \ddots &\\
+  & & & \ddots & 1 \\
+\mathbf{0} & & & & \lambda \\
+\end{bmatrix} \in M_n,
+$$
+which has $k$ $\lambda$'s on the main diagonal and $k-1$ 1's on the superdiagonal. The eigenvectors are directly derived from $J_k(\lambda)$:
+\begin{align*}
+    \Vec{x} : (J_k(\lambda) - \lambda I) \Vec{x} = \Vec{0} 
+        &\quad \Longrightarrow \quad
+            \begin{bmatrix}
+                \lambda & 1 & & & \mathbf{0} \\
+                & \lambda & 1 & &   \\
+                & & \lambda & \ddots &\\
+                & & & \ddots & 1 \\
+                \mathbf{0} & & & & \lambda \\
+            \end{bmatrix}
+            \begin{bmatrix}
+            x_1 \\ x_2 \\ x_3 \\ \vdots \\ x_k
+            \end{bmatrix} = \Vec{0} \\
+        &\quad \Longrightarrow \quad x_1 = \text{anything}, x_2 = x_3 = \dots = x_k = 0 \\
+        &\quad \Longrightarrow \quad \Vec{x} \in \Span\left\{\begin{bmatrix} 1 \\ 0 \\ \vdots \\ 0\end{bmatrix}\right\}
+\end{align*}
+\end{definition}
+
+\begin{remark*}
+Observe that powers of $J_k(0)$ have decreasing rank and that it shifts the entries of a column vector up by one entry.
+\begin{itemize}
+    \item $J_4(0) J_4(0) = \begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0\end{bmatrix} \begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0\end{bmatrix} = \begin{bmatrix} 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0\end{bmatrix}$ has rank 2
+    \item $J_4(0) J_4(0) J_4(0) = \begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0\end{bmatrix} \begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0\end{bmatrix} \begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0\end{bmatrix} = \begin{bmatrix} 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{bmatrix}$ has rank 1
+    \item $J_4(0) J_4(0) J_4(0) J_4(0) = \begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0\end{bmatrix} \begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0\end{bmatrix} \begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0\end{bmatrix} \begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0\end{bmatrix} = \begin{bmatrix} 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{bmatrix}$ has rank 0
+    \item $J_4(0) \begin{bmatrix} a \\ b \\ c \\ d \end{bmatrix} = \begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0\end{bmatrix} \begin{bmatrix} a \\ b \\ c \\ d \end{bmatrix} = \begin{bmatrix} b \\ c \\ d \\ 0 \end{bmatrix}$ 
+    \item $[J_k^l(0)]_{ij} = \begin{cases} 1 & j-i = l \text{ (}l^{\text{th}}\text{ superdiagonal)}\\ 0 & \text{else}\end{cases}$
+    \item $\rank J_k^l(0) = (k-l)_{\geq 0}$ where the subscript $\geq 0$ denotes the ReLU function.
+\end{itemize}
+\end{remark*}
+
+\begin{definition}[Jordan Matrix]
+\label{def:jordan-matrix}
+A \textit{Jordan matrix} is the direct sum of Jordan blocks:
+$$
+J 
+    = \bigoplus_{i=1}^s J_{n_i}(\lambda_i)
+    = J_{n_1}(\lambda_1) \oplus J_{n_2}(\lambda_2) \oplus \dots \oplus J_{n_s}(\lambda_s) 
+    = \begin{bmatrix} J_{n_1}(\lambda_1) & & & \mathbf{0} \\ & J_{n_2}(\lambda_2) & & \\ & & \ddots & \\ \mathbf{0} & & & J_{n_s}(\lambda_s)\end{bmatrix}
+$$
+As an example, $$
+J_5(i) \oplus J_3(2) \oplus J_1(3) = \begin{bmatrix} 
+        i & 1 & 0 & 0 & 0 & & & & \mathbf{0} \\ 
+        0 & i & 1 & 0 & 0 & & & & \\
+        0 & 0 & i & 1 & 0 & & & & \\
+        0 & 0 & 0 & i & 1 & & & & \\
+        0 & 0 & 0 & 0 & i & & & & \\
+                & & & & & 2 & 1 & 0 & \\
+                & & & & & 0 & 2 & 1 & \\
+                & & & & & 0 & 0 & 2 &\\
+                    & & & & & & & & 3 \\
+        \end{bmatrix}
+    \sim J_3(2) \oplus J_1(3) \oplus J_5(i).
+$$
+As a note, Jordan matrices whose blocks are rearrangements to another Jordan matrix are similar by a permutation matrix $P$.
+\end{definition}
+
+\begin{theorem}[Jordan Canonical Form (JCF)]
+\label{thm:jcf}
+For any $A \in M_n$, there exists a Jordan matrix $J$ such that $A \sim J$ and $J$ is unique up to a rearrangement of the Jordan blocks. This creates similarity classes, each identifiable by a Jordan matrix, and all that we need to know about $A$ is characterized by $J$.
+\end{theorem}
+
+\begin{note*}
+A diagonal matrix is a Jordan matrix with all blocks $1 \times 1$. So a matrix is diagonalizable if and only if its Jordan Form $\bigoplus_{i=1}^s J_{n_i}(\lambda_i)$ has $n_i = 1$ for all $i = 1, 2, \dots, s$.
+\end{note*}
+
+\begin{example}
+Suppose $A \in M_n$ has eigenvalues 0, 0, $\dots$, 0. Then $A \sim \bigoplus_{i=1}^s J_{n_i}(0)$ and $\sum_{i=1}^s n_i = n$. In particular suppose that $A \sim J$, where $J = J_5(0) \oplus J_3(0) \oplus J_3(0) \oplus J_2(0)$ is
+$$
+\begin{bmatrix} 
+        0 & 1 & 0 & 0 & 0 & & & & & & & & 0\\ 
+        0 & 0 & 1 & 0 & 0 & & & & & & & & \\
+        0 & 0 & 0 & 1 & 0 & & & & & & & & \\
+        0 & 0 & 0 & 0 & 1 & & & & & & & & \\
+        0 & 0 & 0 & 0 & 0 & & & & & & & & \\
+                & & & & & 0 & 1 & 0 & & & & & \\
+                & & & & & 0 & 0 & 1 & & & & & \\
+                & & & & & 0 & 0 & 0 & & & & & \\
+                & & & & & & & & 0 & 1 & 0 & &  \\
+                & & & & & & & & 0 & 0 & 1 & &  \\
+                & & & & & & & & 0 & 0 & 0 & & \\
+                & & & & & & & & & & & 0 & 1 \\
+                & & & & & & & & & & & 0 & 0
+        \end{bmatrix}
+$$
+Observe the following pattern about the rank of $A$, and consequently, the rank of $J$ since $A^k = SJ^kS^{-1}$:
+\begin{itemize}
+    \item $\rank A^0 = \rank J^0 = 5 + 3 + 3 + 2$
+    \item $\rank A^1 = \rank J^1 = 4 + 2 + 2 + 1$
+    \item $\rank A^2 = \rank J^2 = 3 + 1 + 1 + 0$
+    \item $\rank A^3 = \rank J^3 = 2 + 0 + 0 + 0$
+    \item $\rank A^4 = \rank J^4 = 1 + 0 + 0 + 0$
+    \item $\rank A^5 = \rank J^5 = 0 + 0 + 0 + 0$
+\end{itemize}
+\end{example}
+
+\begin{definition}[Ferrers Diagram, Dual Sequence]
+\label{def:Ferrers-diagram-dual-sequence}
+Suppose we have a sequence of nonincreasing positive integers, e.g. $(5,3,3,2)$. The \textit{dual sequence} of a \textit{Ferrers diagaram}, involves constructing stacks of blocks with heights $(5,3,3,2)$. Then the widths of the stacks going horizontally gives the dual sequence. Formally, $(5,3,3,2)^* = (4,4,3,1,1)$. Note, that the $l^\text{th}$ entry of the dual sequence gives the difference: $\rank A^{l-1} - \rank A^l$.
+\end{definition}
+
+\begin{proposition}
+\label{prop:block-seq-Jordan-matrix}
+If $A \in M_n$ has eigenvalues 0, 0, $\dots$, 0, then for $l = 1, 2, 3, \dots$, let $s_k \defeq \rank A^{l-1} - \rank A^l$. Then $(t_1, t_2, t_3, \dots) = (s_1, s_2, s_3, \dots)^*$ is the block sequence of the Jordan matrix, i.e. $A \sim \bigoplus_i J_{t_i}(0)$.
+\end{proposition}
+
+\subsection{Jordan Canonical Forms and Multiplicities of Eigenvalues}
+Suppose that $A \in M_n$ with JCF $A = S\left(\bigoplus_{i=1}^k J_{n_i}(\lambda_i)\right)S^{-1}$. Then, for all $\gamma \in \C$, 
+$$
+A - \gamma I 
+    = S\left(\bigoplus_{i=1}^k J_{n_i}(\lambda_i) - \gamma I\right) S^{-1} 
+    = S\left(\bigoplus_{i=1}^k J_{n_i}(\lambda_i - \gamma)\right)S^{-1}
+$$
+In particular, if we take $\gamma = \lambda_1$, and say $\lambda_1 = \lambda_2 = \dots = \lambda_q \not= \lambda_i$ for $i > q$, then $\rank (A - \gamma I)^l = \rank S(J-\gamma I)^l S^{-1} = \rank (J-\gamma I)^l$ since invertible matrices do not affect the rank of a matrix. So, we have the following
+$$
+\rank (A-\lambda_1 I)^l 
+    = \rank\left(\bigoplus_i J_{n_i}(\lambda_i - \lambda_1)^l\right) 
+    = \rank 
+        \begin{bmatrix} 
+            J_{n_1}(0) & & & & & & \mathbf{0} \\ 
+            & J_{n_2}(0) & & & & &   \\ 
+            & & \ddots & & & & \\ 
+            & & & J_{n_q}(0) & & & \\ 
+            & & & & J_{n_{q+1}}(\not=0) & & \\ 
+            & & & & & \ddots & \\ 
+            \mathbf{0}   & & & & & & J_{n_k}(\not=0)
+        \end{bmatrix} 
+$$
+From here, we can deduce the Jordan structure of the matrix. Let $z = \sum_{i=q+1}^k n_i$. Since the Jordan blocks corresponding to $n_{q+1}$ to $n_k$ have non-zero eigenvalues, then they are invertible, and therefore have the same rank as before subtracting $\lambda_1$. Thus, $s_l = \rank A^l - \rank A^{l-1}$ helps us deduce the size of the Jordan blocks of the Jordan matrix of $A$.
+
+\noindent We can use this procedure for all eigenvalues $\lambda \in \sigma(A)$ of $A$ to get block structure and the Jordan matrix $\bigoplus_{i=1}^k J_{n_i}(\lambda_i)$ by taking
+$$
+\rank(A-\lambda I)^l
+$$
+for $l = 0, 1, 2, \dots$ until the rank of the matrix stops dropping, which gives us a sequence of $s_l$ and we can get the sizes of the Jordan blocks by taking the dual sequence $(t_1, t_2, t_3, \dots) = (s_1, s_2, s_3, \dots)^*$. This also shows us that each matrix has a unique Jordan form. \\
+
+\noindent For $A \in M_n$ similar to $\bigoplus_{i=1}^k J_{n_i}(\lambda_i)$, say $\lambda_1 = \lambda-2 = \dots = \lambda_q$, $\lambda_i \not= \lambda_q$ for $i > q$, then the algebraic multiplicity of $\lambda_1$ is $n_1 + n_2 + \dots + n_q$ and the geometric multiplicity of $\lambda_1$ is $1 + 1 + \dots + 1 = q$. This is because each block only contributes 1 to the geometric multiplicity of $\lambda_1$.
+
+\begin{example}
+Suppose that $A \in M_n$ is similar to the following Jordan matrix:
+$$
+J 
+    = J_3(\pi) \oplus J_2(\pi) \oplus J_1(17) 
+    = \begin{bmatrix}
+          \pi & 1 & 0 & & & \\
+           0 & \pi & 1 & & & \\
+           0 & 0 & \pi & & & \\
+             & & & \pi & 1 & \\
+             & & & 0 & \pi & \\
+             & & & & & 17
+        \end{bmatrix}
+$$
+Then the algebraic multiplicity of $\pi$ is $5$ while the geometric multiplicity of $\pi$ is 2 since each block for $\pi$ only contributes 1 to its geometric multiplicity. \\
+
+\noindent If we look at $A - \lambda I$, the eigenspace is $\{x: (A-\lambda I)x = \Vec{0}\}$, which is the nullspace of $A - \lambda I$. If we compute $J - \pi I$, then we have
+$$
+    \begin{bmatrix}
+       0 & 1 & 0 & & & \\
+       0 & 0 & 1 & & & \\
+       0 & 0 & 0 & & & \\
+         & & & 0 & 1 & \\
+         & & & 0 & 0 & \\
+         & & & & & 17 - \pi
+    \end{bmatrix}
+$$
+We see that each Jordan block has a rank defect of 1 (it has rank 1 less than full rank, or order), so by the rank-nullity theorem the nullity of $J - \pi I$ is 2. So each Jordan block with eigenvalue $\pi$ corresponds to a single linearly independent eigenvector. More explicitly, observe that if $A = SJS^{-1}$, then $AS = SJ$, so
+$$
+A [\begin{array}{c|c|c|c} S_1 & S_2 & \dots & S_6 \end{array}] 
+= [\begin{array}{c|c|c|c} S_1 & S_2 & \dots & S_6 \end{array}]
+    \begin{bmatrix}
+      \pi & 1 & 0 & & & \\
+       0 & \pi & 1 & & & \\
+       0 & 0 & \pi & & & \\
+         & & & \pi & 1 & \\
+         & & & 0 & \pi & \\
+         & & & & & 17
+    \end{bmatrix}
+$$
+Then we have
+\begin{align*}
+    AS_1 &= \pi S_1 \\
+    AS_4 &= \pi S_4 \\
+    AS_6 &= 17 S_6
+\end{align*}
+So the columns of $S$ corresponding to the first columns of each of the Jordan blocks is are linearly independent eigenvectors.
+\end{example}
+
+\begin{definition}[Spectral radius]
+\label{def:spectral-radius}
+For a matrix $A \in M_n$, the \textit{spectral radius} $\rho(A)$ is
+$$
+\rho(A) \defeq \max_{\lambda \in \sigma(A)} |\lambda|
+$$
+\end{definition}
+
+\begin{definition}[Nilpotent]
+\label{def:nilpotent}
+We say that a matrix $A \in M_n$ is \textit{nilpotent} if there exists a positive integer $k$ such that $A^k = \mathbf{0}$.
+\end{definition}
+
+\begin{proposition}
+\label{prop:nilpotency-eigenvalues}
+A matrix $A \in M_n$ is nilpotent if and only if $A$ has eigenvalues all 0's, that is $\rho(A) = 0$.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition \ref{prop:nilpotency-eigenvalues}]
+Let $A = SJS^{-1}$ be a Jordan canonical form. Then if $A^l = \mathbf{0}$, then $J^l = \mathbf{0}$. $J^l = \mathbf{0}$ if and only if $J = \mathbf{0}$ since any block in $J$ corresponding to a non-zero eigenvalue will never zero out for any power $k > 0$ (only the Jordan block with eigenvalue 0 has the property of shifting columns up by one entry for each power). 
+
+So nilpotency implies $A^l = \mathbf{0}$, which implies $J^l = \mathbf{0}$ and so $J$ only consists of Jordan blocks with eigenvalues 0, so $A$ has eigenvalues 0. If $A$ has all zero eigenvalues, then $J$ clearly must only consist of Jordan blocks with eigenvalues 0, which will result in the zero matrix for some $k > 0$.
+\end{proof}
+
+\begin{proposition}[``Every matrix is almost diagonalizable"]
+\label{prop:almost-diagonalizable-3}
+For all $A \in M_n$, $A$ can be expressed as a diagonal matrix plus a nilpotent matrix.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition \ref{prop:almost-diagonalizable-3}]
+Say $A = SJS^{-1}$ is a Jordan canonical form. $J$ only has nonzeros on its diagonal and superdiagonal, which we can decompose into a diagonal matrix $D = \diag(J)$ and nilpotent matrix $N = \superdiag(J)$ (it is a superdiagonal matrix, so its spectrum is only 0's). We consider $N$ small because it has eigenvalues 0 and will eventually go to the zero matrix for some power, so
+$$
+A = S(D+N)S^{-1} = SDS^{-1} + SNS^{-1}
+$$
+\end{proof}
+
+\begin{corollary}
+\label{cor:jordan-transpose-similar}
+For any $A \in M_n$, $A \sim A^T$. This is because they are similar to the same Jordan matrix.
+\end{corollary}
+
+\begin{proof}[Proof of Corollary \ref{cor:jordan-transpose-similar}]
+Observe that any Jordan block $J_k(\lambda)$ is similar to its transpose $J_k^T(\lambda)$ by a permutation matrix.
+$$
+\begin{bmatrix}
+\mathbf{0} & & & 1 \\
+  & & 1 & \\
+  & \iddots & & \\
+1 & & & \mathbf{0}
+\end{bmatrix}
+\begin{bmatrix}
+\lambda & 1 & & \mathbf{0} \\
+ & \lambda & 1 &  \\
+ & & \ddots & 1 \\
+ \mathbf{0} & &  &\lambda
+\end{bmatrix}
+\begin{bmatrix}
+\mathbf{0} & & & 1 \\
+  & & 1 & \\
+  & \iddots & & \\
+1 & & & \mathbf{0}
+\end{bmatrix}
+= 
+\begin{bmatrix}
+\lambda & & & \mathbf{0} \\
+1 & \lambda & & \\
+ & 1 & \ddots & \\
+\mathbf{0} & & 1 & \lambda
+\end{bmatrix}
+$$
+By extension, for any Jordan matrix $J$, $J \sim J^T$ (by taking the direct sum of permutation matrices in the same way the Jordan blocks are directly summed). So say $A = SJS^{-1}$ is JCF, then $A^T = S^{-T}J^TS^T$, so $A \sim J \sim J^T \sim A^T$. \\
+
+\noindent Another way to look at it, for every $\lambda \in \sigma(A) = \sigma(A^T)$, so $p_A(t) = p_{A^T}(t)$. Also, notice for every $l$, $\rank(A-\lambda I)^l = \rank[(A - \lambda I)^l]^T = \rank([A^T - \lambda I]^l)$ because row rank is equal to column rank. This tells us that they have the same JCF since they have the same eigenvalues and same ranks for each $A - \lambda I$.
+\end{proof}
+
+\subsection{The Minimal Polynomial}
+\begin{definition}[Annihilating polynomial]
+\label{def:annihilating-polynomial}
+Suppose $A \in M_n$. A complex polynomial $p(t) = a_st^s + a_{s-1}t^{s-1} + \dots + a_1t + a_0$ is called an \textit{annihilating polynomial} of $A$ if $p(A) = \mathbf{0}$. An example of an annihilating polynomial of $A$ is $p_A(t)$ by Cayley-Hamilton.
+\end{definition}
+
+\noindent (Preliminaries on polynomials.) Let $m$ be the least non-negative degree such that there exists an annihilating polynomial of that degree.
+\begin{itemize}
+    \item The zero polynomial is an annihilating polynomial, but by convention, its degree is $-\infty$.
+    \item Observe that any polynomial of degree 0 is not annihilating as $\alpha t^0 \Longrightarrow \alpha I \not=\mathbf{0}$ since $\alpha \not= 0$. So $m \geq 1$. Further, by Cayley-Hamilton, $m \leq n$.
+\end{itemize}
+
+\begin{proposition}
+\label{prop:minimal-polynomial}
+There exists a unique monic polynomial of degree $m$ that annihilates $A$. We call this the \textit{minimal polynomial} and denote it $q_A(t)$.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition \ref{prop:minimal-polynomial} (Uniqueness)]
+Suppose $q, q'$ are monic annihilating polynomials of degree $m$. Define $g(t) \defeq q(t) - q'(t)$ is an annihilating polynomial of degree less than $m$. By minimality of $m$, then $g$ can only be the zero polynomial, i.e. $g(t) \equiv 0$. So $q = q'$.
+\end{proof}
+
+\begin{proposition}
+\label{prop:min-poly-divides-annihil-poly}
+Let $A \in M_n$. Then for any annihilating polynomial $p(t)$, then $q_A(t) | p_A(t)$ ($q_A(t)$ divides $p_A(t)$), that is, there exists a polynomial $d(t)$ such that $p(t) = d(t) q_A(t)$. 
+\end{proposition}
+\begin{proof}[Proof of Proposition \ref{prop:min-poly-divides-annihil-poly}]
+By division, there exists $d(t), r(t)$ such that $p(t) = d(t)q_A(t) + r(t)$, where $r(t)$ has degree smaller than the degree of $q_A(t)$. Then $p(A) = d(A)q_A(A) + r(A) \Longrightarrow r(A) \equiv 0$, so $r(t)$ also annihilates $A$. Since $r(t)$ has degree smaller than degree of $q_A(t)$, then for $r(t)$ to annihilate A, it must be that $r(t) \equiv 0$. So, $p(t) = d(t) q_A(t)$.
+\end{proof}
+
+\begin{note*}
+In particular, $\forall A \in M_n$, $q_A(t)|p_A(t)$ by Cayley-Hamilton. So, for any root of $q_A(t)$ with multiplicity $k$ is a root of $p_A(t)$ of multiciplicity $\geq k$.
+\end{note*}
+
+\begin{theorem}
+\label{thm:min-poly-roots}
+$\forall A \in M_n$, $\lambda \in \sigma(A)$, $\lambda$ is a root of $q_A(t)$.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:min-poly-roots}]
+Let $\lambda \in \sigma(A)$ with associated eigenvector $x \not=\Vec{0}$. Say $q_A(t) = \sum_{i=0}^m c_it^i$. Then,
+$$
+\Vec{0} = 0x = q_A(A)x = \sum_{i=0}^m c_iA^ix = \sum_{i=0}^m c_i \lambda^i x = q_A(\lambda) x.
+$$
+So it must be that $q_A(\lambda) = 0$, i.e. $\lambda$ is a root of $q_A(t)$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:min-poly-multiplicities}
+$\forall A \in M_n$, if
+$$
+p_A(t) = \prod_{i=1}^r(t-\lambda_i)^{n_i}
+$$
+for $\lambda_i$ distinct. Then,
+$$
+q_A(t) = \prod_{i=1}^r (t-\lambda_i)^{m_i}
+$$
+where $\forall i$, we have $1 \leq m_i \leq n_i$.
+\end{corollary}
+\begin{proof}[Proof of Corollary \ref{cor:min-poly-multiplicities}]
+With the same preceding notation, $m_i \geq 1$ by Theorem \ref{thm:min-poly-roots}. By the preceding note note, $m_i \leq n_i$.
+\end{proof}
+
+\begin{theorem}
+\label{thm:order-Jordan-block}
+With the same preceding notation, $\forall i$, $m_i$ is the order of the largest Jordan block associated with $\lambda_i$.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:order-Jordan-block}]
+Let $A = SJS^{-1}$ be JCF. Say
+$$
+J = \begin{bmatrix}
+\bigoplus \text{J blocks with eigenvalue } \lambda_1 & & & \mathbf{0} \\
+& \bigoplus \text{J blocks with eigenvalue } \lambda_2 & & \\
+& & \ddots & \\
+& & & \bigoplus \text{J blocks with eigenvalue } \lambda_n \\
+\end{bmatrix}
+$$
+We know that the form a minimal polynomial $q_A(t)$ is $\prod_{i=1}^r (t-\lambda_1)^{s_i}$
+We need to find the minimum $s_i$ for which $q_A(t)$ is annihilating. The above form tells us that $q_A(t)$ is an annihilating polynomial of $A$ if and only if on input $A$, $q_A(A)$ evaluates to $\mathbf{0}$. So, this tell us,
+$$
+(A-\lambda_1 I)^{s_1}(A-\lambda_1 I)^{s_2} \cdots (A-\lambda_r I)^{s_r} = S[\underbrace{(J-\lambda_1 I)^{s_1} (J-\lambda_2 I)^{s_2} \cdots (J-\lambda_r I)^{s_r}}_{(*)}]S^{-1} = \mathbf{0} \Longleftrightarrow (*) = \mathbf{0}.
+$$
+Writing out $(*)$ explicitly, we have
+\begin{align*}
+    (*) &= \begin{bmatrix}
+            \bigoplus \text{J blocks with eigenvalue 0}^{s_1} & & & \\
+            & \bigoplus \text{J blocks with eigenvalue }\not= 0^{s_1} & & \\
+            & & \ddots & \\
+            & & & \bigoplus \text{J blocks with eigenvalue }\not= 0^{s_1}
+            \end{bmatrix} \\
+        &\phantom{=.} 
+            \begin{bmatrix}
+            \bigoplus \text{J blocks with eigenvalue }\not= 0^{s_2} & & & \\
+            & \bigoplus \text{J blocks with eigenvalue 0}^{s_2} & & \\
+            & & \ddots & \\
+            & & & \bigoplus \text{J blocks with eigenvalue }\not= 0^{s_2}
+            \end{bmatrix} \\
+        &\phantom{=.} \vdots \\
+        &\phantom{=.}
+            \begin{bmatrix}
+            \bigoplus \text{J blocks with eigenvalue }\not= 0^{s_r} && \\
+            & & \bigoplus \text{J blocks with eigenvalue }\not= 0^{s_r} \\
+            & & \ddots & \\
+            & & & \bigoplus \text{J blocks with eigenvalue 0}^{s_r}
+            \end{bmatrix} \\
+\end{align*}
+For each Jordan block with eigenvalue 0 in the product, we get to $\mathbf{0}$ if and only if $s_i$ is greater than or equal to the order of the largest Jordan block with the corresponding to $\lambda_i$ because the each power of a Jordan block with eigenvalue 0 shift the entries of each column up by 1. So, we choose the minimum $s_i$ which are exactly the order of the largest Jordan block with eigenvalue $\lambda_i$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:diagonalizable-min-poly-simple-roots}
+Any matrix $A \in M_n$ is diagonalizable if and only if $q_A(t)$ is a product of distinct linear factors, or simple roots, i.e. $m_i = 1$ for all $i$.
+\end{corollary}
+
+
+\subsection{Non-derogatory Matrices and Companion Matrices}
+\begin{definition}[Non-derogatory]
+\label{def:nonderogatory}
+We say that a matrix $A \in M_n$ is \textit{non-derogatory} if any of the following equivalent statements are true:
+\begin{itemize}
+    \item $\forall \lambda \in \sigma(A)$, there is only one Jordan block associated with $\lambda$
+    \item $\forall \lambda \in \sigma(A)$, the geometric multiplicity of $\lambda$ is 1 (each block contributes 1 geometric multiplicity)
+    \item $p_A(t) = q_A(t)$
+    \item $m_i = n_i$ $\forall i$
+\end{itemize}
+\end{definition}
+
+\begin{proposition}
+\label{prop:diagonalizable-nonderogatory}
+A matrix $A \in M_n$ is diagonalizable and non-derogatory if and only if all $n$ eigenvalues are distinct.
+\end{proposition}
+
+\begin{definition}[Companion matrix]
+\label{def:companion-matrix}
+Let $g(t) = t^n + a_{n-1}t^{n-1} + a_{n-2}t^{n-2} + \dots + a_1 t + a_0$ be a complex polynomial. The associated \textit{companion matrix} is 
+$$
+C_g \defeq \begin{bmatrix}
+ 0 & 1 & 0 & 0 & \cdots & 0 \\
+ 0 & 0 & 1 & 0 & \cdots & 0 \\
+ 0 & 0 & 0 & 1 & \cdots & 0 \\
+   & \vdots & & & \ddots & \vdots \\
+ 0 & 0 & 0 & 0 & \cdots & 1 \\
+ -a_0 & -a_1 & -a_2 & -a_3 & \cdots & -a_{n-1}
+\end{bmatrix} \in M_n,
+$$
+is the matrix with 1's on the superdiagonal and the negative coefficients of $g(t)$.
+\end{definition}
+
+\begin{remark*}
+$\lambda$ is an eigenvalue of $C_g$ if and only if $\lambda$ is a root of $g(t)$.
+\end{remark*}
+\begin{proof}[Proof of Remark]
+Suppose that $\lambda$ is an eigenvalue of $C_g$ with associated eigenvector $x$. Then,
+$$
+C_g x =
+\begin{bmatrix}
+ 0 & 1 & 0 & 0 & \cdots & 0 \\
+ 0 & 0 & 1 & 0 & \cdots & 0 \\
+ 0 & 0 & 0 & 1 & \cdots & 0 \\
+   & \vdots & & & \ddots & \vdots \\
+ 0 & 0 & 0 & 0 & \cdots & 1 \\
+ -a_0 & -a_1 & -a_2 & -a_3 & \cdots & -a_{n-1}
+\end{bmatrix}
+\begin{bmatrix}
+ x_1 \\ x_2 \\ x_3 \\ x_4 \\ \vdots \\ x_n
+\end{bmatrix}
+= 
+\begin{bmatrix}
+ \lambda x_1 \\ \lambda x_2 \\ \lambda x_3 \\ \lambda x_4 \\ \vdots \\ \lambda x_n
+\end{bmatrix}
+$$
+The top $n-1$ equations tell us
+\begin{align*}
+    x_2 &= \lambda x_1 \\
+    x_3 &= \lambda x_2 \\
+    \vdots \phantom{} &= \phantom{=} \vdots \\
+    x_n &= \lambda x_{n-1} \\
+\end{align*}
+Choosing $x_1 = \alpha \not=0$, then
+\begin{align*}
+    x_2 &= \lambda \alpha \\
+    x_3 &= \lambda^2 \alpha \\
+    \vdots \phantom{} &= \phantom{=} \vdots \\
+    x_n &= \lambda^{n-1} \alpha, \\
+\end{align*}
+which tells us that
+$x = \alpha \begin{bmatrix}
+ 1 \\ \lambda \\ \lambda^2 \\ \vdots \\ \lambda^{n-1}
+\end{bmatrix} \in \Span\left\{\begin{bmatrix}
+ 1 \\ \lambda \\ \lambda^2 \\ \vdots \\ \lambda^{n-1}
+\end{bmatrix}\right\}$. The bottommost equation in $C_gx = \lambda x$ tells us
+\begin{alignat*}{3}
+    &&-\sum_{i=0}^{n-1}a_i x_{i+1} &= -\sum_{i=0}^{n-1}a_i \lambda^i \alpha & \quad \quad \text{(from top } n-1 \text{ equations)} \\
+    &&&= \lambda x_n & \quad \quad \text{(from last equation)} \\
+    &&&= \lambda (\lambda^{n-1}\alpha) & \quad \quad \text{(from last equation of top } n-1 \text{ equations)} \\
+    &&&= \lambda^n \alpha \\
+    &\Longleftrightarrow \quad & \lambda^n \alpha + \sum_{i=0}^{n-1} a_i \lambda^i \alpha = 0 \\
+    &\Longleftrightarrow \quad & \alpha \left(\lambda^n + \sum_{i=0}^{n-1} a_i \lambda^i \right) = 0 \\
+    &\Longleftrightarrow \quad &\lambda^n + \sum_{i=0}^{n-1} a_i \lambda^i = 0 \\
+    &\Longleftrightarrow \quad & g(\lambda) = 0. \\
+\end{alignat*}
+Thus, $\lambda$ is an eigenvalue of $C_g$ if and only if $\lambda$ is a root of $g$. Note that the geometric multiplicity of such an eigenvalue is 1, so $C_g$ is non-derogatory.
+\end{proof}
+
+\begin{proposition}
+\label{prop:companion-polynomials}
+For all monic polynomials $g$, $g(t) = p_{C_g}(t) = q_{C_g}(t)$.
+\end{proposition}
+
+\begin{theorem}
+\label{thm:nonderog-iff1}
+A matrix $A \in M_n$ is non-derogatory if and only if $\{B \in M_n: AB = BA\} = \{p(A): p \text{ is a complex polynomial}\}$. Note that the sets $\{B \in M_n: AB = BA\}$ = $\{p(A): p \text{ is a complex polynomial}\}$ are equal. We have $\supseteq$ because every polynomial of $A$ trivially commutes with $A$. We have $\subseteq$ as a consequence of $A$ being non-derogatory.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:nonderog-iff1} ($A$ is diagonalizable case)]
+
+($\Longrightarrow$) If $A$ is diagonalizable and non-derogatory, say $A = SDS^{-1}$ is a diagonalization with $D$ having distinct diagonal entries (by non-derogatory). Suppose $B \in M_n$ such that $AB = BA$, then $A$ and $B$ are simultaneously diagonalizable. Say $B = S\hat{D}S^{-1}$
+
+Let $p(t)$ be an interpolating polynomial such that for all $i$, we have $p(\lambda_i) = \hat{D}_{ii}$. Such an interpolating polynomial exists since the $\lambda_i$ are distinct. Then,
+$$
+p(A) = p(SDS^{-1}) = Sp(D)S^{-1} = S\hat{D}S^{-1} = B.
+$$
+
+($\Longleftarrow$) Suppose $A$ is diagonalizable and suppose $A$ is not non-derogatory. Then we set a matrix $B$ that commutes with $A$ and show that no polynomial of $A$ can equal $B$. Say $ADS^{-1}$ is a diagonalization with $D$ diagonals not all distinct. Set $B = S\hat{D} S^{-1}$ for any particular diagonal matrix $\hat{D}$ with distinct diagonals. Note, $A$ commutes with $B$ since they are simultaneously diagonalizable. No polynomial of $A$ can equal $B$ since no polynomial of $D$ can equal $\hat{D}$ since each of $\hat{D}_{ii}$ are distinct, while some of the $D_{ii}$ are repeated. There is no polynomial (which is a function) that sends the same input to different outputs.
+\end{proof}

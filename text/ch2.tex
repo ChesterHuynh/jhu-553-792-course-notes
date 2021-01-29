@@ -1,0 +1,605 @@
+\section{Chapter 2 -- Unitary Similarity and Unitary Equivalence}
+
+\subsection{Unitary Matrices}
+Recall the properties of complex conjugates:
+\begin{align*}
+    \alpha, \beta \in \R &\quad \quad \quad \overline{\alpha+\beta i} = \alpha - \beta i \\
+    \rho, \theta \in \R_{\geq 0} &\quad \quad \quad \overline{\rho e^{\theta i}} = \rho e^{-\theta i} \\
+    y, z \in \C &\quad \quad \quad \overline{y+z} = \Bar{y} + \Bar{z} \\
+                &\quad \quad \quad \overline{yz} = \overline{y}\overline{z} \\
+    y_1, y_2, \dots, z_1, z_2, \dots \in \C &\quad \quad \quad \overline{y_1z_1 + y_2z_z + \dots} = \bar{y_1}\bar{z_1} + \bar{y_2}\bar{z_2} + \dots
+\end{align*}
+
+\begin{definition}[Conjugate Transpose]
+\label{def:conjugate-transpose}
+For $A \in M_{m,n}(\C)$, the \textit{conjugate transpose} of $A$ is 
+\begin{align*}
+A^* &\defeq \overline{A^T} = \Bar{A}^T \\
+A^*_{ij} &= \overline{A_{ji}} \quad \quad \forall i,j
+\end{align*}
+\end{definition}
+
+\begin{note*}
+For $A \in M_{n,p}$ and $B \in M_{p,m}$,
+\begin{itemize}
+    \item $(AB)^T = B^T A^T$
+    \item $(AB)^* = \overline{(AB)^T} = \overline{B^T A^T} = \bar{B^T} \bar{A^T} = B^* A^*$
+    \item $(A^*)^* = A$
+\end{itemize}
+\end{note*}
+
+\begin{definition}[Orthogonal, Orthogonal Set, Orthonormal]
+Suppose $x, y \in \C^n$. We say that $x$ is \textit{orthogonal} to $y$, denoted $x \perp y$, when $y^*x = 0$. For a set $\{x^{(1)}, x^{(2)}, \dots, x^{(k)}\} \subseteq \C^n$, we call it an \textit{orthogonal set} if the vectors are pairwise orthogonal. We say that a set is \textit{orthonormal} if the set is an orthogonal set and all vectors are normal ($\norm{x^{(i)}}_2 = \sqrt{x^{(i)*}x^{(i)}} = 1$ for $i = 1, 2, \dots, k$).
+\end{definition}
+
+\noindent Our notion of conjugation is nice because we can extend $(\alpha + \beta i ) + \overline{(\alpha + \beta i)} = \alpha^2 + \beta^2$ to matrices.
+
+\begin{definition}[Unitary]
+\label{def:unitary}
+For $U \in M_n$, we say that $U$ is \textit{unitary} if $U^*U = I$, that is $U^{-1} = U^*$ and $UU^* = I$. This is a generalization of orthonormality to $\C$.
+\end{definition}
+
+\begin{definition}[Real Orthogonal]
+\label{def:real-orthogonal}
+For $Q \in M_n(\R)$, we say that it is \textit{real orthogonal} if $Q^T Q = I$. In this notion of orthogonal is an overloaded definition. For matrices, this just means that the matrix is real and unitary.
+\end{definition}
+
+\begin{proposition}
+\label{prop:unitary-iff-orthonormal-columns}
+$U \in M_n$ is unitary if and only if the columns of $U$ are orthonormal.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition \ref{prop:unitary-iff-orthonormal-columns}]
+\begin{alignat*}{2}
+    && U^*U &= I \\
+    &\Longleftrightarrow \quad & \begin{bmatrix}u_1^* \\ u_2^* \\ \vdots \\ u_n^*\end{bmatrix} \begin{array}{c|c|c|c}[u_1 & u_2 & \dots & u_n]\end{array} &= I \\
+    &\Longleftrightarrow \quad & u_i^* u_j &= \begin{cases}
+    1 &\mbox{ if } i = j \\
+    0 &\mbox{ if } i \not= j
+    \end{cases} \quad \forall i, j \\
+    &\Longleftrightarrow \quad & \{u_1, u_2, \dots, u_n\} &\text{ are orthonormal}
+\end{alignat*}
+By symmetry, the columns of $U^*$ are also orthonormal.
+\end{proof}
+
+\begin{note*}
+If $U, V \in M_n$ are unitary, then $UV$ is also unitary. Check that $(UV)^*(UV) = V^*U^*UV = I$.
+\end{note*}
+
+\begin{note*}
+If $U \in M_n$ is unitary, then it is an isometry, that is, it preserves lengths and distances, i.e. $\forall x \in \C^n$, $\norm{Ux}_2 = \norm{x}_2$. This is true since
+$$
+\norm{Ux}_2 = \sqrt{(Ux)^* Ux} = \sqrt{x^*U^*Ux} = \sqrt{x^*x} = \norm{x}_2.
+$$
+This also tells us that $\forall x, y \in \C^n$, $\norm{Ux-Uy}_2 = \norm{U(x-y)}_2 = \norm{x-y}_2$. 
+\end{note*}
+
+\noindent In fact, it turns out that matrices that are an isometry are also unitary. We can think of unitary matrices as a class of operators that rotate or reflect a vector space.
+
+\begin{definition}[Unitarily Similar/Unitarily Equivalent]
+\label{def:unitarily-similar}
+$A, B \in M_n$ are \textit{unitarily similar} if $\exists U \in M_n$ unitary such that $A = UBU^*$.
+\end{definition}
+
+\begin{note*}
+Unitary similarity is an equivalence relation.
+\begin{itemize}
+    \item Reflexive: $A = IAI^*$
+    \item Symmetric: $A = UBU^* \Longrightarrow U^*AU = B$
+    \item Transitive: $A = UBU^*$ and $B = WCW^* \Longrightarrow A = UWCW^*U*$. 
+\end{itemize}
+\end{note*}
+
+\begin{proposition}
+\label{prop:unitarily-similar-frobenius-norm}
+Suppose $A,B \in M_n$ are unitarily similar. Then $\norm{A}_F = \norm{B}_F$, where
+$$
+\norm{A}_F \defeq \sqrt{\sum_{i}\sum_{j}|a_{ij}|^2}
+$$
+\end{proposition}
+
+\begin{proof}[Proof of Proposition \ref{prop:unitarily-similar-frobenius-norm}]
+Say that $A = UBU^*$ for a unitary $U \in M_n$. We claim that $\norm{A}_F^2 = \tr(A^*A)$. This is direct since 
+$$(A^*A)_{ii} = \sum_{k=1}^n (A^*)_{ik}A_{ki} = \sum_{k=1}^n \overline{A_{ki}}A_{ki} = \sum_{k=1}^n |A_{ki}|^2.$$ 
+The last equality is from the fact that for $z = \alpha+\beta i \in \C$, then $\bar{z}z = (\overline{\alpha + \beta i})(\alpha + \beta i) = \alpha^2 + \beta^2 = |z|^2$. This means that 
+$$\tr(A^*A) = \sum_{i=1}^n (A^*A)_{ii} = \sum_{i=1}^n \sum_{k=1}^n |A_{ki}|^2 = \norm{A}_F^2.$$
+From here, we can show our proposition directly
+\begin{align*}
+    \norm{A}_F^2 = \tr(A^*A) &= \tr\left(\left(UBU^*\right)^*UBU^*\right) \\
+                             &= \tr\left(UB^*U^*UBU^*\right) \\
+                             &= \tr\left(UB^*BU^*\right) \\
+                             &= \tr\left(B^*B\right) \\
+                             &= \norm{B}_F^2
+\end{align*}
+\end{proof}
+
+\begin{definition}[Hermitian]
+\label{def:hermitian}
+We say that a matrix $A \in M_n$ is \textit{Hermitian} if $A = A^*$.
+\end{definition}
+
+\begin{definition}[Householder transformation]
+\label{def:househoulder-transformation}
+Let $w \in \C^n$ such that $\norm{w}_2 = 1$. We define the \textit{Householder transformation} is
+$$
+H_w \defeq I - 2ww^*.
+$$
+\end{definition}
+
+\begin{remark*}
+Observe that $H_w$ is unitary and Hermitian.
+\begin{itemize}
+    \item \underline{Hermitian}: $H_w^* = (I - 2ww^*)^* = I^* - 2(ww^*)^* = I - 2ww^* = H_w$
+    \item \underline{Unitary}: $H_w^* H_w = (I-2ww^*)^*(I-2ww^*) = I - 2ww^* - 2ww^* + 4ww^*ww^* = I - 4ww^* + 4ww^* = I$
+\end{itemize}
+\end{remark*}
+
+\begin{note*}
+For any $x, y \in \R^n$ such that $x \not= y$ and $\norm{x}_2 = \norm{y}_2$, if we set 
+$$
+w \defeq \frac{1}{\norm{x - y}_2} (x-y),
+$$
+then $H_wx = y$ and $H_w y = x$.
+\end{note*}
+
+\begin{lemma}
+\label{lem:unitary-matrices-first-column}
+Given any $x \in \C^n$ such that $\norm{x}_2 = 1$, $\exists U \in M_n$ unitary such that $x$ is the first column of $U$.
+\end{lemma}
+
+\begin{proof}[Proof of Lemma \ref{lem:unitary-matrices-first-column}]
+The simplest approach is the apply the Gram-Schmidt algorithm to extend $x$ to an orthonormal basis of $\C^n$. These are the columns of $U$. Computationally, there is an $O(n^2)$ algorithm. If $x \in \R^n$, then
+\begin{itemize}
+    \item If $x = \rm{e}_1 = \begin{bmatrix}1 \\ 0 \\ \vdots \\ 0\end{bmatrix}$, then take $U$ to be $I$.
+    \item Otherwise, take $w \defeq \frac{1}{\norm{x - \rm{e_1}}} (x - \rm{e_1})$ and $U = H_w$. Then by Lemma \ref{lem:unitary-matrices-first-column},
+    $$
+    H_w \rm{e_1} = x.
+    $$
+    Since $\rm{e_1}$ selects the first column of any matrix with which it is left multiplied, then the above equality tells us that the first column of $H_w$ is $x$.
+\end{itemize}
+\end{proof}
+
+\subsection{Schur's Theorem}
+\begin{theorem}[Schur]
+\label{thm:schurs-thm}
+Let $A \in M_n$ have eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_n$ (in any order). Then $\exists U \in M_n$ unitary and $T \in M_n$ upper triangular such that $A = UTU^*$, where 
+$$T = \begin{bmatrix}\lambda_1 & & & * \\
+                & \lambda_2 & &  \\ 
+                & & \ddots & \\
+                \mathbf{0} & & & \lambda_n \end{bmatrix}.
+$$ 
+That is, every matrix in $M_n$ is unitarily similar to an upper triangular matrix. If $A$ is real and its eigenvalues are real, then $U, T$ may be chosen to be real.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:schurs-thm}]
+Suppose $A \in M_n$ with eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_n$. We argue the claim inductively. \\
+
+\noindent Let $x \in \C^n$ be a normalized ($\norm{x}_2 = 1$) eigenvector of $A$ associated with eigenvalue $\lambda_1$ and let $U \in M_n$ be a unitary matrix such that the first column of $U$ is $x$, which is guaranteed to exist by Lemma \ref{lem:unitary-matrices-first-column}.
+\begin{align*}
+    U^*AU = \begin{bmatrix}u^*_1 \\ u^*_2 \\ \vdots \\ u^*_n\end{bmatrix} A \begin{array}{c|c|c|c}[u_1 & u_2 & \dots & u_n]\end{array} &= \begin{bmatrix}\red{x^*_1} \\ u^*_2 \\ \vdots \\ u^*_n\end{bmatrix} A \begin{array}{c|c|c|c}[\red{x_1} & u_2 & \dots & u_n]\end{array} \\
+          &= \begin{bmatrix}\red{x^*_1} \\ u^*_2 \\ \vdots \\ u^*_n\end{bmatrix} \begin{array}{c|c|c|c}[\red{\lambda_1x_1} & Au_2 & \dots & Au_n]\end{array} \\
+          &= \begin{bmatrix} \lambda_1 & & * & & \\ \begin{array}{c} 0 \\ \vdots \\ 0 \end{array} & & \textit{\huge B} & & \end{bmatrix}
+\end{align*}
+Observe that $\sigma(B) = \{\lambda_2, \lambda_3, \dots, \lambda_n\}$ since $A \sim T$, i.e. $\sigma(B)$ must be the remainder of $\sigma(A) = \sigma(T)$. \\
+
+\noindent Let $y \in \C^{n-1}$ be a normalized ($\norm{y}_2 = 1$) eigenvector of $B$ associated with eigenvalue $\lambda_2$ and let $V \in M_{n-1}$ be a unitary matrix such that the first column of $V$ is $y$, which is guaranteed to exist by Lemma \ref{lem:unitary-matrices-first-column}.
+\begin{align*}
+    \left(U\begin{bmatrix}1 & 0 \\ 0 & V\end{bmatrix}\right)^*
+    A
+    \left(U\begin{bmatrix}1 & 0 \\ 0 & V\end{bmatrix}\right) 
+    &= 
+    \begin{bmatrix}1 & 0 \\ 0 & V^*\end{bmatrix} 
+    U^*AU 
+    \begin{bmatrix}1 & 0 \\ 0 & V\end{bmatrix} \\
+    &= 
+    \begin{bmatrix}1 & 0 \\ 0 & V^*\end{bmatrix} 
+    \begin{bmatrix} \lambda_1 & & * & & \\ \begin{array}{c} 0 \\ \vdots \\ 0 \end{array} & & \textit{\huge B} & & \end{bmatrix}
+    \begin{bmatrix}1 & 0 \\ 0 & V\end{bmatrix} \\
+    &= 
+    \begin{bmatrix} \lambda_1 & & * & & \\ \begin{array}{c} 0 \\ \vdots \\ 0 \end{array} & & \textit{\huge V*BV} & & \end{bmatrix} \\
+    &= 
+    \begin{bmatrix} 
+        \lambda_1 & * & & & \\ 
+        0 & \lambda_2 & * & & \\ 
+        \begin{array}{c} \vdots \\ 0 \end{array} & \begin{array}{c} \vdots \\ 0 \end{array} & 
+            \textit{\huge C} & & \end{bmatrix}
+\end{align*}
+Observe that $\sigma(C) = \{\lambda_3, \lambda_4, \dots, \lambda_n\}$ and $\left(U\begin{bmatrix}1 & 0 \\ 0 & V\end{bmatrix}\right)$ is unitary. \\
+
+\noindent Let $z \in \C^{n-2}$ be a normalized ($\norm{z}_2 = 1$) eigenvector of $C$ associated with eigenvalue $\lambda_3$ and let $W \in M_{n-2}$ be a unitary matrix such that the first column of $W$ is $z$, which is guaranteed to exist by Lemma \ref{lem:unitary-matrices-first-column}.
+\begin{align*}
+    \left(U\begin{bmatrix}1 & 0 \\ 0 & V\end{bmatrix} \begin{bmatrix}I & 0 \\ 0 & W\end{bmatrix}\right)^*
+    A
+    \left(U\begin{bmatrix}1 & 0 \\ 0 & V\end{bmatrix}
+    \begin{bmatrix}I & 0 \\ 0 & W\end{bmatrix}\right) 
+    &= \begin{bmatrix} 
+        \lambda_1 & * & * & & *\\ 
+        0 & \lambda_2 & * & & \\ 
+        \vdots & 0 & \lambda_3 & & \\
+        0 & \vdots & 0 & \ddots & \\
+        0 & 0 & 0 & &
+        \end{bmatrix}
+\end{align*}
+Observe again that $\left(U\begin{bmatrix}1 & 0 \\ 0 & V\end{bmatrix} \begin{bmatrix}I & 0 \\ 0 & W\end{bmatrix}\right)$ is unitary. By induction, we will have unitary $\Lambda$ such that
+\begin{align*}
+\Lambda* A \Lambda 
+    &= \begin{bmatrix}
+        \lambda_1 & & & * \\
+        & \lambda_2 & & \\
+        & & \ddots & \\
+        \mathbf{0} & & & \lambda_n
+    \end{bmatrix}
+\end{align*}
+This means $\Lambda^*A\Lambda=T \Longrightarrow A = \Lambda T \Lambda^*$. If $A$ is real, then the eigenvalues are real and all the above steps may be done as if all values are real.
+\end{proof}
+
+\begin{theorem}
+\label{thm:commuting-simul-unitarily-upper-triang}
+If $\mathcal{F} \subseteq M_n$ is a set of commuting matrices, then they are simultaneously, unitarily upper triangularizable, meaning $\exists U \in M_n$ unitary such that
+$$
+\forall A \in \mathcal{F}, \quad U^*AU \text{ is upper triangular.}
+$$
+\end{theorem}
+
+\begin{corollary}
+\label{cor:commuting-matrices-spectra}
+If $A, B \in M_n$ commute, and say $\sigma(A) = \{ \lambda_1, \lambda_2, \dots, \lambda_n\}$ in any order and $\sigma(B) = \{\tau_1, \tau_2, \dots, \tau_n\}$. Then there exists a bijection $\pi: \{1, 2, \dots, n\} \rightarrow \{1, 2, \dots, n\}$ such that
+\begin{align*}
+    \sigma(A+B) &= \{\lambda_i + \tau_{\pi(i)} : i = 1, 2, \dots, n\} \\
+    \sigma(AB) &= \{\lambda_i  \tau_{\pi(i)} : i = 1, 2, \dots, n\}
+\end{align*}
+\end{corollary}
+
+\begin{proof}[Proof of Corollary \ref{cor:commuting-matrices-spectra}]
+Say that $A = UT_AU^*$, $B = UT_BU^*$ for $U \in M_n$ unitary, $T_A, T_B \in M_n$ upper triangular, then
+\begin{align*}
+    A + B &= UT_AU^* + UT_BU^* \\
+          &= U(T_A+T_B)U^* \\
+    A + B &\sim T_A + T_B  \text{ unitarily}
+\end{align*}
+Note that each diagonal entry of $T_A + T_B$ is $\lambda_i + \tau_{\pi(i)}$.
+$$
+AB = (UT_AU^*)(UT_BU^*) = U(T_A T_B) U^*
+$$
+\end{proof}
+
+\begin{fact}
+For two upper triangular matrices $T, R \in M_n$, the diagonal entries of $TR$ are the product of the corresponding diagonal entries of $T$ and $R$:
+$$
+TR = \begin{bmatrix}
+t_{11} & & & * \\
+& t_{22} & & \\
+& & \ddots & \\
+\mathbf{0} & & & t_{nn} \\
+\end{bmatrix}
+\begin{bmatrix}
+r_{11} & & & * \\
+& r_{22} & & \\
+& & \ddots & \\
+\mathbf{0} & & & r_{nn} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+t_{11}r_{11} & & & * \\
+& t_{22}r_{22} & & \\
+& & \ddots & \\
+\mathbf{0} & & & t_{nn}r_{nn} \\
+\end{bmatrix}
+$$
+\end{fact}
+
+\begin{definition}[Matrix Polynomial]
+If $q(t) = a_mt^m + a_{m-1}t^{m-1} + \dots a_1 t + a_0$ for $a_i \in \C$. Suppose that $A \in M_n$. We define the \textit{matrix polynomial} $q(A)$ as
+$$
+q(A) \defeq a_mA^m + a_{m-1}A^{m-1} + a_1 A + a_0 I.
+$$
+\end{definition}
+
+\begin{remark*}
+Suppose that $q(t) = a_m (t - \tau_1)(t - \tau_2) \cdots (t - \tau_m)$, then the $q(A)$ also factors similarly
+$$
+q(A) = a_m (A - \tau_1 I)(A - \tau_2 I) \cdots (A - \tau_m I).
+$$
+\end{remark*}
+
+\begin{note*}
+Suppose $A = UTU^*$ is a Schur decomposition, where $U \in M_n$ unitary, $T \in M_n$ upper triangular. If $k \geq 0$, then 
+$$
+A^k = (UTU^*)(UTU^*) \cdots (UTU^*) = UT^kU^*.
+$$
+Observe that $T^k$ is also upper triangular and the diagonals are $t_{11}^k, t_{22}^k, \dots, t_{nn}^k$. \\
+\end{note*}
+
+\begin{remark*}
+Suppose $A = UTU^*$ is a Schur decomposition, where $U \in M_n$ unitary, $T \in M_n$ upper triangular. Let $q(A)$ be the matrix polynomial of $A$. Then
+\begin{align*}
+    q(A) &= Uq(T)U^* \\
+         &= U 
+         \begin{bmatrix}
+            q(t_{11}) & & & \textup{\huge*} \\
+            & q(t_{22}) & & \\
+            & & \ddots & \\
+            \mathbf{0} & & & q(t_{nn}) \\
+         \end{bmatrix}
+         U^* \\
+\end{align*}
+\end{remark*}
+
+\begin{example}
+Suppose $q(t) = t^5 - 11t^4 + t + 2$. Then,
+\begin{align*}
+A^5 - 11A^4 + A + 2I 
+    &= U[T^5 - 11T^4 + T + 2I]U^* \\
+    &= U \begin{bmatrix}
+    t_{11}^5 - 11t_{11}^4 + t_{11} + 2 & & & \textup{\huge*} \\
+    & t_{22}^5 - 11t_{22}^4 + t_{22} + 2 & & \\
+    & & \ddots & \\
+    \mathbf{0} & & & t_{nn}^5 - 11t_{nn}^4 + t_{nn} + 2 \\
+    \end{bmatrix}U^*
+\end{align*}
+\end{example}
+
+\begin{remark*}
+The spectrum of a matrix polynomial is the polynomial transformation applied to each of the eigenvalues of the matrix, including all the multiplities.
+$$
+\sigma(q(A)) \defeq \{q(\lambda) : \lambda \in \sigma(A) \}
+$$
+\end{remark*}
+\noindent With a slight misuse of notation, we denote this $q(\sigma(A))$.
+
+
+\subsection{Cayley-Hamilton Theorem}
+\begin{lemma}
+\label{lem:upper-triang-product-with-zero-entry}
+$$
+\begin{bmatrix}
+\mathbf{0}_{k\times k} & & & * \\
+  & & & \\
+  & & & \\
+\mathbf{0}_{k\times (n-k)} & & & T
+\end{bmatrix}
+\begin{bmatrix}
+\begin{matrix}
+* & & & * \\
+ & * & & \\
+ & & \ddots & \\
+\mathbf{0} & & & *
+\end{matrix} & \textup{\huge*} \\
+\mathbf{0}_{k\times (n-k)} & \begin{matrix} \mathbf{0} & & & * \\ & * & & \\ & & \ddots & \\ & & & * \end{matrix}
+\end{bmatrix}
+= \begin{bmatrix}
+\mathbf{0}_{k\times (n-k)} & \begin{array}{c} 0 \\ 0 \\ 0
+\end{array} & * \\
+\mathbf{0}_{k\times (n-k)} & \begin{array}{c} 0 \\ 0 \\ 0
+\end{array} & \mathlarger{\mathlarger{\mathlarger{\mathlarger{\tau}}}}
+\end{bmatrix}
+$$
+\end{lemma}
+
+\begin{theorem}[Cayley-Hamilton]
+\label{thm:cayley-hamilton}
+For $A \in M_n$, $p_A(A) = \mathbf{0}$.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:cayley-hamilton}]
+Let $A = UTU^*$ be a Schur decomposition and
+$$
+T = \begin{bmatrix}
+\lambda_1 & & & * \\
+& \lambda_2 & & \\
+& & \ddots & \\
+\mathbf{0} & & & \lambda_n
+\end{bmatrix}
+$$
+and say that $p_A(t) = (t-\lambda_1)(t-
+\lambda_2) \cdots (t-\lambda_n)$. Then,
+\begin{align*}
+    p_A(A) &= Up_A(T)U^* \\
+           &= U[(T-\lambda_1I)(T-\lambda_2I)\cdot(T-\lambda_3I)]U^* \\
+\end{align*}
+Observe that each sub-component $(T-\lambda_i I)$ of $p_A(T)$ has a 0 as its $i^{\text{th}}$ diagonal entry. By Lemma \ref{lem:upper-triang-product-with-zero-entry}, we build up columns of zero, so $p_A(T) = 0$, meaning
+$$
+p_A(A) = U\mathbf{0}U^* = \mathbf{0}.
+$$
+\end{proof}
+
+\begin{corollary}
+\label{cor:matrix-poly-inverse}
+Suppose $A \in M_n$ invertible with
+$$
+p_A(t) = t^n + a_{n-1}t^{n-1} + a_{n-2}t^{n-2} + \dots + a_0.
+$$
+Then, the inverse of $A$ is
+$$
+A^{-1} = \frac{(-1)^{n+1}}{\det A}[A^{n-1} + a_{n-1}A^{n-2} + a_{n-2}A^{n-3} + \dots + a_1 I] = q(A)
+$$
+for some polynomial function $q$. This shows that the inverse of $A$ is a polynomial of $A$ with degree less than $n$.
+\end{corollary}
+
+\begin{proof}[Proof of Corollary \ref{cor:matrix-poly-inverse}]
+Recall that $\det A = (-1)^n a_0$ from Definition \ref{def:s-and-e-char-poly}. By Theorem \ref{thm:cayley-hamilton} (Cayley-Hamilton), then 
+\begin{alignat*}{2}
+    && p_A(t) = A^n + a_{n-1}A^{n-1} + a_{n-2}A^{n-2} + \dots + a_1A + a_0I &= 0 \\
+    &\Longrightarrow \quad \quad & A[A^{n-1} + a_{n-1}A^{n-2} + \dots + a_1 I] + a_0 I &= 0 \\
+    &\Longrightarrow \quad \quad & A[A^{n-1} + a_{n-1}A^{n-2} + \dots + a_1 I] &= -a_0 I \\
+    &\Longrightarrow \quad \quad & A[\underbrace{-\frac{1}{a_0} \left(A^{n-1} + a_{n-1}A^{n-2} + \dots + a_1 I\right)}_{A^{-1}}] &= I
+\end{alignat*}
+\end{proof}
+
+\begin{theorem}[``Every matrix is almost diagonalizable"]
+\label{thm:almost-diagonalizable}
+Let $A \in M_n$. $\forall \epsilon > 0$, $\exists S \in M_n$ invertible, $D \in M_n$ diagonal, and $E \in M_n$ such that $\norm{E}_F < \epsilon$ such that
+$$
+A = S(D+E)S^{-1}.
+$$
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:almost-diagonalizable}]
+Let $A = UTU^*$ be a Schur decomposition. For all $\delta > 0$, we consider the following matrix product,
+$$
+\begin{bmatrix}
+\delta^{-1} & & & \mathbf{0} \\
+& \delta^{-2} & & \\
+& & \ddots & \\
+\mathbf{0} & & & \delta^{-n} \\
+\end{bmatrix}
+T
+\begin{bmatrix}
+\delta^{1} & & & \mathbf{0} \\
+& \delta^{2} & & \\
+& & \ddots & \\
+\mathbf{0} & & & \delta^{n} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+t_{11}\delta^0 & t_{12}\delta^1 & \dots & t_{1n}\delta^{n-1} \\
+t_{21}\delta^{-1} & t_{22}\delta^0 & \dots & t_{2n}\delta^{n-2} \\
+\vdots & \vdots & \ddots & \vdots \\
+t_{n1}\delta^{-(n-1)} & t_{n2}\delta^{-(n-2)} & \dots & t_{nn}\delta^0 \\
+\end{bmatrix}
+$$
+Observe that the $(i,j)$-entry of this matrix product is $t_{ij}\delta^{j-i}$. In the limit as $\delta \rightarrow 0$, all non-diagonal entries converge component-wise to 0. Thus,
+$$
+A = \underbrace{U \begin{bmatrix} \delta^1 & & & \mathbf{0} \\ & \delta^2 & & \\ & & \ddots & \\ \mathbf{0} & & & \delta^n \end{bmatrix}}_{S} \underbrace{\begin{bmatrix} \delta^{-1} & & & \mathbf{0} \\ & \delta^{-2} & & \\ & & \ddots & \\ \mathbf{0} & & & \delta^{-n} \end{bmatrix} T \begin{bmatrix} \delta^{-1} & & & \mathbf{0} \\ & \delta^{-2} & & \\ & & \ddots & \\ \mathbf{0} & & & \delta^{-n} \end{bmatrix}}_{\begin{bmatrix}
+t_{11} & & & \mathbf{0} \\
+& t_{22} & & \\
+& & \ddots & \\
+0 & & & t_{nn} \end{bmatrix} + O(\delta)} \underbrace{\begin{bmatrix} \delta^1 & & & \mathbf{0} \\ & \delta^2 & & \\ & & \ddots & \\ \mathbf{0} & & & \delta^n \end{bmatrix} U^*}_{S^{-1}}
+$$
+\end{proof}
+
+\begin{theorem}[``Every matrix is almost diagonalizable"].
+\label{thm:almost-diagonalizable-2}
+Let $A \in M_n$. $\forall \epsilon > 0$, $\exists E \in M_n$ such that $\norm{E}_F < \epsilon$ such that $A + E$ is diagonalizable.
+\end{theorem}
+
+\begin{proof}[Proof of \ref{thm:almost-diagonalizable-2}]
+Let $A = UTU^*$ be a Schur decomposition. $\exists D \in M_n$ diagonal such that $T + D$ has distinct diagonal entries and $\norm{D}_F < \epsilon$.\\
+
+\noindent Define $E \defeq UDU^*$. Note that $\norm{E}_F = \norm{UDU^*}_F = \norm{D}_F < \epsilon$. Also, note that
+$$
+A + E = UTU^* + UDU^* = U(T+D)U^*
+$$
+Since $(A+E)$ has $n$ distinct eigenvalues, it is also diagonalizable.
+\end{proof}
+
+\subsection{Normal Matrices}
+\begin{definition}[Normal Matrix]
+\label{def:normal-matrices}
+$A \in M_n$ is \textit{normal} if $AA^* = A^*A$. Some notable examples are
+\begin{itemize}
+    \item Diagonal matrices
+    \item Hermitian matrices ($A = A^*$, see Definition \ref{def:hermitian})
+    \item Unitary matrices
+\end{itemize}
+A non-example is $\begin{bmatrix}1 & 1 \\ 0 & 1\end{bmatrix}$.
+\end{definition}
+
+\begin{lemma}
+\label{lem:upper-triang-normal-iff-diag}
+Let $T \in M_n$ be upper triangular. $T$ is normal if and only if $T$ is diagonal.
+\end{lemma}
+
+\begin{proof}[Proof of Lemma \ref{lem:upper-triang-normal-iff-diag}]
+($\Longleftarrow$) This is trivial. \\
+
+\noindent ($\Longrightarrow$) Suppose $T$ is normal, then $TT^* = T^*T$. Observe the following equalities:
+$$
+(T^*T)_{ij} = \sum_{k=1}^{n} (T^*)_{ik}T_{kj} = \norm{T_{:, j}}_2^2 = \norm{T_{i, :}}_2^2 = \sum_{k=1}^n T_{ik}(T^*_{kj}) = (TT^*)_{ij}.
+$$
+Thus, $(T^*T)_{ij}$ is the squared-length of the $j^{\text{th}}$ column of $T$ and  $(TT^*)_{ij}$ is the squared-length of the $i^{\text{th}}$ row of $T$. We show that $T$ is diagonal in an inductive manner by considering the diagonal of the product matrices \\
+
+\noindent Consider $(T^*T)_{11} = (TT^*)_{11}$. The squared length of the $ 1^{\text{st}}$ column of $T$ is just $(T^*T)_{11} = |t_{11}|^2$ since $T$ is upper triangular. But, the squared length of the $1^{\text{st}}$ row of $T$ is $(TT^*)_{11} = |t_{11}|^2 + |t_{12}|^2 + \dots + |t_{1n}|^2$. Thus, $t_{1j} = 0$ for all $j > 1$. \\
+
+\noindent Consider $(T^*T)_{22} = (TT^*)_{22}$. The squared length of the $ 2^{\text{nd}}$ column of $T$ is just $(T^*T)_{22} = |t_{22}|^2$ since $T$ is upper triangular and we argued above that $t_{12} = 0$. But, the squared length of the $2^{\text{nd}}$ row of $T$ is $(TT^*)_{22} = |t_{22}|^2 + |t_{23}|^2 + \dots + |t_{2n}|^2$. Thus, $t_{2j} = 0$ for all $j > 2$. \\
+
+\noindent Consider $(T^*T)_{33} = (TT^*)_{33}$. The squared length of the $ 3^{\text{rd}}$ column of $T$ is just $(T^*T)_{33} = |t_{33}|^2$ since $T$ is upper triangular and we argued above that $t_{13} = t_{23} = 0$. But, the squared length of the $3^{\text{rd}}$ row of $T$ is $(TT^*)_{33} = |t_{33}|^2 + |t_{34}|^2 + \dots + |t_{3n}|^2$. Thus, $t_{3j} = 0$ for all $j > 3$. \\
+
+\noindent Continuing this argument, we inductively determine that $T$ is diagonal.
+\end{proof}
+
+\begin{lemma}
+\label{lem:unitarily-similar-matrices-normal}
+Let $A, B \in M_n$ be unitarily similar. Then $A$ is normal if and only if $B$ is normal.
+\end{lemma}
+
+\begin{proof}[Proof of Lemma \ref{lem:unitarily-similar-matrices-normal}]
+Say $A = UBU^*$ for some unitary $U \in M_n$. Since $A$ is normal then
+\begin{alignat*}{2}
+    && AA^* &= A^*A \\
+    &\Longrightarrow \quad & (UBU^*)(UBU^*)^* &= (UBU^*)^*(UBU^*) \\
+    &\Longrightarrow \quad & UBB^*U^* &= UB^*BU^* \\
+    &\Longrightarrow \quad & BB^* &= B^*B
+\end{alignat*}
+Thus, $B$ is normal.
+\end{proof}
+
+\begin{definition}[Unitarily Diagonalizable]
+\label{def:unitarily-diagonalizable}
+We say $A \in M_n$ is \textit{unitarily diagonalizable} if $A$ is unitarily similar to a diagonal matrix, that is
+$$
+A = UDU^*.
+$$
+Like how being similar to a diagonalizable matrix gives an invertible matrix $S \in M_n$ of the eigenvectors of $A$, the columns of unitary matrix $U \in M_n$ form an orthonormal set of eigenvectors for $A$.
+\end{definition}
+
+\begin{theorem}[Spectral Theorem for Normal Matrices]
+\label{thm:spectral-thm-normal}
+Let $A \in M_n$ with eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_n$. The following are equivalent:
+\begin{enumerate}[label=(\arabic*)]
+    \item $A$ is normal
+    \item $A$ is unitarily diagonalizable
+    \item $\norm{A}_F^2 = \sum_{i=1}^n |\lambda_i|^2$
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:spectral-thm-normal}][(2) $\Longrightarrow$ (1) and (3)] Suppose $A$ is unitarily diagonalizable. Say that $A = VDV*$, where $V \in M_n$ unitary, $D \in M_n$ diagonal. By Lemma \ref{lem:upper-triang-normal-iff-diag}, then $D$ is also normal. By Lemma \ref{lem:unitarily-similar-matrices-normal}, then $A$ is also normal, giving condition (1). Since $A$ and $D$ are unitarily similar, then by Proposition \ref{prop:unitarily-similar-frobenius-norm}, $\norm{A}_F^2 = \norm{VDV^{-1}}_F^2 = \norm{D}_F^2 = \sum_{i=1}^n |\lambda_i|^2$.
+
+[(1) $\Longrightarrow$ (2)] Suppose $A$ is normal. Let $A = UTU^*$ by a Schur decomposition. By Lemma \ref{lem:unitarily-similar-matrices-normal} since $A$ is normal, then $T$ is also normal. By Lemma \ref{lem:upper-triang-normal-iff-diag}, since $T$ is normal and upper triangular, then $T$ is also diagonal, giving condition (2).
+
+[(3) $\Longrightarrow$ (2)] Suppose $\norm{A}_F^2 = \sum_{i=1}^n |\lambda_i|^2$. Let $A = UTU^*$ be a Schur decomposition. Since $T$ is upper triangular, then its eigenvalues are on its diagonal. Then,
+$$
+\sum_{i=1}^n |t_{ii}|^2 = \sum_{i=1}^n |\lambda_i|^2 = \norm{A}_F^2 = \norm{UTU^*}_F^2 = \norm{T}_F^2 = \sum_{i=1}^n \sum_{j=1}^n |t_{ij}|^2.
+$$
+So for $i \not= j$, then $t_{ij} = 0$, meaning $T$ is diagonal, giving us condition (2).
+
+\end{proof}
+
+\begin{theorem}[Spectral Theorem of Hermitian Matrices]
+\label{thm:spectral-thm-hermitian}
+$A \in M_n$ is Hermitian if and only if
+\begin{enumerate}[label=(\arabic*)]
+    \item $A$ is unitarily diagonalizable, and
+    \item the eigenvalues of $A$ are real
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:spectral-thm-hermitian}]
+($\Longrightarrow$) Suppose $A \in M_n$ is Hermitian. Then $A$ is also normal (see Definition \ref{def:normal-matrices}), and therefore also unitarily diagonalizable by Theorem \ref{thm:spectral-thm-normal}, giving us condition (1). Suppose $A$ is unitarily diagonalizable into $UDU^*$. Now
+$$
+A = A^* \Longrightarrow UDU^* = (UDU^*)^* \Longrightarrow D = D^* \Longrightarrow D \in M_n(\R).
+$$
+Since $D$ is real, then the eigenvalues of $A$ are all real, giving condition (1).
+
+($\Longleftarrow$) Suppose that $A$ is unitarily diagonalizable, say $A = UDU^*$ for $U \in M_n$ unitary, $D \in M_n$ diagonal, and the eigenvalues of $A$ are all real. Then
+$$
+A^* = (UDU^*)^* = UD^*U^* = UDU^* = A,
+$$
+so $A$ is Hermitian.
+\end{proof}
+
+
+\begin{theorem}
+\label{thm:symmetric-real-orthogonally-diagonalizable}
+Suppose $A \in M_n(\R)$. Then $A$ is symmetric if and only if $A$ is (real) orthogonally diagonalizable.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:symmetric-real-orthogonally-diagonalizable}]
+($\Longleftarrow$) Suppose $A$ is orthogonally diagonalizable (see Definition \ref{def:real-orthogonal}). Specifically, suppose that $A = QDQ^T$ for $Q \in M_n(\R)$ orthogonal and $D \in M_n(\R)$ diagonal. Then,
+$$
+A^T = (QDQ^T)^T = QD^TQ^T = QDQ^T = A,
+$$
+so $A$ is symmetric.
+
+($\Longrightarrow$) $A$ is symmetric tells us that $A$ is Hermitian, and therefore $A$ has real eigenvalues by Theorem \ref{thm:spectral-thm-hermitian}. Since $A$ is real and has real eigenvalues, then $A$ has a real Schur decomposition, say $A = QTQ^T$. Now, since $A$ is Hermitian, then $A$ is also normal (see Definition \ref{def:normal-matrices}). By Lemma \ref{lem:unitarily-similar-matrices-normal}, $T$ is normal by unitary similarity. By Lemma \ref{lem:upper-triang-normal-iff-diag} $T$ is diagonal, so $A = QTQ^T$ is real orthogonally diagonalizable.
+\end{proof}

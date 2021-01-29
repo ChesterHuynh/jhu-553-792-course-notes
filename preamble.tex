@@ -1,0 +1,82 @@
+% packages
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage{epsfig}
+\usepackage{hyperref}
+\usepackage{mathdots}
+\usepackage{mathtools}
+\usepackage{multicol}
+\usepackage{relsize}
+\usepackage{xcolor}
+\usepackage{xspace}
+
+% styling
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\newcommand{\red}[1]{{\color{red} #1}}
+\newcommand{\blue}[1]{{\color{blue} #1}}
+
+\setcounter{MaxMatrixCols}{20}
+\setenumerate[0]{label=(\roman*)}
+
+% math statements
+\theoremstyle{plain}
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{theorem}{Theorem}[section]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem*{exercise}{Exercise}
+\newtheorem{fact}{Fact}[section]
+
+\theoremstyle{remark}
+\newtheorem*{note*}{Note}
+\newtheorem*{remark*}{Remark}
+
+% math notation
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Ker}{ker}
+\DeclareMathOperator{\range}{range}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\superdiag}{superdiag}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\defeq}{\vcentcolon=}
+\newcommand{\eqdef}{=\vcentcolon}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\Cal}[1]{\ensuremath{\mathcal{#1}}}
+\newcommand{\innerprod}[2]{\ensuremath{\langle #1, #2\rangle}}
+
+\newcommand{\R}{\ensuremath{\mathbb R}}
+\newcommand{\C}{\ensuremath{\mathbb C}}
+\newcommand{\Q}{\ensuremath{\mathbb Q}}
+\newcommand{\Z}{\ensuremath{\mathbb Z}}
+\newcommand{\N}{\ensuremath{\mathbb N}}
+\newcommand{\F}{\ensuremath{\mathbb F}}
+
+\newenvironment{amatrix}[1]{%
+  \left[\begin{array}{@{}*{#1}{c}|c@{}}
+}{%
+  \end{array}\right]
+}
+
+% abbreviations
+\newcommand{\e}{\epsilon}
+\newcommand{\kp}{\kappa}
+\newcommand{\union}{\cup}
+

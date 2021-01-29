@@ -1,0 +1,558 @@
+\section{Chapter 4 -- Hermitian Matrices, Symmetric Matrices, and Congruence}
+
+\subsection{Field of Values and Characterization of Hermitian Matrices}
+\begin{definition}[Field of values]
+Suppose $A \in M_n$. The \textit{field of values} $F(A)$ of $A$ is defined as
+\begin{align*}
+    F(A) 
+        &\defeq \left\{\frac{x^*Ax}{x^*x} : x\in \C^n, x \not= \Vec{0}\right\} \\
+        &= \left\{x^*Ax : x \in \C^n, \norm{x}_2 = 1 \right\}.
+\end{align*}
+The second equality comes from the fact that $\norm{x}_2^2 = x^*x$ and 
+$$
+\left(\frac{x^*}{\norm{x}_2}\right)A\left(\frac{x}{\norm{x}_2}\right) = \frac{x^*Ax}{\norm{x}_2^2} = \frac{x^*Ax}{x^*x}
+$$
+\end{definition}
+
+\begin{theorem}
+\label{thm:field-of-values-convex-hull}
+Let $A \in M_n$ be a normal matrix. Its field of values $F(A)$ is the same as the convex hull of its eigenvalues $\Cal{H}(\sigma(A))$, that is,
+$$
+F(A) = \Cal{H}(\sigma(A)) = \left\{\sum_{i=1}^n \alpha_i \lambda_i : \forall i, \alpha_i \geq 0, \sum_{i=1}^n \alpha_i = 1 \right\}.
+$$
+Note that $\Cal{H}$ is the smallest convex set containing the eigenvalues of $A$.
+\end{theorem}
+
+\begin{proof}[Proof of \ref{thm:field-of-values-convex-hull}]
+Since $A$ is normal, then it is unitarily diagonalizable as $A = UDU^*$ for some unitary $U \in M_n$ and diagonal matrix $D \in M_n$ with $\lambda_1, \lambda_2, \dots, \lambda_n$ along its diagonal. Then we have
+\begin{align*}
+    F(A) 
+        &= \{x^*Ax : x \in \C^n, \norm{x}_2 = 1\} \\
+        &= \{x^*UD\underbrace{U^*x}_{y} : x \in \C^n, \norm{x}_2 = 1\} \\
+        &= \{y^*Dy : y \in \C^n, \norm{y}_2 = 1\} \quad \quad \text{(since } U \text{ is unitary, and is an isometry)} \\
+        &= \left\{
+            \begin{bmatrix} \Bar{y_1} & \Bar{y_2} & \dots & \Bar{y_n}  \end{bmatrix} 
+            \begin{bmatrix}
+                \lambda_1 & & & \mathbf{0} \\
+                & \lambda_2 & & \\
+                & & \ddots & \\
+                \mathbf{0} & & & \lambda_n
+            \end{bmatrix}
+            \begin{bmatrix}
+            y_1 \\ y_2 \\ \ddots \\ y_n
+            \end{bmatrix}: \norm{y}_2 = 1\right\} \\
+        &= \left\{\sum_{i=1}^n \underbrace{|y_i|^2}_{``\alpha_i"} \lambda_i : \norm{y}_2 = 1 = \norm{y}_2^2 = \sum_{i=1}^n |y_i|^2 = 1 \right\} \\
+        &= \Cal{H}(\sigma(A)).
+\end{align*}
+
+\begin{example}
+This theorem does not hold for non-normal $A \in M_n$. Consider $A = \begin{bmatrix}0 & 1 \\ 0 & 0\end{bmatrix}$. Then, $\sigma(A) = \{0, 0\}$, so $\Cal{H}(\sigma(A)) = \{0\}$. But consider a vector $x = \begin{bmatrix}1 \\ 1 \end{bmatrix}$. Then $F(A)$ contains the value $\frac{1}{2}$, but
+$$
+\frac{x^* A x}{x^*x} 
+    = \frac{
+            \begin{bmatrix}1 & 1\end{bmatrix} 
+            \begin{bmatrix}0 & 1 \\ 0 & 0\end{bmatrix}
+            \begin{bmatrix}1 \\ 1\end{bmatrix}
+        }
+        {
+            \begin{bmatrix}1 & 1\end{bmatrix}
+            \begin{bmatrix}1 \\ 1\end{bmatrix}
+        }
+    = \frac12 \not \in \Cal{H}(\sigma(A)).
+$$
+\end{example}
+\end{proof}
+
+\noindent From here on, we keep in mind that Hermitian matrices are normal matrices with real eigenvalues. Further, we consider the eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_n$ in nondecreasing order, and call $\frac{x^*Ax}{x^*x}$ the ``\textit{Rayleigh-Ritz ratios}".
+
+\clearpage 
+
+\subsection{Variational Characterizations}
+
+\begin{theorem}[Rayleigh-Ritz]
+\label{thm:Rayleigh-Ritz}
+Suppose $A \in M_n$ is Hermitian. Then,
+\begin{multicols}{2}
+\noindent \begin{align*}
+    \min_{x \in \C^n \setminus \{\Vec{0}\}} \frac{x^*Ax}{x^*x} &= \lambda_1(A),
+\end{align*}
+\begin{align*}
+    \max_{x \in \C^n \setminus \{\Vec{0}\}} \frac{x^*Ax}{x^*x} &= \lambda_n(A).
+\end{align*}
+\end{multicols}
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:Rayleigh-Ritz}]
+Since $A$ is Hermitian, then $A$ is also normal and $\lambda_i(A) \in \R$ for all $i = 1, 2, \dots, n$. Since $\lambda_i(A)$ are all real, then the convex hull is just the closed interval from the smallest eigenvalue to the largest eigenvalue. By Theorem \ref{thm:field-of-values-convex-hull}, then this closed interval is also $F(A)$. The left side of the claim minimizes $F(A)$, which gives you $\lambda_1$, and the right side maximizes $F(A)$, which gives you $\lambda_n$.
+\end{proof}
+
+\begin{definition}[Positive definite, Positive semidefinite, Negative definite, Negative semidefinite, Indefinite]
+\label{def:semi-defs}
+Suppose that $A \in M_n$ is Hermitian. Then we have several similar definitions:
+\begin{itemize}
+    \item $A$ is \textit{positive definite} if $\forall x \in \C^n$ nonzero, then $x^*Ax > 0$.
+    \item $A$ is \textit{positive semidefinite} if $\forall x \in \C^n$, then $x^*Ax \geq 0$.
+    \item $A$ is \textit{negative definite} if $\forall x \in \C^n$ nonzero, then $x^*Ax < 0$.
+    \item $A$ is \textit{negative semidefinite} if $\forall x \in \C^n$, then $x^*Ax \leq 0$.
+    \item $A$ is \textit{indefinite} otherwise.
+\end{itemize}
+\end{definition}
+
+\begin{theorem}
+\label{thm:eigs-definiteness}
+Suppose $A \in M_n$ is Hermitian. Then we have several similar equivalencies:
+\begin{itemize}
+    \item $A$ is positive definite if and only if $\sigma(A) \subseteq \R_{> 0}$.
+    \item $A$ is positive semidefinite if and only if $\sigma(A) \subseteq \R_{\geq 0}$.
+    \item $A$ is negative definite if and only if $\sigma(A) \subseteq \R_{< 0}$.
+    \item $A$ is negative semidefinite if and only if $\sigma(A) \subseteq \R_{\leq 0}$.
+\end{itemize}
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:eigs-definiteness}]
+Use Theorem \ref{thm:Rayleigh-Ritz} (Rayleigh-Ritz). The signs of Rayleigh-Ritz ratios do not change regardless of whether you divide by $x^*x$.
+\end{proof}
+
+\begin{theorem}
+\label{thm:orthonormal-eigs}
+Suppose $A \in M_n$ is Hermitian with orthonormal eigenvectors $\mu_1, \mu_2, \dots, \mu_n$ with associated eigenvalues $\lambda_1 \leq \lambda_2 \leq \dots \leq \lambda_n$. Then for all $k = 1, 2, \dots, n$,
+\begin{multicols}{2}
+\noindent \begin{align*}
+    \min_{
+        \substack{
+            x \in \C^n \setminus \{\Vec{0}\} \\ 
+            x \perp \mu_1, \mu_2, \dots, \mu_{k-1}
+        }
+    } \frac{x^*Ax}{x^*x} &= \lambda_k(A),
+\end{align*}
+\begin{align*}
+    \max_{
+        \substack{
+            x \in \C^n \setminus \{\Vec{0}\} \\ x \perp \mu_{k+1}, \mu_{k+2}, \dots, \mu_n
+        }
+    } \frac{x^*Ax}{x^*x} &= \lambda_k(A).
+\end{align*}
+\end{multicols}
+\end{theorem}
+On the min side, if $k = 1$, the orthogonality conditions are vacuously satisfied by any $x \in \C^n \setminus \{\Vec{0}\}$, so by Theorem \ref{thm:Rayleigh-Ritz} (Rayleigh-Ritz), this is just $\lambda_1$. If $k = n$, then $x \perp \mu_1, \mu_2, \dots, \mu_{n-1}$, so $x \in \Span\{\mu_n\}$.
+
+Similarly, on the max side, if $k = 1$, the orthogonality conditions are vacuously satisfied by any $x \in \C^n \setminus \{\Vec{0}\}$, so by Theorem \ref{thm:Rayleigh-Ritz} (Rayleigh-Ritz), this is just $\lambda_n$. If $k = n$, then $x \perp \mu_2, \mu_3, \dots, \mu_{n}$, so $x \in \Span\{\mu_1\}$.
+
+\begin{proof}[Proof of Theorem \ref{thm:orthonormal-eigs} (min side)]
+Say $A = UDU^*$ for 
+$U = [\begin{array}{c|c|c|c}\mu_1 & \mu_2 & \cdots & \mu_n\end{array}]$ is a unitary matrix and 
+$D = \diag(\lambda_1, \lambda_2, \dots, \lambda_n)$ is a diagonal matrix. Then,
+
+\begin{align*}
+    \min_{
+        \substack{
+            x \in \C^n \setminus \{\Vec{0}\} \\ 
+            x \perp \mu_1, \mu_2, \dots, \mu_{k-1}
+        }
+    } \frac{x^*Ax}{x^*x} &= 
+    \min_{
+        \substack{
+            x \in \C^n \setminus \{\Vec{0}\} \\ 
+            x \in \Span\{\mu_k, \mu_{k+1}, \dots, \mu_n\}
+        }
+    } \frac{x^*UDU^*x}{x^*x} \\
+    &= 
+    \min_{
+        \substack{
+            \delta_k, \delta_{k+1}, \dots, \delta_n \in \C^n \\
+            \text{not all 0}
+        }
+    } \frac
+        {
+            \left(\sum_{i=k}^n \delta_i\mu_i\right)^* 
+            UDU^* 
+            \left(\sum_{i=k}^n\delta_i\mu_i\right)
+        }
+        {
+            \left(\sum_{i=k}^n \delta_i\mu_i\right)^*
+            \left(\sum_{i=k}^n \delta_i\mu_i\right)
+        } \\
+    &=
+    \min_{
+        \substack{
+            \delta_k, \delta_{k+1}, \dots, \delta_n \in \C^n \\
+            \text{not all 0}
+        }
+    } \frac
+        {
+            \begin{bmatrix} 
+                0 & \cdots & 0 & \Bar{\delta}_k & \cdots &  \Bar{\delta}_n
+            \end{bmatrix}
+            \begin{bmatrix}
+                \lambda_1 & & & 0 \\
+                & \lambda_2 & & \\ 
+                & & \ddots & \\
+                0 & & & \lambda_n
+            \end{bmatrix}
+            \begin{bmatrix} 
+                0 \\ \cdots \\ 0 \\ \Bar{\delta}_k \\ \vdots \\ \Bar{\delta}_n
+            \end{bmatrix}
+        }
+        {
+            \sum_{i=k}^n \Bar{\delta_i}\delta_i
+        } \\
+    &=
+    \min_{
+        \substack{
+            \delta_k, \delta_{k+1}, \dots, \delta_n \in \C^n \\
+            \text{not all 0}
+        }
+    } \frac
+        {\sum_{j=k}^n |\delta_j|^2 \lambda_j}
+        {\sum_{i=k}^n |\delta_i|^2} \\
+    &=
+    \min_{
+        \substack{
+            \delta_k, \delta_{k+1}, \dots, \delta_n \in \C^n \\
+            \text{not all 0}
+        }
+    } \sum_{j=k}^n 
+        \underbrace{\left(
+            \frac
+                {|\delta_j|^2}
+                {\sum_{i=k}^n |\delta_i|^2}
+        \right)}_{``\alpha_j \geq 0"}
+        \lambda_j \\
+    &=
+    \min_{
+        \substack{
+            \delta_k, \delta_{k+1}, \dots, \delta_n \in \C^n \\
+            \text{not all 0}
+        }
+    } \sum_{j=k}^n \alpha_j \lambda_j \\
+    &= \min_{
+        \substack{
+            \delta_k, \delta_{k+1}, \dots, \delta_n \in \C^n \\
+            \text{not all 0}
+        }
+    } \Cal{H}(\lambda_k, \lambda_{k+1}, \dots, \lambda_n) \\
+    &= \lambda_k.
+\end{align*}
+\end{proof}
+
+\subsection{Courant-Fischer Theorem}
+\begin{theorem}
+\label{thm:Courant-Fischer}
+Let $A \in M_n$ be Hermitian. Then for all $k = 1, 2, \dots, n$,
+\begin{multicols}{2}
+\centering
+\noindent \begin{align*}
+    \max_{y_1, y_2, \dots, y_{k-1} \in \C^n}
+    \min_{
+        \substack{
+            x \in \C^n \setminus \{\Vec{0}\} \\ 
+            x \perp y_1, y_2, \dots, y_{k-1}}}
+        \frac{x^*Ax}{x^*x} &= \lambda_k(A),
+\end{align*}
+\begin{align*}
+    \min_{y_{k+1}, y_{k+2}, \dots, y_n \in \C^n}
+    \max_{
+        \substack{
+            x \in \C^n \setminus \{\Vec{0}\} \\ 
+            x \perp y_{k+1}, y_{k+2}, \dots, y_n}}
+        \frac{x^*Ax}{x^*x} &= \lambda_k(A).
+\end{align*}
+\end{multicols}
+\end{theorem}
+
+Some things to note are that we can consider the maximin problem as a maximization of a function $\phi(y_1, y_2, \dots, y_{k-1})$, where $\phi(\cdot)$ evaluates the minimum value over all choices of $x$ which are orthogonal for specified input $y_1$, $y_2$, \dots, $y_{k-1} \in \C^n$.
+
+Similarly, for the minimax problem, we can consider it as the minimization of a function $\theta(y_{k+1}, y_{k+2}, \dots, y_n)$, where $\theta(\cdot)$ evaluates the maximum value over all choices of $x$ which are orthogonal for specified input $y_{k+1}$, $y_{k+2}$, \dots, $y_n \in \C^n$.
+
+\begin{proof}[Proof of Theorem \ref{thm:Courant-Fischer} (min side)]
+Let $A = UDU^*$ where 
+$U = 
+    [\begin{array}{c|c|c|c}
+    \mu_1 & \mu_2 & \cdots & \mu_k
+    \end{array}]
+\in M_n$
+is a unitary matrix and $D = \diag(\lambda_1(A), \lambda_2(A), \cdots, \lambda_n(A))$ is a diagonal matrix.
+
+For any $y_1, y_2, \dots, y_{k-1} \in \C^n$,
+$$
+\overset{``V_1"}{\underbrace{\Span\{\mu_1, \mu_2, \dots, \mu_k\}}_{\dim V_1 = k}} \cap 
+\overset{``V_2"}{\underbrace{\Span\{y_1, y_2, \dots, y_{k-1}\}^\perp}_{\dim V_2 \geq n - (k-1)}}
+\not= \{\Vec{0}\}.
+$$
+
+From inclusion-exclusion, then
+\begin{align*}
+    \dim V_1 \cap V_2 
+        &= \dim V_1 + \dim V_2 - \dim V_1 \cup V_2 \\
+        &\geq k + n - (k-1) - n \\
+        &= 1,
+\end{align*}
+where the inequality is because $\dim V_1 \cup V_2 \leq n$. Let $w \in \C^n \setminus \{\Vec{0}\}$ be some vector in this intersection. Then $\frac{w^*Aw}{w^*w} \in F(A) = \Cal{H}(\sigma(A))$, meaning it is also a convex combination of $\lambda_1(A), \dots, \lambda_k(A)$ since $w \in \Span \{\mu_1, \mu_2, \dots, \mu_k\}$. This means that $\frac{w^*Aw}{w^*w} \leq \lambda_k(A)$. This tell us that
+$$
+\min_{
+    \substack{
+        x \in \C^n \setminus \{\Vec{0}\} \\ 
+        x \perp y_1, y_2, \dots y_{k-1}
+    }
+}
+\frac{x^*Ax}{x^*x} \leq \lambda_k(A)
+$$
+with equality only when $y_1 = \mu_1, y_2 = \mu_2, \dots, y_{k-1} = \mu_{k-1}$ by Theorem \ref{thm:Rayleigh-Ritz}, i.e. the above minimization problem for a given choice of $y_1, y_2, \dots y_{k-1}$ achieves the largest value of $\lambda_k(A)$ when we have $y_1 = \mu_1, y_2 = \mu_2, \dots, y_{k-1} = \mu_{k-1}$. So,
+\begin{align*}
+    \max_{y_1, y_2, \dots, y_{k-1} \in \C^n}
+    \min_{
+        \substack{
+            x \in \C^n \setminus \{\Vec{0}\} \\ 
+            x \perp y_1, y_2, \dots, y_{k-1}}}
+        \frac{x^*Ax}{x^*x} &= \lambda_k(A).
+\end{align*}
+\end{proof}
+
+\begin{note*}
+\label{note:min-max-properties}
+Consider a set of indices $\Cal{I}$ and sequences $a = \{a_i\}_{i \in \Cal{I}} \subseteq \R$ and $b = \{b_i\}_{i \in \Cal{I}} \subseteq \R$. Suppose that $\forall i \in \Cal{I}$, $a_i \leq b_i$, that is, the sequence $b$ dominates $a$. Then, the following inequalities hold:
+\begin{multicols}{2}
+\noindent $$
+\min_{i \in \Cal{I}} a_i \leq \min_{i \in \Cal{I}} b_i,
+$$
+$$
+\max_{i \in \Cal{I}} a_i \leq \max_{i \in \Cal{I}} b_i.
+$$
+\end{multicols}
+Let $\Check{f}$, $\Hat{f}$ be functions where $\Hat{f}$ dominates $\Check{f}$, i.e. $\Check{f} \leq \Hat{f}$. Also, let $f$ be some arbitrary function. Then, the following inequalities are true:
+\begin{align*}
+    \max \min \Check{f} &\leq \max \min \Hat{f} \\
+    \min \max \Check{f} &\leq \min \max \Hat{f} \\
+    \max \min f &\leq \max \min_{\text{more restrictions}} f \\
+    \min \max f &\geq \min \max_{\text{more restrictions}} f
+\end{align*}
+\end{note*}
+
+\subsection{Eigenvalue Inequalities for Hermitian Matrices}
+
+\begin{theorem}[Weyl]
+\label{thm:Weyl}
+Let $A, B \in M_n$ be Hermitian matrices. For all $k = 1, 2, \dots, n$,
+$$
+\lambda_k(A) + \lambda_1(B) \leq \lambda_k(A+B) \leq \lambda_k(A) + \lambda_n(B).
+$$
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:Weyl}]
+We show this claim directly using Theorem \ref{thm:Courant-Fischer} (Courant-Fischer) and Theorem \ref{thm:Rayleigh-Ritz} (Rayleigh-Ritz).
+\begin{align*}
+    \lambda_k(A+B) 
+        &\underset{\text{C-F}}{=} \underset{\text{C-F conditions}}{\min\max} \frac{x^*(A+B)x}{x^*x} \\
+        &= \underset{\text{C-F conditions}}{\min\max} \frac{x^*Ax}{x^*x} + \frac{x^*Bx}{x^*x} \\
+        &\underset{{\text{R-R}}}{\leq} \underset{\text{C-F conditions}}{\min\max} \left(\frac{x^*Ax}{x^*x} + \lambda_n(B)\right) \\
+        &= \underset{\text{C-F conditions}}{\min\max} \left(\frac{x^*Ax}{x^*x}\right) + \lambda_n(B) \\
+        &\underset{\text{C-F}}{=} \lambda_k(A) + \lambda_n(B).
+\end{align*}
+\end{proof}
+
+\begin{corollary}
+\label{cor:Weyl-cor}
+Let $A, B \in M_n$ be Hermitian matrices and $B$ be positive semidefinite. Then for all $k = 1, 2, \dots, n$,
+$$
+\lambda_n(A) \leq \lambda_n(A+B).
+$$
+\end{corollary}
+
+\begin{proof}[Proof of Corollary \ref{cor:Weyl-cor}]
+Since $B$ is positive semidefinite, then $\lambda_1(B) \geq 0$, so $\lambda_k(A) \leq \lambda_k(A) + \lambda_1(B)$.
+\end{proof}
+
+\begin{theorem}[Interlacing I]
+\label{thm:interlacing-one}
+Suppose $A \in M_n$ Hermitian, $y \in \C^n$, $a \in \R$. Then for all $k = 1, 2, \dots, n-1$,
+$$
+\lambda_k(A + ayy^*) \leq \lambda_{k+1}(A).
+$$
+\end{theorem}
+Observe that $yy^*$ is a rank 1 matrix, which can be thought of as a perturbation matrix to $A$.
+
+\begin{proof}[Proof of Theorem \ref{thm:interlacing-one}]
+We show this directly:
+\begin{align*}
+    \lambda_k(A+ayy^*) 
+        &= \max_{z_1, z_2, \dots, z_{k-1} \in \C^n} \min_{\substack{x \in \C^n \setminus \{\Vec{0}\} \\ x \perp z_1, z_2, \dots, z_{k-1}}} \frac{x^*(A + ayy^*)x}{x^*x} \\
+        &\leq \max_{z_1, z_2, \dots, z_{k-1} \in \C^n} \min_{\substack{x \in \C^n \setminus \{\Vec{0}\} \\ x \perp z_1, z_2, \dots, z_{k-1} \\ x \perp y}} \frac{x^*(A + ayy^*)x}{x^*x} \\
+        &= \max_{z_1, z_2, \dots, z_{k-1} \in \C^n} \min_{\substack{x \in \C^n \setminus \{\Vec{0}\} \\ x \perp z_1, z_2, \dots, z_{k-1}, y}} \frac{x^*Ax}{x^*x} \\
+        &\leq \max_{z_1, z_2, \dots, z_{k-1}, z_k \in \C^n} \min_{\substack{x \in \C^n \setminus \{\Vec{0}\} \\ x \perp z_1, z_2, \dots, z_{k-1}, z_k}} \frac{x^*Ax}{x^*x} \\
+        &\underset{\text{C-F}}{=} \lambda_{k+1}(A).
+\end{align*}
+\end{proof}
+
+To establish notational convention, for $A \in M_n$ Hermitian, then
+$$
+\lambda_k(A) 
+    = \begin{cases} 
+        \infty & \text{if } i > n \\ 
+        -\infty & \text{if } i < 1
+    \end{cases}
+$$
+and recall that $\lambda_k(A+ayy^*) \leq \lambda_{k+1}(A)$ for Theorem \ref{thm:interlacing-one}.
+
+\begin{corollary}
+\label{cor:interlacing-one-cor}
+Let $A, B \in M_n$ be Hermitian with $\rank B = r$. Then for all $k = 1, 2, \dots, n$,
+$$
+\lambda_k(A+B) \leq \lambda_{k+r}(A).
+$$
+\end{corollary}
+
+\begin{proof}[Proof of Corollary \ref{cor:interlacing-one-cor}]
+Let $B = UDU^*$ for unitary $U = [\begin{array}{c|c|c|c}\mu_1 & \mu_2 & \cdots & \mu_n\end{array}] \in M_n$, $D \in M_n$ diagonal with $d_{11}, d_{22}, \dots, d_{rr} \not= 0$ and the other diagonal entries being 0. Then, $B = \sum_{i=1}^r d_{ii}\mu_i\mu_i^* = \sum_{i=1}^{r-1} d_{ii}\mu_i\mu_i^* + d_{rr}UU^*$ and by 
+\begin{align*}
+    \lambda_k(A+B) = \lambda_{k+r-r}\left(A + \sum_{i=1}^r d_{ii}\mu_i\mu_i^*\right) 
+        &\leq \lambda_{k+r-(r-1)}\left(A + \sum_{i=1}^{r-1} d_{ii}\mu_i\mu_i^*\right) \\
+        &\leq \lambda_{k+r-(r-2)}\left(A + \sum_{i=1}^{r-2} d_{ii}\mu_i\mu_i^*\right) \\
+        &\vdots \\
+        &\leq \lambda_{k+r-1}\left(A + d_{11}\mu_i\mu_i^*\right) \\
+        &\leq \lambda_{k+r}(A).
+\end{align*}
+\end{proof}
+\noindent This gives us the following bounds:
+\begin{itemize}
+    \item $\lambda_{k-r}(A) \leq \lambda_k(A+B) \leq \lambda_{k+r}(A)$
+    \item $\lambda_{k-r}(A+B) \leq \lambda_k(A) \leq \lambda_{k+r}(A+B)$.
+\end{itemize}
+If we also define $\mathbb{A} \defeq A + B$ and $\mathbb{B} \defeq -B$, then
+$$
+\lambda_k(\mathbb{A} + \mathbb{B}) \leq \lambda_{k+r}(\mathbb{A}).
+$$
+
+\begin{theorem}[Interlacing II, Inclusion Principle]
+\label{thm:interlacing-two}
+Let $A \in M_n$ be Hermitian and $B \in M_r$ be a principal submatrix of $A$. Then for all $k = 1, 2, \dots, r$, then
+$$
+\lambda_k(A) \leq \lambda_k(B) \leq \lambda_{k+n-r}(A)
+$$
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:interlacing-two}]
+Say the row and column indices deleted from $A$ to construct $B$ are $i_1$, $i_2$, \dots, $i_{n-r}$. By Theorem \ref{thm:Courant-Fischer} (Courant-Fischer), then
+\begin{align*}
+    \lambda_k(A) 
+        &= \max_{y_1, y_2, \dots, y_{k-1} \in \C^n} \min_{\substack{x \in \C^n \setminus \{\Vec{0}\} \\ x \perp y_1, y_2, \dots, y_{k-1}}} \frac{x^*Ax}{x^*x} \\
+        &\leq \max_{y_1, y_2, \dots, y_{k-1} \in \C^n} \min_{\substack{x \in \C^n \setminus \{\Vec{0}\} \\ x \perp y_1, y_2, \dots, y_{k-1}, e_{i_1}, e_{i_2}, \dots, e_{i_{n-r}}}}\frac{x^*Ax}{x^*x} \\
+        &= \max_{w_1, w_2, \dots, w_{k-1} \in \C^n} \min_{\substack{z \in \C^n \setminus \{\Vec{0}\} \\ z \perp w_1, w_2, \dots, w_{k-1}}} \frac{z^*Bz}{z^*z} \\
+        &\underset{\text{C-F}}{=} \lambda_k(B),
+\end{align*}
+where $z \in \C^r$ is the vector constructed from $x$ where the zero entries are removed and the $w_i \in \C^r$ are vectors constructed from the $y_i$ where the corresponding entries are removed.
+\end{proof}
+
+\begin{corollary}
+\label{cor:interlacing-two-cor1}
+For $A \in M_n$ Hermitian and $B \in M_{n-1}$ being a principal submatrix of $A$, then
+$$
+\lambda_1(A) \leq \Hat{\lambda}_1(B) \leq \lambda_2(A) \leq \Hat{\lambda}_2(B) \leq \dots \leq \lambda_{n-1}(A) \leq \Hat{\lambda}_{n-1}(B) \leq \lambda_n(A).
+$$
+\end{corollary}
+
+\begin{corollary}
+\label{cor:interlacing-two-cor2}
+If $A \in M_n$ Hermitian, then for every diagonal $a_{ii}$,
+$$
+\lambda_1(A) \leq a_{ii} \leq \lambda_n(A),
+$$
+where we can consider $a_{ii}$ to be a $1 \times 1$ principal submatrix of $A$.
+\end{corollary}
+
+\begin{definition}[Majorize]
+\label{def:majorize}
+We say that a vector $x \in \R^n$ \textit{majorizes} $y \in \R^n$ if when the components each vector are ordered as $x_{l_1} \leq x_{l_2} \leq \cdots \leq x_{l_n}$, $y_{m_1} \leq y_{m_2} \leq \cdots \leq y_{m_n}$, we have for all $k = 1, 2, \dots, n$
+$$
+\sum_{i=1}^k x_{l_i} \geq \sum_{i=1}^k y_{m_i}
+$$
+and exact equality when $k = n$. This means the partial sums of the ordered components of $x$ dominate the partial sums of the ordered components of $y$ and we have equality for full sum ($k = n$).
+\end{definition}
+
+\begin{example}
+If $x = \begin{bmatrix} 3 \\ 5 \\ 4\end{bmatrix}$ and $y = \begin{bmatrix} 9 \\ 1 \\ 2\end{bmatrix}$, then $x$ majorizes $y$. The sorted $x$ is $\begin{bmatrix} 3 \\ 4 \\ 5\end{bmatrix}$ and the sorted $y$ is $\begin{bmatrix} 1 \\ 2 \\ 9\end{bmatrix}$. The sequence of partial sums for $x$ is 3, 7, and 12, and the partial sums for $y$ is 1, 3, 12.
+\end{example}
+
+\begin{example}
+If $x = \begin{bmatrix} 6 \\ 2 \\ -3\end{bmatrix}$ and $y = \begin{bmatrix} 3 \\ -5 \\ 7\end{bmatrix}$, then $x$ majorizes $y$. The sorted $x$ is $\begin{bmatrix} -3 \\ 2 \\ 6\end{bmatrix}$ and the sorted $y$ is $\begin{bmatrix} -5 \\ 3 \\ 7\end{bmatrix}$. The sequence of partial sums for $x$ is -3, -1, and 5, and the partial sums for $y$ is -5, -2, 5.
+\end{example}
+
+\begin{theorem}
+\label{thm:diag-majorize-eigs}
+If $A \in M_n$ Hermitian, then $\diag(A) = \begin{bmatrix}a_{11} \\ a_{22} \\ \vdots \\ a_{nn}\end{bmatrix}$ majorizes $\lambda(A) = \begin{bmatrix}\lambda_1(A) \\ \lambda_2(A) \\ \vdots \\ \lambda_n(A)\end{bmatrix}$.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:diag-majorize-eigs}]
+We prove by induction on $n$. This is trivially true when $n = 1$. Suppose the claim holds true for $n-1$. Consider any arbitrary $A \in M_n$ Hermitian. Let $B \in M_{n-1}$ be a principal submatrix of $A$ obtained by deleting row and column $l_n$ where the diagonals of $A$ are ordered
+$$
+a_{l_1, l_1} \leq a_{l_2, l_2} \leq a_{l_3, l_3} \leq \cdots \leq a_{l_n, l_n}.
+$$
+Since $A$ is Hermitian, then $B$ is also Hermitian. Then for all $k = 1, 2, \dots, n-1$, then
+$$
+\sum_{i=1}^k \lambda_i(A) \leq \sum_{i=1}^k \lambda_i(B) \leq \sum_{i=1}^k a_{l_i, l_i},
+$$
+where the first inequality is from Theorem \ref{thm:interlacing-two} (Interlacing II) and the second inequality is by our induction hypothesis. Then when $k = n$, we have
+$$
+\sum_{i=1}^n \lambda_i(A) = \tr(A) = \sum_{i=1}^n a_{l_i, l_i}.
+$$
+\end{proof}
+
+\begin{theorem}
+\label{thm:hermitian-trace-orthonormal-cols}
+Let $A \in M_n$ Hermitian, and $r$ such that $1 \leq r \leq n$, then
+\begin{align*}
+    \sum_{k=1}^r \lambda_k(A) &= \min_{\substack{U \in M_{n,r} \\ \text{orthonormal columns}}} \tr(U^*AU) \\
+    \sum_{k=0}^{r-1} \lambda_{n-k}(A) &= \max_{\substack{U \in M_{n,r} \\ \text{orthonormal columns}}} \tr(U^*AU) \\
+\end{align*}
+\end{theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:hermitian-trace-orthonormal-cols}]
+Consider any matrix $U \in M_{n,r}$ with orthonormal columns. Extend this to a matrix $V = [U | *] \in M_n$ unitary and apply Gram-Schmidt to maintain orthonormality of the columns of $V$. Then
+$$
+V^*AV = \begin{bmatrix}U^* \\ *\end{bmatrix} A \begin{bmatrix}U | *\end{bmatrix} = \begin{bmatrix}U^*AU & * \\ * & * \end{bmatrix},
+$$
+so for all since $V^*AV \sim A$ $k = 1, 2, \dots, r$, $\lambda_k(A) = \lambda_k(V^*AV) \leq \lambda_k(U^*AU)$ by Theorem \ref{thm:interlacing-two}.
+
+Summing over $k$ from 1 to $r$, we have
+$$
+\sum_{k=1}^r \lambda_k(A) \leq \tr(U^*AU)
+$$
+with equality when $U = [\begin{array}{c|c|c|c} u_1 & u_2 & \cdots & u_r \end{array}]$, where $u_1, u_2, \dots u_r$ are orthonormal eigenvectors associated with $\lambda_1(A), \lambda_2(A), \dots, \lambda_r(A)$. Then,
+\begin{align*}
+    \tr(U^*AU) 
+        &= \tr\left(\begin{bmatrix}u_1^* \\ u_2^* \\ \vdots \\ u_r^*\end{bmatrix} A [\begin{array}{c|c|c|c} u_1 & u_2 & \cdots & u_r \end{array}]\right) \\
+        &= \tr\left(\begin{bmatrix}u_1^* \\ u_2^* \\ \vdots \\ u_r^*\end{bmatrix} [\begin{array}{c|c|c|c} \lambda_1u_1 & \lambda_2u_2 & \cdots & \lambda_ru_r \end{array}]\right) \\
+        &= \tr\begin{bmatrix}\lambda_1 & & & \mathbf{0} \\ & \lambda_2 & & \\ & & \ddots & \\ \mathbf{0} & & & \lambda_r\end{bmatrix} \\
+        &= \sum_{i=1}^r \lambda_i(A)
+\end{align*}
+\end{proof}
+
+\begin{corollary}
+\label{cor:majorize-matrix-sum}
+Let $A, B \in M_n$ be Hermitian. Then $$\lambda(A+B) = \begin{bmatrix}\lambda_1(A+B) \\ \lambda_2(A+B) \\ \vdots \\ \lambda_n(A+B)\end{bmatrix} \text{ majorizes } \lambda(A) + \lambda(B) = \begin{bmatrix}\lambda_1(A) + \lambda_1(B) \\ \lambda_2(A) + \lambda_2(B) \\ \vdots \\ \lambda_n(A) + \lambda_n(B)\end{bmatrix}$$
+\end{corollary}
+
+\begin{proof}[Proof of Corollary \ref{cor:majorize-matrix-sum}]
+For all $k = 1, 2, \dots, n$,
+\begin{align*}
+\sum_{i=1}^k \lambda_i(A+B)
+    &= \min_{\substack{U \in M_{n,k} \\ \text{orthonormal columns}}} \tr(U^*(A+B)U) \\
+    &\geq \min_{\substack{U \in M_{n,k} \\ \text{orthonormal columns}}} \tr(U^*AU) +  \min_{\substack{U \in M_{n,k} \\ \text{orthonormal columns}}} \tr(U^*BU) \\
+    &= \sum_{i=1}^k \lambda_i(A) + \sum_{i=1}^k \lambda_i(B),
+\end{align*}
+where the last equality is by Theorem \ref{thm:hermitian-trace-orthonormal-cols}. We also have
+$$
+\sum_{i=1}^n \lambda_i(A+B) = \tr(A+B) = \tr A + \tr B = \sum_{i=1}^n \lambda_i(A) + \sum_{i=1}^n \lambda_i(B).
+$$
+\end{proof}
+
+\begin{theorem}[Hadamard's Inequality]
+\label{thm:Hadamards-inequality}
+Let $A \in M_n$ be positive semidefinite. Then $\det A \leq \prod_{i=1}^n a_{ii}$.
+\end{theorem}
+\begin{proof}[Proof of Theorem \ref{thm:Hadamards-inequality}]
+For all $i = 1, 2, \dots, n$, $0 \leq \lambda_i(A) \leq a_{ii}$. Thus, $\prod_{i=1}^n a_{ii} \geq 0$. If $A$ is singular, the result is trivial. Otherwise $A$ is positive definite and $0 < \lambda_1(A) \leq a_{ii}$. Thus, define $D \defeq \diag(\frac{1}{\sqrt{a_{11}}}, \frac{1}{\sqrt{a_{22}}}, \dots, \frac{1}{\sqrt{a_{nn}}})$.
+Then, $DAD$ is Hermitian and positive definite since for all $x \in \C^n \setminus \{\Vec{0}\}$, we have $x^*DADx = y^*Ay > 0$, where $y = Dx$. Then,
+$$
+\frac{\det A}{\prod_{i=1}^n a_{ii}} = \det D \det A \det D = \det DAD = \prod_{i=1}^n \lambda_i(DAD) \leq \left(\frac{1}{n}\sum_{i=1}^n \lambda_i(DAD)\right)^n = \left(\frac{1}{n}\tr(DAD)\right)^n \leq 1.
+$$
+\end{proof}
